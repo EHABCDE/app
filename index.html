@@ -47,8 +47,21 @@
                 <input type="text" id="search-input" onkeyup="filterTopics()" placeholder="🔍 Situation suchen... (z.B. Strom, Biene, Husten)">
             </div>
             
-            <!-- Themen-Kacheln (wird per JS dynamisch gefüllt) -->
-            <div class="grid-container" id="topics-grid"></div>
+            <div class="grid-container" id="topics-grid">
+    <button class="topic-card special-card" style="background-color: #e8f8f5; border-color: #27ae60; color: #1e8449;" onclick="showScreen('screen-praevention')"><strong>🛡️ Zuhause-Check (Prävention)</strong></button>
+    <button class="topic-card special-card" style="background-color: #ebf5fb; border-color: #2980b9; color: #2980b9;" onclick="showScreen('screen-feedback')"><strong>💬 Feedback & Hilfe</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-reanimation')"><strong>🫀 Reanimation</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-fieberkrampf')"><strong>🌡️ Fieberkrampf</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-insektenstich')"><strong>🐝 Stich im Mund / Schock</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-kleinteile')"><strong>🔋 Knopfzellen & Magnete</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-verbrennung')"><strong>🔥 Verbrennung / Verbrühung</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-pseudokrupp')"><strong>🗣️ Pseudokrupp-Anfall</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-vergiftung')"><strong>🧪 Vergiftungen</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-stuerze')"><strong>🤕 Sturz auf den Kopf</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-strom')"><strong>⚡ Stromunfälle</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-ertrinken')"><strong>🌊 Ertrinken</strong></button>
+    <button class="topic-card" onclick="showScreen('screen-verschlucken')"><strong>⚠️ Akutes Verschlucken</strong></button>
+</div>
 
             <!-- Installations-Button für das Handy -->
             <button onclick="showInstallGuide()" class="btn-secondary" style="background-color: #27ae60; color: white !important; border: none;">
