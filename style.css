@@ -241,6 +241,15 @@ main.mode-panic #search-input {
     color: #ffffff;
 }
 
+/* Im NOTFALL-Modus nur die kurzen Sofortmaßnahmen zeigen,
+   Hintergrundwissen/Quellen/Produkttipps ausblenden.
+   (Screens ohne eigenes .panic-content, z.B. Prävention/Feedback,
+   nutzen inline style="display:block" auf .learn-content und
+   bleiben davon unberührt.) */
+main.mode-panic .learn-content {
+    display: none;
+}
+
 /* --- FEEDBACK BUTTON & LEGAL DISCLAIMER --- */
 .btn-secondary {
     width: 100%;
