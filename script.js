@@ -15,12 +15,12 @@ const topics = [
     { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' }
 ];
 
-// Start-Funktion beim Laden
+// Start-Funktion beim Laden (Fehler-gesichert)
 document.addEventListener('DOMContentLoaded', () => {
-    renderTopics(topics);
-    initModeSwitcher();
-    initGeoLocation();
-    injectInstallModalHtml();
+    try { renderTopics(topics); } catch (e) { console.error(e); }
+    try { initModeSwitcher(); } catch (e) {}
+    try { initGeoLocation(); } catch (e) {}
+    try { injectInstallModalHtml(); } catch (e) {}
 });
 
 // Rendert die Themen-Buttons auf der Startseite
