@@ -31,7 +31,7 @@ body {
 /* --- HEADER & NAVIGATION --- */
 #mode-switcher-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 12px 20px;
     background: #ffffff;
@@ -42,9 +42,16 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+#mode-switcher-container .switch-inner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .header-logo {
     height: 38px;
     width: auto;
+    margin-left: auto;
 }
 
 .switch-inner {
