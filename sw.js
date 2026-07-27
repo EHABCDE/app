@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eh-abc-v1';
+const CACHE_NAME = 'eh-abc-v99';
 const ASSETS = [
   './',
   './index.html',
