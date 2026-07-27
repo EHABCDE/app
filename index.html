@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Erste Hilfe ABC</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <!-- Globale Navigation: Der Modus-Umschalter -->
+    <div id="mode-switcher-container">
+        <div class="switch-inner">
+            <div class="switch-label">LERNEN</div>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle">
+                <span class="slider round"></span>
+            </label>
+            <div class="switch-label" style="color: #c0392b; font-weight: bold;">NOTFALL</div>
+        </div>
+        
+        <!-- Kleines Logo im Header -->
+        <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToStart()" style="cursor: pointer;">
+    </div>
+
+    <!-- Hauptinhalt der App -->
+    <main id="app-content" class="mode-learn">
+        
+        <!-- STARTSEITE -->
+        <section id="screen-start" class="active-screen">
+            
+            <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
+                <img src="logo.jpg" alt="Erste Hilfe ABC" class="main-logo">
+            </div>
+
+            <h1 id="main-title">Erste Hilfe ABC</h1>
+            <p id="main-subtitle">Wähle eine Situation aus:</p>
+
+            <!-- Prominenter Präventions-Banner -->
+            <button onclick="showScreen('screen-pravention')" class="promo-banner">
+                🛡️ Interaktiver Zuhause-Check (Prävention)
+            </button>
+
+            <!-- Suche -->
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="search-input" onkeyup="filterTopics()" placeholder="🔍 Situation suchen... (z.B. Strom, Biene, Husten)">
+            </div>
+            
+            <!-- Themen-Kacheln (wird per JS dynamisch gefüllt) -->
+            <div class="grid-container" id="topics-grid"></div>
+
+            <!-- Installations-Button für das Handy -->
+            <button onclick="showInstallGuide()" class="btn-secondary" style="background-color: #27ae60; color: white !important; border: none;">
+                📲 App zum Handy-Startbildschirm hinzufügen
+            </button>
+
+            <!-- Feedback Button (ausgelagert aus den Kacheln) -->
+            <button onclick="showScreen('screen-feedback')" class="btn-secondary">
+                💬 Feedback &amp; Verbesserungsvorschläge
+            </button>
+
+            <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
+            <div class="app-disclaimer">
+                <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
+                Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung. 
+                <br><br>
+                <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
+                <br><br>
+                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: PRÄVENTIONS- & RISIKO-CHECK -->
+        <section id="screen-pravention" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="learn-content" style="display: block;">
+                <h1 style="color: #27ae60;">🛡️ Interaktiver Zuhause-Check</h1>
+                <p>Mache dein Zuhause Schritt für Schritt kindersicher – maßgeschneidert auf das Alter deines Kindes und eure Wohnsituation!</p>
+
+                <!-- SCHRITT 1: Entwicklungsstufe wählen -->
+                <div id="quiz-step-1" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
+                    <h3 style="margin-top:0; color: #2c3e50;">👶 1. Wähle die Entwicklungsstufe:</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                        <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
+                            <input type="radio" name="dev_stage" value="baby" checked> <strong>Säugling (0–5 Monate):</strong> Noch immobil, liegt auf Rücken/Bauch.
+                        </label>
+                        <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
+                            <input type="radio" name="dev_stage" value="crawler"> <strong>Krabbelkind (6–12 Monate):</strong> Robben, Krabbeln, Greifen (orale Phase).
+                        </label>
+                        <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
+                            <input type="radio" name="dev_stage" value="toddler"> <strong>Kleinkind (1–3+ Jahre):</strong> Laufen, Klettern, Schränke öffnen.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 2: Gegebenheiten abfragen -->
+                <div id="quiz-step-2" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
+                    <h3 style="margin-top:0; color: #2c3e50;">🏡 2. Was trifft auf eure Wohnsituation zu?</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; color: #2c3e50;">
+                        <label><input type="checkbox" id="has-grandparents" checked> Besuche bei Oma &amp; Opa / Verwandten</label>
+                        <label><input type="checkbox" id="has-stairs"> Treppen im Haus/Wohnung</label>
+                        <label><input type="checkbox" id="has-fireplace"> Kaminofen vorhanden</label>
+                        <label><input type="checkbox" id="has-pets"> Haustiere (Hund / Katze / Nagetiere)</label>
+                        <label><input type="checkbox" id="has-water"> Gartenteich, Pool, Brunnen oder Regentonne</label>
+                        <label><input type="checkbox" id="has-garage"> Garage / Gartenschuppen / Abstellraum</label>
+                    </div>
+
+                    <button onclick="generateRiskCheck()" style="margin-top: 20px; background: #27ae60; color: white; border: none; padding: 14px 25px; border-radius: 25px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        🚀 Persönlichen Check starten
+                    </button>
+                </div>
+
+                <!-- SCHRITT 3: Fragen-Katalog -->
+                <div id="quiz-step-3" style="display: none;">
+                    <div id="questions-container"></div>
+                    
+                    <button onclick="evaluateRiskCheck()" style="margin-top: 20px; background: #c0392b; color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                        📊 Ergebnis anzeigen
+                    </button>
+                </div>
+
+                <!-- SCHRITT 4: Auswertung -->
+                <div id="quiz-results" style="display: none; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; text-align: center;">🎯 Dein Sicherheits-Ergebnis</h2>
+                    <div id="score-display" style="font-size: 32px; font-weight: bold; text-align: center; margin: 15px 0;"></div>
+                    <div id="recommendations-container"></div>
+                    
+                    <button onclick="resetRiskCheck()" style="margin-top: 20px; background: #34495e; color: white; border: none; padding: 12px 20px; border-radius: 20px; width: 100%; font-size: 15px; font-weight: bold; cursor: pointer;">
+                        🔄 Check erneut durchführen
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: FEEDBACK & HINWEISE -->
+        <section id="screen-feedback" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="learn-content" style="display: block;">
+                <h1 style="color: #2980b9;">💬 Feedback &amp; Unterstützung</h1>
+                <p>Deine Rückmeldung hilft uns, diese App für alle Eltern noch besser und sicherer zu machen!</p>
+
+                <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">🐛 Etwas funktioniert nicht?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">Ein Button reagiert nicht, ein Bild wird nicht geladen oder eine Ansicht sieht komisch aus? Sag mir kurz Bescheid, damit ich es sofort reparieren kann.</p>
+                    
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Fehlermeldung&amp;body=Hallo%20Erste%20Hilfe%20ABC%20Team%2C%0A%0Amir%20ist%20folgender%20Fehler%20in%20der%20App%20aufgefallen%3A%0A%0A-%20Welcher%20Bereich%2FBildschirm%3A%20%0A-%20Was%20funktioniert%20nicht%3A%20%0A-%20Mein%20Smartphone%2FBrowser%3A%20%0A%0AVielen%20Dank!" target="_blank" style="display: block; background-color: #e74c3c; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        🚨 Fehler per E-Mail melden
+                    </a>
+                </div>
+
+                <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">💡 Idee oder Verbesserungswunsch?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">Vermisst du ein bestimmtes Notfall-Thema, einen Tipp im Zuhause-Check oder hast du Ideen zur Verbesserung? Ich freue mich über jede Nachricht!</p>
+                    
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Feedback%20%26%20Idee&amp;body=Hallo%20Erste%20Hilfe%20ABC%20Team%2C%0A%0Aich%20habe%20folgendes%20Feedback%20%2F%20folgenden%20Wunsch%20f%C3%BCr%20die%20App%3A%0A%0A%0AViele%20Gr%C3%BC%C3%9Fe" target="_blank" style="display: block; background-color: #2980b9; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        ✉️ Vorschlag per E-Mail senden
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: KINDER-REANIMATION -->
+        <section id="screen-reanimation" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">🫀 NOTFALL: REANIMATION</h1>
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>BLITZ-ERKENNUNG:</strong> Kind reagiert nicht und atmet nicht normal? Leg das Kind sofort auf den <strong>harten Boden</strong>!
+                </div>
+                
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ATEMWEGE FREIMACHEN:</strong><br>
+                    • <em>Unter 1 Jahr (Baby):</em> Kopf in Neutralposition lassen (Gesicht zeigt gerade nach oben – es muss reinregnen können!).<br>
+                    • <em>Ab 1 Jahr (Kind):</em> Kopf vorsichtig nach hinten überstrecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>SOFORT-START (1 MINUTE):</strong><br>
+                    • Gib <strong>5 initiale Beatmungen</strong> (Luft sanft reinblasen, bis sich der Brustkorb hebt).<br>
+                    • Danach 1 Minute lang im Wechsel: <strong>30 Herzdruckmassagen : 2 Beatmungen</strong>.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>NOTRUF 112:</strong> Jetzt erst den Notruf wählen! Handy auf Lautsprecher neben das Kind legen und ohne Unterbrechung <strong>30:2 weiterdrücken/beatmen</strong>, bis Hilfe da ist.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button id="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        🔊 Taktgeber starten (110 BPM)
+                    </button>
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Reanimation</h1>
+                <p>Bei Kindern liegt die Ursache eines Kreislaufstillstands meist an akutem Sauerstoffmangel (Ersticken, Ertrinken), nicht am Herzen selbst. Daher ist die Beatmung hier absolut überlebenswichtig.</p>
+                
+                <h3>Die anatomische "Regen-Regel":</h3>
+                <p>Bei Säuglingen unter einem Jahr ist der Hinterkopf anatomisch so groß, dass ein Überstrecken die Atemwege abknicken würde. Die neutrale "Schnüffelstellung" hält die Atemwege frei.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Wissenschaftliche Quellen (Evidenzbasierte Leitlinien &amp; Fachinfos):</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/krankheiten/ploetzlicher-kindstod-anscheinend-lebensbedrohliches-ereignis/ursachen-risikofaktoren/" target="_blank">🔗 Kinderärzte im Netz – Ursachen &amp; Risikofaktoren für lebensbedrohliche Ereignisse</a>
+                </div>
+            </div>
+        </section>   
+
+        <!-- BILDSCHIRM: FIEBERKRAMPF -->
+        <section id="screen-fieberkrampf" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #3498db;">🌡️ NOTFALL: FIEBERKRAMPF</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ RUHE BEWAHREN! Ein typischer Fieberkrampf hört fast immer von alleine auf.</p>
+                
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>VERLETZUNGEN VERHINDERN:</strong> 
+                    <br>• Räume harte oder scharfe Gegenstände aus dem Weg.
+                    <br>• Polstere den Kopf des Kindes weich ab (z. B. mit einem Kissen oder einer Jacke).
+                    <br>• <strong>Wichtig:</strong> Das Kind auf keinen Fall festhalten oder schütteln!
+                </div>
+                
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>NIX IN DEN MUND:</strong> 
+                    <br>• Stecke dem Kind <strong>keine</strong> Gegenstände (wie Beißringe oder Löffel) in den Mund.
+                    <br>• Versuche nicht, den Mund gewaltsam zu öffnen. 
+                    <br>• Gib ihm während des Krampfes keine Medikamente oder Flüssigkeiten oral (Erstickungsgefahr!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>NOTRUF 112 WÄHLEN, WENN...</strong>
+                    <br>• ...es der **erste** Fieberkrampf im Leben des Kindes ist.
+                    <br>• ...der Krampf länger als **5 Minuten** dauert.
+                    <br>• ...das Kind nach dem Krampf nicht richtig zu sich kommt oder blau anläuft.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>NACH DEM KRAMPF:</strong>
+                    <br>• Wenn das Zucken aufhört: Bringe das Kind in die <strong>Stabile Seitenlage</strong>, damit Speichel abfließen kann und die Atemwege frei bleiben.
+                    <br>• Überprüfe fortlaufend die Atmung.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Fieberkrampf</h1>
+                <p>Ein Fieberkrampf ist ein altersabhängiger Krampfanfall, der meistens im Alter zwischen 6 Monaten und 5 Jahren auftritt. Er wird durch den schnellen Anstieg (seltener Abfall) der Körpertemperatur ausgelöst – das unreife kindliche Gehirn reagiert auf diese rasche Veränderung mit einer temporären "Überladung".</p>
+                
+                <h3>Warum sieht das so schlimm aus?</h3>
+                <p>Während des Krampfes verliert das Kind das Bewusstsein, der Körper versteift sich, die Augen verdrehen sich und es kommt zu rhythmischen Zuckungen der Arme und Beine. Oft atmen Kinder dabei unregelmäßig oder laufen im Gesicht leicht blau an. So furchteinflößend das aussieht: In den allermeisten Fällen hinterlässt ein typischer Fieberkrampf keine Schäden im Gehirn.</p>
+                
+                <h3>Was man im Alltag tun kann:</h3>
+                <p>Sollte dein Kind zu Fieberkrämpfen neigen, besprich mit dem Kinderarzt die Gabe von fiebersenkenden Mitteln (Ibuprofen/Paracetamol) ab einer bestimmten Temperatur sowie die Bereitstellung eines krampflösenden Notfallmedikaments (meistens ein Rektal-Diazepam oder eine Schmelztablette), das im Ernstfall nach Ablauf weniger Minuten verabreicht werden kann.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Wissenschaftliche Quellen (Evidenzbasierte Patienteninformationen):</strong><br>
+                    <a href="https://register.awmf.org/de/leitlinien/detail/027-074" target="_blank">🔗 AWMF Register – S3-Leitlinie Fiebermanagement (Auf der Seite unter „Downloads“ der „Elternleitlinie“ folgen)</a><br>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Empfehlung für die Hausapotheke:</strong><br>
+                    Um bei einem drohenden Fieberkrampf die Temperatur deines Kindes völlig stressfrei, sekundenschnell und ohne Berührung im Blick zu behalten, empfehlen wir den Marktführer: Das **Braun No-Touch Stirnthermometer** in elegantem Schwarz.
+                    <br><br>
+                    💡 <strong>ABC-Tipp:</strong> Reaktiv und berührungslos messen schützt dein Kind vor zusätzlichem Stress während eines Fieberschubs.
+                    <a href="https://www.amazon.de/Braun-Ber%C3%BChrungsfrei-Stirnthermometer-AgePrecision-schwarz/dp/B07R2KJTVY?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Braun No-Touch auf Amazon ansehen →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: INSEKTENSTICH / SCHOCK -->
+        <section id="screen-insektenstich" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #3498db;">🐝 NOTFALL: STICH IM MUND / SCHOCK</h1>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>NOTRUF 112 WÄHLEN bei:</strong> 
+                    <br>• Jedem Stich **im Mund, Rachen oder am Hals** (Egal ob Biene oder Wespe!).
+                    <br>• Bekannter Allergie oder ersten Schock-Anzeichen (Ausschlag am ganzen Körper, Atemnot, Schwellung im Gesicht).
+                </div>
+                
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>KÜHLEN VON INNEN &amp; AUSSEN:</strong> 
+                    <br>• Gib dem Kind sofort **Eiswürfel zum Lutschen** oder eiskaltes Wasser zum Schlucken (bremst die Schwellung im Hals).
+                    <br>• Kühle den Hals von außen mit einem feuchten Tuch oder einem Kühlakku (in ein Handtuch gewickelt).
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>BERUHIGEN &amp; AUFRECHT SETZEN:</strong>
+                    <br>• Setze das Kind unbedingt **aufrecht** hin, das erleichtert das Atmen bei zuschwellenden Atemwegen.
+                    <br>• Versuche, den Stachel (falls sichtbar) vorsichtig mit einer Pinzette oder dem Fingernagel wegzukratzen. Nicht mit den Fingern zusammenquetschen (drückt restliches Gift hinein!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ALLERGIE-NOTFALLSET (Falls vorhanden):</strong>
+                    <br>• Hat das Kind eine bekannte Allergie und ein Notfallset? 
+                    <br>• Ramme den **Adrenalin-Autoinjektor** (z. B. Fastjekt / Jext) sofort senkrecht in den **äußeren Oberschenkel** und halte ihn dort für 5–10 Sekunden (auch durch die Kleidung durch möglich!).
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Atemwegsödem &amp; Anaphylaxie</h1>
+                <p>Ein Insektenstich an Arm oder Bein ist meistens nur lästig. Schwalben Kinder jedoch beim Trinken aus einer offenen Coladose eine Wespe oder Biene herunter, wird der Stich im Mund- und Rachenraum lebensgefährlich. Das Gewebe schwillt innerhalb weniger Minuten massiv an und blockiert die Luftröhre.</p>
+                
+                <h3>Warum ist Kälte hier so mächtig?</h3>
+                <p>Eis und kaltes Wasser bewirken, dass sich die Blutgefäße im Rachenraum schlagartig zusammenziehen. Dadurch wird der Einstrom von Gewebeflüssigkeit verlangsamt und die lebensbedrohliche Schwellung mechanisch ausgebremst, bis der Rettungsdienst eintrifft oder im Krankenhaus abschwellende Medikamente (Kortison/Antihistaminika) gegeben werden können.</p>
+                
+                <h3>Der anaphylaktische Schock</h3>
+                <p>Bei einer echten Insektengiftallergie reagiert das Immunsystem über. Die Gefäße im ganzen Körper weiten sich schlagartig, der Blutdruck fällt in den Keller und die Atemwege verengen sich (Anaphylaxie). Hier hilft nur Adrenalin, welches die Gefäße sofort wieder verengt und das Herz-Kreislauf-System stabilisiert.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Leitlinien-Info:</strong><br>
+                    <a href="https://register.awmf.org/de/leitlinien/detail/061-025" target="_blank">🔗 AWMF S2k-Leitlinie – Akuttherapie anaphylaktischer Reaktionen</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Smarter Helfer für den Sommer:</strong><br>
+                    Sollte dein Kind draußen beim Spielen von einer Mücke, Bremse oder Wespe an Arm oder Bein erwischt werden, hilft konzentrierte Wärme statt Chemie. Der **heat it Stichheiler fürs Smartphone** vernichtet die juckreizauslösenden Eiweiße des Gifts sekundenschnell.
+                    <br><br>
+                    💡 <strong>ABC-Tipp:</strong> Durch das kompakte Design am Schlüsselbund hast du die Soforthilfe gegen den lästigen Juckreiz immer griffbereit am Handy.
+                    <a href="https://www.amazon.de/heat-Insektenstichheiler-Smartphone-Chemiefreie-konzentrierter/dp/B0D26GWWD1?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 heat it Stichheiler auf Amazon ansehen →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: KNOPFZELLEN & MAGNETE -->
+        <section id="screen-kleinteile" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">🔋 NOTFALL: KNOPFZELLEN / MAGNETE</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ VERDACHT REICHT AUS! Sofortiges Handeln erforderlich. Keine Symptome abwarten!</p>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>SOFORT IN DIE KLINIK:</strong> 
+                    <br>• Fahre **unverzüglich** in die nächste Kinderklinik (oder wähle den Notruf 112, wenn das Kind Atemnot hat).
+                    <br>• Nimm (wenn möglich) die Verpackung oder ein identisches Teil zur Identifikation mit.
+                </div>
+                
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>DAS IST JETZT VERBOTEN:</strong> 
+                    <br>• Führe **kein** Erbrechen herbei! (Die Magensäure verstärkt beim Rückfluss die Verätzung der Speiseröhre).
+                    <br>• Gib dem Kind **nichts** zu essen oder zu trinken (Ausnahme siehe Schritt 3).
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #27ae60;">
+                    <span class="step-num">3</span>
+                    <strong>ERSTE HILFE MIT HONIG (Ab 1 Jahr!):</strong>
+                    <br>• Wenn das Verschlucken der **Knopfzelle** weniger als 12 Stunden her ist und das Kind über 1 Jahr alt ist: Gib ihm sofort **1–2 Teelöffel flüssigen Honig**.
+                    <br>• Diesen Schritt alle 10 Minuten auf dem Weg ins Krankenhaus wiederholen. 
+                    <br>• *Honig legt einen Schutzfilm um die Batterie und verlangsamt die chemische Reaktion!*
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>WARNUNG VOR MAGNETEN:</strong>
+                    <br>• Hat das Kind **mehr als einen** Magneten (oder einen Magneten + Metall) verschluckt? Das ist ein absoluter OP-Notfall! Die Magnete können sich im Darm anziehen und die Darmwand durchlöchern.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Chemische Verätzung &amp; Magnetkräfte</h1>
+                <p>Knopfzellen und Supermagnete gehören zu den gefährlichsten Dingen, die ein Kleinkind verschlucken kann. Das Tückische: Oft merkt man es zuerst gar nicht, weil die Kinder keine akute Atemnot haben.</p>
+                
+                <h3>Was passiert bei einer Knopfzelle?</h3>
+                <p>Bleibt die flache Batterie in der engen Speiseröhre stecken, schließt sich durch die feuchte Schleimhaut ein Stromkreis. Es kommt zu einem Stromfluss, der Gewebeflüssigkeit spaltet und hochgradig ätzende Lauge entstehen lässt. Dies kann innerhalb weniger Stunden die Speiseröhre komplett durchätzen.</p>
+                
+                <h3>Die Honig-Methode (Wissenschaftlich belegt):</h3>
+                <p>Studien haben gezeigt, dass Honig (durch seine leicht saure und zähflüssige Eigenschaft) die Entstehung dieser gefährlichen Lauge extrem effektiv ausbremsen kann. Wichtig: Niemals bei Säuglingen unter einem Jahr anwenden (Gefahr von Säuglingsbotulismus!).</p>
+
+                <h3>Warum sind Magnete so gefährlich?</h3>
+                <p>Ein einzelner Magnet wird meistens natürlich ausgeschieden. Werden aber zwei oder mehr verschluckt, wandern sie zeitversetzt durch die Darmschlingen. Treffen sie im Darm aufeinander, klemmen sie die zarte Darmwand dazwischen ein. Die Durchblutung bricht ab, und es kommt blitzschnell zu einem Darmdurchbruch.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Pädiatrischer Leitfaden &amp; Prävention:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/verschluckte-gegenstaende/" target="_blank">🔗 Kinderärzte im Netz – Verschluckbare Gegenstände im Alltag &amp; Prävention</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERBRENNUNGEN -->
+        <section id="screen-verbrennung" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">🔥 NOTFALL: VERBRENNUNG / VERBRÜHUNG</h1>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>GEFAHR STOPPEN &amp; KLEIDUNG WEG:</strong> 
+                    <br>• Ziehe heiß getränkte Kleidung (z. B. durch Tee/Kaffee) **sofort** aus! Jede Sekunde zählt, in der der heiße Stoff auf der Haut brennt.
+                    <br>• <strong>Ausnahme:</strong> Kleidung, die bereits fest an der Haut klebt, nicht gewaltsam abreißen!
+                </div>
+                
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>RICHTIG KÜHLEN (NUR KLEINE STELLEN):</strong> 
+                    <br>• Kühle verbrannte Stellen **sofort mit handwarmem/Leitungswasser** (ca. 15–20°C) für maximal 10 Minuten. 
+                    <br>• <strong>Lebenswichtige Warnung:</strong> Niemals Eiswasser oder Kühlakkus verwenden! Niemals großflächig kühlen (Gefahr von Unterkühlung bei Babys)!
+                    <br>• Gesicht und Hände immer vorsichtig kühlen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>WUNDEN ABDECKEN &amp; HAUSMITTEL-VERBOT:</strong>
+                    <br>• Decke die Brandwunden locker mit einer sterile Keimschutzauflage (aus dem Verbandskasten) ab.
+                    <br>• Schmeiß **keine** Hausmittel wie Mehl, Öl, Zahnpasta oder Puder auf die Wunde! 
+                    <br>• Brandblasen auf keinen Fall aufstechen!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>WANN ZUM ARZT / NOTRUF?</strong>
+                    <br>• Wähle den **Notruf 112**, wenn die Verbrennung großflächig ist (größer als die Handfläche des Kindes), das Gesicht, Genitalien oder Gelenke betroffen sind.
+                    <br>• Geh bei jeder sichtbaren Brandblase zum Kinderarzt.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Thermische Verletzungen</h1>
+                <p>Verbrühungen durch heiße Flüssigkeiten (wie Kaffee, Tee oder Suppe) sind im Kleinkindalter die häufigste Unfallursache. Die zarte Haut von Kindern ist wesentlich dünner als die von Erwachsenen und erleidet schon bei weitaus geringeren Temperaturen (ab ca. 52°C) schwere Schäden.</p>
+                
+                <h3>Die Unterkühlungs-Falle bei Kindern</h3>
+                <p>Früher hieß es pauschal: "Kühlen, bis der Arzt kommt." Davon ist die moderne Medizin völlig abgekommen. Kleinkinder haben im Verhältnis zu ihrem Körpergewicht eine sehr große Hautoberfläche und kühlen extrem schnell aus. Ein exzessives Kühlen mit eiskaltem Wasser schädigt zudem die Durchblutung des Gewebes und vertieft die Wunde im schlimmsten Fall sogar.</p>
+                
+                <h3>Warum sind Hausmittel so gefährlich?</h3>
+                <p>Zahnpasta, Mehl oder Öl trocknen auf der Wunde ein und verkleben sie. In der Notaufnahme müssen die Ärzte diese Schichten dann unter großen Schmerzen für das Kind mühsam abkratzen, um die Wunde beurteilen und behandeln zu können. Zudem bringen Hausmittel Keime tief in die zerstörte Hautbarriere ein, was zu schweren Infektionen führt.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Prävention &amp; Erste Hilfe:</strong><br>
+                    <a href="https://www.paulinchen.de/brandverletzung/erste-hilfe/" target="_blank">🔗 Paulinchen e.V. – Erste Hilfe bei Verbrennungen &amp; Verbrühungen</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: PSEUDOKRUPP -->
+        <section id="screen-pseudokrupp" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #3498db;">🗣️ NOTFALL: PSEUDOKRUPP-ANFALL</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ RUHE AUSSTRAHLEN! Deine Angst überträgt sich aufs Kind und verschlimmert die Atemnot.</p>
+                
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>AUFRECHT HALTEN &amp; BERUHIGEN:</strong> 
+                    <br>• Nimm das Kind sofort auf den Arm und setze es **aufrecht** hin.
+                    <br>• Sprich ruhig auf das Kind ein. Wenn das Kind weint oder schreit, schwillt der Kehlkopf durch den Druck noch weiter zu!
+                </div>
+                
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>KALTE LUFT ATMEN (DER BLITZ-EFFEKT):</strong> 
+                    <br>• Geh mit dem Kind zum **offenen Kühlschrank/Gefrierfach** oder direkt an ein **geöffnetes Fenster / auf den Balkon** (Körper warm einpacken!).
+                    <br>• Die kalte, feuchte Luft sorgt dafür, dass die Schleimhäute im Kehlkopf blitzschnell abschwellen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>NOTFALLMEDIKAMENT (Falls vorhanden):</strong>
+                    <br>• Hat dir der Kinderarzt bereits ein Notfallmedikament verschrieben? 
+                    <br>• Gib dem Kind jetzt das **Kortison-Zäpfchen** oder den entsprechenden Saft/Spray nach ärztlicher Anweisung. (Kortison wirkt abschwellend, braucht aber ca. 20–30 Minuten).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>WANN NOTRUF 112 WÄHLEN?</strong>
+                    <br>• Wenn sich der Zustand trotz kalter Luft nach 10–15 Minuten nicht bessert.
+                    <br>• Wenn die Lippen oder Fingernägel sich **blau färben**.
+                    <br>• Wenn sich die Haut zwischen den Rippen beim Einatmen tief einzieht.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Was ist Pseudokrupp?</h1>
+                <p>Ein Pseudokrupp-Anfall ist eine virusbedingte Entzündung der Schleimhaut im Bereich des Kehlkopfes und der Stimmbänder. Betroffen sind meistens Kinder im Alter von 6 Monaten bis 3 Jahren, da deren Atemwege anatomisch noch sehr eng sind.</p>
+                
+                <h3>Die typischen Symptome im Schlaf:</h3>
+                <p>Meistens wacht das Kind nachts mit einem **trockenen, bellenden Husten** (klingt wie ein Seehund) auf. Beim Einatmen hört man oft ein pfeifendes oder ziehendes Geräusch (den sogenannten Stridor). Begleitet wird das Ganze oft von Heiserkeit.</p>
+                
+                <h3>Warum hilft kalte Luft besser als heißer Dampf?</h3>
+                <p>Früher wurde oft empfohlen, das Badezimmer mit heißem Wasserdampf zu füllen. Moderne Studien zeigen jedoch, dass **kalte Luft** (entweder draußen im Freien oder am Kühlschrank) wesentlich effektiver ist. Die Kälte bewirkt ein Zusammenziehen der Blutgefäße in der Schleimhaut, wodurch die Schwellung mechanisch zurückgeht. Zudem beruhigt die kühle Luft den Atemreflex.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Patientenleitfaden:</strong><br>
+                    <a href="https://www.gesundheitsinformation.de/pseudokrupp.html" target="_blank">🔗 IQWiG – Pseudokrupp erkennen und behandeln</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERGIFTUNGEN -->
+        <section id="screen-vergiftung" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #27ae60;">🧪 NOTFALL: VERGIFTUNG</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ NIEMALS ERBRECHEN HERBEIFÜHREN! Das kann die Speiseröhre verätzen oder zum Ersticken führen.</p>
+                
+               <div class="emergency-step" style="background-color: #1a252f; border-left-color: #27ae60;">
+                    <span class="step-num">1</span>
+                    <strong>GIFTNOTRUF ODER NOTRUF:</strong> 
+                    <br>• Kind stabil/wach? Rufe sofort die für dich zuständige Zentrale an:
+                    
+                    <div id="poison-center-display" style="margin: 10px 0; padding: 10px; background: rgba(39, 174, 96, 0.2); border-radius: 8px; border: 1px solid #27ae60; text-align: center;">
+                        ⏳ Ermittle zuständigen Giftnotruf über deinen Standort...
+                    </div>
+                    
+                    <br>• Kind bewusstlos oder schwere Atemnot? <strong>Sofort Notruf 112!</strong>
+                </div>
+                
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>RESTE SICHERN:</strong> 
+                    <br>• Nimm dem Kind die Reste der Substanz (Pflanzenteile, Putzmittel, Tabletten) aus dem Mund.
+                    <br>• Sichere die Verpackung, Flasche oder Pflanzenteile, um sie den Ärzten zu zeigen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>NUR WASSER TRINKEN (Falls giftnotruf erlaubt):</strong>
+                    <br>• Nach Absprache mit dem Giftnotruf: Gib dem Kind ein paar Schlucke **stilles Wasser oder Tee** zum Ausspülen und Verdünnen.
+                    <br>• <strong>Absolutes Verbot von Milch oder Salzwasser!</strong> (Milch beschleunigt bei manchen Giften die Aufnahme im Darm; Salzwasser ist für Kinder tödlich!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>BEI REINIGUNGSMITTELN (SCHAUM):</strong>
+                    <br>• Hat das Kind Spülmittel, Seife oder Waschmittel geschluckt? **Niemals Wasser trinken lassen!** Das bringt das Mittel im Magen zum Schäumen, wodurch Schaum in die Lunge gerät (Erstickungsgefahr). 
+                    <br>• Wenn vorhanden, Entschäumer-Medikamente (z. B. Sab Simplex / Lefax) nach Rücksprache geben.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Toxikologische Notfälle</h1>
+                <p>Kinder entdecken ihre Welt mit dem Mund. Besonders bunt leuchtende Spülmaschinen-Pods, Medikamente der Großeltern oder giftige Zimmerpflanzen (wie die Dieffenbachie) ziehen Kleinkinder magisch an. Da ihr Körpergewicht gering ist, reichen oft schon kleinste Mengen für schwere Vergiftungen aus.</p>
+                
+                <h3>Die tödliche Gefahr von "Hausmitteln"</h3>
+                <p>Früher wurde oft geraten, Kinder mittels Salzwasser zum Erbrechen zu bringen. Das ist ein lebensgefährlicher Irrtum! Eine hohe Dosis Salz führt bei Kleinkindern blitzschnell zu einer akuten Salzvergiftung (Hypernatriämie), die tödliche Hirnödeme auslösen kann. Zudem führt das Erbrechen von ätzenden Stoffen (wie Rohrreinigern) dazu, dass Speiseröhre und Mundraum ein zweites Mal verätzt werden.</p>
+                
+                <h3>Wie funktioniert der Giftnotruf?</h3>
+                <p>Die Giftnotrufzentralen sind 24 Stunden am Tag mit Fachärzten besetzt. Sie haben Zugriff auf gigantische Datenbanken, in denen die exakten Inhaltsstoffe fast aller Haushalts- und Industrieprodukte sowie Pflanzen hinterlegt sind. Sie sagen dir sekundenschnell, ob du sofort in die Klinik musst oder ob das Produkt harmlos war.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Offizielle Übersicht aller Zentralen:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/vergiftungen/" target="_blank">🔗 Kinderärzte im Netz – Giftnotrufzentralen Übersicht</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Gefahren unsichtbar verbannen:</strong><br>
+                    Prävention ist der beste Schutz vor Vergiftungen. Ob für den klassischen Giftschrank, Waschbeckenunterschränke im Bad oder schwere Schubladen in der Küche – die **MUTKIND® Magnetische Kindersicherung** sperrt neugierige Kinderhände zuverlässig aus.
+                    <br><br>
+                    💡 <strong>ABC-Tipp:</strong> Die Schlösser werden komplett von innen verklebt. Das schont die Möbel und ist von außen absolut unsichtbar, sodass dein Kind gar nicht erst zum Rütteln animiert wird.
+                    <a href="https://www.amazon.de/MUTKIND%C2%AE-Magnetische-Kindersicherung-Starker-Kleber/dp/B0F274BJG4?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 MUTKIND® Kindersicherung auf Amazon ansehen →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: STÜRZE & KOPF -->
+        <section id="screen-stuerze" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #3498db;">🤕 NOTFALL: STURZ AUF DEN KOPF</h1>
+                
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>BEWUSSTSEIN &amp; ATMUNG PRÜFEN:</strong> 
+                    <br>• Reagiert das Kind nicht auf Ansprache oder sanftes Rütteln? 
+                    <br>• <strong>Bei Bewusstlosigkeit + normaler Atmung:</strong> Sofort Stabile Seitenlage und <strong>Notruf 112</strong>!
+                    <br>• <strong>Keine normale Atmung:</strong> Sofort Herzdruckmassage starten!
+                </div>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>BLITZ-CHECK AUF GEHIRNERSCHÜTTERUNG:</strong> 
+                    <br>Wähle sofort den <strong>Notruf 112</strong> oder fahre in die Klinik bei folgenden Warnzeichen:
+                    <br>• Das Kind hat sich direkt nach dem Sturz kurz <strong>bewusstlos</strong> angeühlt.
+                    <br>• Das Kind <strong>erbricht</strong> sich (auch Stunden später noch).
+                    <br>• Das Kind ist extrem schläfrig, apathisch oder lässt sich schwer wecken.
+                    <br>• Die <strong>Pupillen</strong> in den Augen sind ungleich groß oder das Kind schielt plötzlich.
+                    <br>• Blut oder klare Flüssigkeit läuft aus Ohr oder Nase.
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">3</span>
+                    <strong>BEULEN UND PLATZWUNDEN VERSORGEN:</strong>
+                    <br>• Wenn das Kind weint, aber fit ist: Kühle die Beule vorsichtig (Kühlakku in ein Tuch wickeln, niemals direkt auf die Haut!).
+                    <br>• Drücke bei stark blutenden Platzwunden ein steriles Verbandtuch für ein paar Minuten fest auf die Wunde (Kopfhautwunden bluten extrem stark!).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>48-STUNDEN-ÜBERWACHUNG:</strong>
+                    <br>• Auch wenn das Kind direkt nach dem Sturz fit wirkt: Beobachte es für die nächsten 48 Stunden ganz genau. 
+                    <br>• Schau nachts zweimal nach ihm: Lässt es sich im Schlaf leicht bewegen oder reagiert es ganz normal auf Berührung? Wenn es unnatürlich tief schläft, fahre in die Klinik.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Schädel-Hirn-Trauma (SHT)</h1>
+                <p>Der Kopf von Säuglingen und Kleinkindern ist im Verhältnis zum restlichen Körper viel größer und schwerer als bei Erwachsenen. Zudem liegt der Schwerpunkt höher. Deshalb landen Kinder bei Stürzen fast immer auf dem Kopf. Glücklicherweise ist die Natur schlau: Die Schädelknochen sind noch elastisch und fangen viel Energie ab.</p>
+                
+                <h3>Warum ist Erbrechen so ein Warnsignal?</h3>
+                <p>Wenn das Gehirn durch einen Aufprall stark erschüttiert wird, kann es leicht anschwellen oder es kommt zu einer minimalen Blutung. Da der Schädelknochen starr ist, steigt der Druck im Kopf. Dieser Druck reizt das Brechzentrum im Gehirn. Deshalb ist (insbesondere verzögertes) Erbrechen das klassische Leitsymptom für ein mittelschweres bis schweres Schädel-Hirn-Trauma.</p>
+                
+                <h3>Wann ist der Sturz harmlos?</h3>
+                <p>Wenn ein Kind nach einem Sturz sofort laut schreit (also nicht bewusstlos war), sich innerhalb von ca. 10–15 Minuten von den Eltern beruhigen lässt und danach wieder ganz normal spielt, isst und lacht, liegt meistens nur eine harmlose Schädelprellung ("Beule") vor. Ein Arztbesuch schadet zur Sicherheit dennoch nie.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Wissenschaftliche Quellen (Evidenzbasierte Patienteninformationen):</strong><br>
+                    <a href="https://www.gesundheitsinformation.de/gehirnerschuetterung.html" target="_blank">🔗 IQWiG – Gehirnerschütterung (Leichtes SHT)</a><br>
+                    <a href="https://www.gesundheitsinformation.de/erste-hilfe-bei-einer-kopfverletzung.html" target="_blank">🔗 IQWiG – Erste Hilfe bei einer Kopfverletzung</a><br>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Sicher kühlen bei Beulen &amp; Prellungen:</strong><br>
+                    Wie im Notfallmodus gelernt, dürfen eiskalte Kühlakkus niemals direkt auf die nackte Kinderhaut gepresst werden. Die **Hilph Mehrweg-Kühlkissen für Kinder** kommen mit weichen, kindgerechten Stoffhüllen, die die Kälte perfekt dosieren und gleichzeitig Tränen trocknen.
+                    <br><br>
+                    💡 <strong>ABC-Tipp:</strong> Die flexiblen Gel-Packs bleiben auch tiefgefroren anschmiegsam und passen sich der Kopfform des Kindes optimal an.
+                    <a href="https://www.amazon.de/Hilph-Stoffh%C3%BClle-K%C3%BChlkissen-Weisheitsz%C3%A4hne-Insektenstiche/dp/B0DB5W1HHG?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Hilph Kinder-Kühlkissen auf Amazon ansehen →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: STROMUNFÄLLE -->
+        <section id="screen-strom" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #f39c12;">⚡ NOTFALL: STROMUNFALL</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ EIGENSCHUTZ BEACHTEN! Berühre das Kind niemals, solange es noch unter Strom steht!</p>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>STROMKREIS TRENNEN:</strong> 
+                    <br>• Ziehe sofort den **Stecker** des Geräts oder wirf die **Sicherung (FI-Schalter)** im Sicherungskasten raus!
+                    <br>• Ist das unmöglich: Trenne das Kind mit einem **trockenen, nicht-leitenden Gegenstand** (z. B. einem Holzbesenstiel oder einem dicken Buch) von der Stromquelle.
+                </div>
+                
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>NOTRUF &amp; VITALZEICHEN:</strong> 
+                    <br>• Wähle sofort den **Notruf 112** (Lautsprecher an!).
+                    <br>• Prüfe das Bewusstsein und die Atmung des Kindes.
+                    <br>• **Keine normale Atmung?** Beginne sofort mit der Reanimation (30 Herzdruckmassagen : 2 Beatmungen)!
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">3</span>
+                    <strong>BEI BEWUSSTSEIN: STABILE SEITENLAGE &amp; VERBRENNUNG:</strong>
+                    <br>• Atmet das Kind normal, ist aber bewusstlos: **Stabile Seitenlage**.
+                    <br>• Kühle eventuelle sichtbare Brandwunden (Ein- und Austrittsstellen des Stroms) mit handwarmem Wasser.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>IMMER INS KRANKENHAUS (24H ÜBERWACHUNG):</strong>
+                    <br>• Auch wenn das Kind nach dem Stromschlag sofort wieder topfit wirkt: **Fahre sofort in eine Kinderklinik!**
+                    <br>• Strom kann noch Stunden später lebensgefährliche **Herzrhythmusstörungen** auslösen. Das Kind muss für 24 Stunden an den EKG-Monitor.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Stromwirkung im Körper</h1>
+                <p>Ein Stromunfall bei Kindern unterscheidet sich oft von dem bei Erwachsenen. Während Erwachsene meistens an Baustellen- oder Haushaltsgroßgeräten verunfallen, sind es bei Kleinkindern oft defekte Ladekabel (durchgekaut), offene Steckdosen oder defekte Haushaltsgeräte.</p>
+                
+                <h3>Warum ist der EKG-Monitor Pflicht?</h3>
+                <p>Unser Herz wird durch winzige, körpereigene elektrische Impulse gesteuert. Fließt von außen Strom durch den Körper, bringt dieser die Taktung des Herzens komplett durcheinander. Es kann zu Kammerflimmern oder einem plötzlichen Herzstillstand kommen. Das Tückische: Diese Rhythmusstörungen können zeitversetzt auftreten. Daher ist eine medizinische Überwachung für mindestens 24 Stunden absolute Pflicht.</p>
+                
+                <h3>Niederspannung vs. Hochspannung</h3>
+                <p>Im Haushalt haben wir es mit Niederspannung (230 Volt) zu tun. Diese führt oft zu Muskelverkrampfen, wodurch das Kind die Stromquelle oft nicht mehr eigenständig loslassen kann ("Festkleben"). Hochspannungsunfälle (z. B. an Bahnoberleitungen oder Trafostationen) verursachen durch die enorme Hitzeentwicklung schwerste, oft tödliche innere und äußere Verbrennungen.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Wissenschaftliche Quellen (Evidenzbasierte Patienteninformationen):</strong><br>
+                    <a href="https://www.kindergesundheit-info.de/themen/sicher-aufwachsen/alltagstipps/sicher-im-alltag/bei-stromunfaellen/" target="_blank">🔗 BIÖG – Erste Hilfe bei einem Stromunfall</a><br>
+                    <a href="https://gesund.bund.de/icd-code-suche/t75-4" target="_blank">🔗 gesund.bund.de – Schäden durch elektrischen Strom</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ERTRINKEN -->
+        <section id="screen-ertrinken" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #1abc9c;">🌊 NOTFALL: ERTRINKEN</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ ACHTUNG: Ertrinken ist ein LEISER Unfall! Kinder gehen lautlos unter.</p>
+                
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #1abc9c;">
+                    <span class="step-num">1</span>
+                    <strong>AUS DEM WASSER RETTEN:</strong> 
+                    <br>• Bring das Kind **sofort** an Land (Achte auf deinen Eigenschutz in tiefem Wasser!).
+                    <br>• Entferne nasse Kleidung zügig und pack das Kind in warme Decken/Jacken, um Unterkühlung zu vermeiden.
+                </div>
+                
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>BEWUSSTSEIN &amp; ATMUNG CHECKEN:</strong> 
+                    <br>• Reagiert das Kind nicht? Atemwege frei machen (Kopf altersgerecht positionieren).
+                    <br>• Höre/fühle für 10 Sekunden an Mund und Nase, ob eine normale Atmung da ist.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-left-color: #ff4d4d;">
+                    <span class="step-num">3</span>
+                    <strong>WENN KEINE ATMUNG: 5 INITIALE BEATMUNGEN!</strong>
+                    <br>• Da Sauerstoffmangel das Hauptproblem ist: Gib **sofort 5 initiale Beatmungen** (Luft sanft reinblasen, bis der Brustkorb sich hebt).
+                    <br>• Danach 1 Minute lang im Wechsel: **30 Herzdruckmassagen : 2 Beatmungen** durchführen.
+                    <br>• *Erst nach dieser 1 Minute Reanimation den Notruf 112 wählen, falls du alleine bist!*
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>BEI BEWUSSTSEIN / SCHAUM VOR DEM MUND:</strong>
+                    <br>• Atmet das Kind, ist aber benommen: **Stabile Seitenlage** (Kopf tief, damit Wasser ablaufen kann).
+                    <br>• **Lebenswichtig:** Jedes Kind, das unter Wasser war oder reanimiert wurde, muss per Rettungsdienst in die Klinik – auch wenn es wieder fit wirkt! (Gefahr von verzögerten Lungenproblemen).
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Der Ertrinkungsunfall</h1>
+                <p>Ertrinken ist eine der häufigsten unfallbedingten Todesursachen bei Kleinkindern. Das liegt am sogenannten "Stimmritzenkrampf": Sobald Wasser an den Kehlkopf gelangt, verschließt sich dieser reflexartig. Das Kind bekommt keine Luft mehr und verliert das Bewusstsein – oft ohne einen einzigen Laut von sich zu geben.</p>
+                
+                <h3>Warum sind die 5 Beatmungen am Anfang so wichtig?</h3>
+                <p>Im Gegensatz zum Erwachsenen steht beim Ertrinken der akute Sauerstoffmangel im Vordergrund. Das Herz schlägt oft noch kurz weiter, hat aber keinen Sauerstoff mehr. Mit den **5 initialen Beatmungen** drückst du lebenswichtigen Sauerstoff in die Lungen und kannst den Kreislauf oft direkt wieder stimulieren. Daher weicht die Leitlinie hier vom Standard ab.</p>
+                
+                <h3>Der Mythos vom "trockenen Ertrinken"</h3>
+                <p>Wenn ein Kind Wasser in die Lunge bekommt, kann dieses Wasser die empfindlichen Lungenbläschen schädigen. Stunden später (bis zu 24h) kann sich ein Lungenödem bilden – das Kind "ertrinkt" sprichwörtlich zeitversetzt an Land. Achte nach Badeunfällen immer auf Husten, schnelle Atmung oder extreme Müdigkeit.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Wissenschaftliche Quellen (Evidenzbasierte Patienteninformationen):</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/ertrinken/" target="_blank">🔗 Kinderärzte im Netz – Sofortmaßnahmen bei Ertrinkungsunfällen</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: AKUTES VERSCHLUCKEN -->
+        <section id="screen-verschlucken" class="app-screen" style="display: none;">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">⚠️ NOTFALL: VERSCHLUCKEN</h1>
+                
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>HUSTEN PRÜFEN:</strong> Hustet das Kind kräftig? 
+                    <br>• <strong>Ja:</strong> Nur beruhigen, zum Weiterhusten animieren. Nicht eingreifen!
+                    <br>• <strong>Nein (Husten schwach/effektlos, Atemnot, Blaufärbung):</strong> Sofort handeln!
+                </div>
+                
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #e67e22;">
+                    <span class="step-num">2</span>
+                    <strong>5 RÜCKENSCHLÄGE:</strong> 
+                    <br>• Kind mit dem Bauch kopfabwärts auf deinen Oberschenkel/Unterarm legen. Kopf gut stützen!
+                    <br>• Mit dem Handballen bis zu <strong>5 kräftige Schläge</strong> zwischen die Schulterblätter geben. Nach jedem Schlag kurz prüfen, ob der Fremdkörper gelöst ist.
+                    
+                    <div class="step-illustration">
+                        <svg viewBox="0 0 200 100" width="100%" height="80" style="margin-top: 10px;">
+                            <path d="M 20,80 Q 100,60 180,80" stroke="#7f8c8d" stroke-width="4" fill="none" />
+                            <path d="M 40,35 Q 100,45 160,75" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round" />
+                            <circle cx="160" cy="75" r="10" fill="#ffffff" />
+                            <path d="M 80,10 L 80,30 M 80,30 L 75,25 M 80,30 L 85,25" stroke="#e67e22" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <text x="95" y="23" fill="#e67e22" font-size="12" font-weight="bold">Handballen-Schlag</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>FALLS ERFOLGLOS: DRUCKSTÖSSE</strong>:<br>
+                    • <strong>Unter 1 Jahr (Säugling):</strong> Kind in Rückenlage drehen (Kopf tief). <strong>5 Brustdruckstöße</strong> auf der Mitte des Brustbeins. <em>Kein Heimlich-Griff!</em><br>
+                    • <strong>Ab 1 Jahr (Kind):</strong> <strong>5 Oberbauchdruckstöße (Heimlich-Manöver)</strong>. Von hinten um das Kind greifen, eine Faust zwischen Bauchnabel und Brustbein setzen und kräftig nach hinten-oben ziehen.
+                    
+                    <div class="step-illustration">
+                        <svg viewBox="0 0 200 100" width="100%" height="80" style="margin-top: 10px;">
+                            <path d="M 60,90 Q 60,30 110,30 Q 140,30 140,90" stroke="#7f8c8d" stroke-width="3" fill="none" stroke-dasharray="4" />
+                            <path d="M 90,90 L 90,40 Q 110,20 120,40 L 120,90" stroke="#ffffff" stroke-width="5" fill="none" />
+                            <circle cx="105" cy="25" r="10" fill="#ffffff" />
+                            <circle cx="105" cy="55" r="7" fill="#e74c3c" />
+                            <path d="M 125,55 Q 95,50 95,35 M 95,35 L 90,40 M 95,35 L 100,40" stroke="#e74c3c" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <text x="5" y="58" fill="#e74c3c" font-size="11" font-weight="bold">Nach hinten-oben</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>NOTRUF 112 &amp; REANIMATION:</strong>
+                    <br>Ist der Gegenstand noch drin und das Kind wird <strong>bewusstlos</strong>? Leg es flach auf den Boden, wähl den <strong>Notruf 112</strong> (Lautsprecher) und beginn sofort mit der <strong>Kinder-Reanimation</strong> (Start mit 5 Beatmungen!).
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Atemwegsbolus</h1>
+                <p>Ein Fremdkörper in den Atemwegen (Bolus) blockiert die Sauerstoffzufuhr massiv. Solange ein Kind kräftig husten kann, erzeugt es selbst den höchsten und effektivsten Druck. Erst wenn der Hustenstoß versagt, greifen wir mechanisch ein.</p>
+                
+                <h3>Warum kein Heimlich-Griff bei Babys unter 1 Jahr?</h3>
+                <p>Bei Säuglingen sind die inneren Organe im Oberbauch noch nicht durch den Rippenbogen geschützt und extrem verletzlich. Der Heimlich-Griff kann hier lebensgefährliche innere Blutungen verursachen. Deshalb wird beim Baby stattdessen auf den Brustkorb gedrückt.</p>
+                
+                <h3>Wichtig nach jedem Manöver:</h3>
+                <p>Wurde ein Oberbauchdruckstoß durchgeführt, muss das Kind <strong>immer</strong> im Krankenhaus untersucht werden, um versteckte Verletzungen der Bauchorgane auszuschließen – selbst wenn der Fremdkörper erfolgreich gelöst wurde.</p>
+                
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Pädiatrischer Leitfaden:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/verschluckte-gegenstaende/" target="_blank">🔗 Kinderärzte im Netz – Fremdkörper verschluckt</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Empfehlung aus der Praxis:</strong><br>
+                    Um im absoluten Ernstfall bei einer Atemwegsblockade maximal abgesichert zu sein, empfehlen wir das originale Atemwegs-Rettungsgerät von LifeSaveAir.
+                    <br><br>
+                    🎁 <strong>Exklusiver ABC-Vorteil:</strong> Nutze im Warenkorb den Rabattcode <strong style="color: #c0392b; font-size: 16px;">ABC10</strong> und erhalte **10% Rabatt** auf deine Bestellung!
+                    <a href="https://www.lifesaveair.com" target="_blank" class="product-link-btn">
+                        🛒 LifeSaveAir mit 10% Rabatt ansehen →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- GLOBALER NOTRUF- & STANDORT-BUTTON FÜR PANIK-MODUS -->
+        <div class="global-emergency-bar" style="max-width: 600px; margin: 20px auto; padding: 15px; background: #2c0e0e; border: 2px solid #e74c3c; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+            <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 10px;">🚨 Schneller Notruf 112</h3>
+            
+            <div id="geo-location-display" style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; font-size: 14px;">
+                📍 Standort wird ermittelt...
+            </div>
+            
+            <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: background 0.2s;">
+                📞 Jetzt 112 anrufen
+            </button>
+        </div>
+    </main>
+
+    <!-- FESTES INSTALLATIONS-MODAL (FÜR DEN GRÜNEN BUTTON) -->
+    <div id="install-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
+        <div style="background:#ffffff; max-width:450px; width:100%; padding:25px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.3); color:#2c3e50; position:relative; text-align:left;">
+            <h2 style="margin-top:0; color:#27ae60; font-size:20px;">📲 App zum Startbildschirm</h2>
+            <p style="font-size:14px; color:#555; line-height:1.5;">Installiere diese App auf deinem Handy, um sie wie eine echte App (ohne Adresszeile) und auch offline zu nutzen:</p>
+            
+            <div style="background:#f8fafc; padding:12px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:15px; font-size:14px; line-height:1.6;">
+                <strong>🍎 Für iPhone / iPad (Safari):</strong><br>
+                1. Tippe unten in Safari auf das <strong>Teilen-Symbol</strong> (Viereck mit Pfeil nach oben 📤).<br>
+                2. Scrolle im Menü nach unten und wähle <strong>„Zum Home-Bildschirm“</strong> ➕.<br>
+                3. Tippe oben rechts auf <strong>„Hinzufügen“</strong>.
+            </div>
+
+            <div style="background:#f8fafc; padding:12px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:15px; font-size:14px; line-height:1.6;">
+                <strong>🤖 Für Android (Chrome):</strong><br>
+                1. Tippe oben rechts auf die <strong>drei Punkte</strong> (Menü ⋮).<br>
+                2. Wähle <strong>„Zum Startbildschirm hinzufügen“</strong> oder <strong>„App installieren“</strong>.<br>
+                3. Bestätige mit <strong>„Installieren“</strong>.
+            </div>
+
+            <button onclick="closeInstallGuide()" style="background:#34495e; color:white; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                Verstanden &amp; Schließen
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log('Service Worker erfolgreich registriert!'))
+          .catch((err) => console.log('Service Worker Registrierung fehlgeschlagen:', err));
+      }
+
+      function showInstallGuide() {
+          const modal = document.getElementById('install-modal');
+          if (modal) modal.style.display = 'flex';
+      }
+      function closeInstallGuide() {
+          const modal = document.getElementById('install-modal');
+          if (modal) modal.style.display = 'none';
+      }
+    </script>
+</body>
+</html>
