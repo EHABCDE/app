@@ -257,6 +257,17 @@ main.mode-panic .learn-content {
     display: none;
 }
 
+/* Im LERNEN-Modus umgekehrt: die kurze Sofortmaßnahmen-Anleitung
+   (inkl. Metronom) sowie den Schnell-Notruf-Balken ausblenden –
+   dort stehen die ausführlichen Infos & Quellen-Links im Fokus. */
+main.mode-learn .panic-content {
+    display: none;
+}
+
+main.mode-learn .global-emergency-bar {
+    display: none;
+}
+
 /* --- FEEDBACK BUTTON & LEGAL DISCLAIMER --- */
 .btn-secondary {
     width: 100%;
