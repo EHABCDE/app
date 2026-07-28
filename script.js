@@ -111,20 +111,74 @@ function toggleMetronome() {
     }
 }
 
-// Standortbestimmung für Notruf
+// Standortbestimmung mit Adresse, Koordinaten und Notruf-Hilfe
 function initGeoLocation() {
     const display = document.getElementById('geo-location-display');
+    const poisonDisplay = document.getElementById('poison-center-display');
+    
     if (navigator.geolocation && display) {
+        display.innerHTML = '📍 Standort wird ermittelt (GPS & Adresse)...';
+        
         navigator.geolocation.getCurrentPosition(
-            pos => {
-                const lat = pos.coords.latitude.toFixed(4);
-                const lon = pos.coords.longitude.toFixed(4);
-                display.innerHTML = `📍 Dein Standort: Breiten- / Längengrad: ${lat}, ${lon}`;
+            async pos => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const latFormatted = lat.toFixed(4);
+                const lonFormatted = lon.toFixed(4);
+                
+                let addressText = "Adresse konnte nicht geladen werden";
+                
+                try {
+                    // Kostenloses Reverse-Geocoding über OpenStreetMap Nominatim
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
+                        headers: {
+                            'Accept-Language': 'de'
+                        }
+                    });
+                    const data = await response.json();
+                    if (data && data.address) {
+                        const road = data.address.road || data.address.pedestrian || '';
+                        const houseNumber = data.address.house_number || '';
+                        const postcode = data.address.postcode || '';
+                        const city = data.address.city || data.address.town || data.address.village || '';
+                        
+                        if (road || city) {
+                            addressText = `${road} ${houseNumber}, ${postcode} ${city}`.trim();
+                        } else {
+                            addressText = data.display_name;
+                        }
+                    }
+                } catch (e) {
+                    addressText = "Offline / Adresse nur über GPS";
+                }
+                
+                // Ausgabe im Notfall-Bildschirm & Globaler Leiste
+                const locationHtml = `
+                    📍 <strong>Adresse:</strong> ${addressText}<br>
+                    🌍 <strong>GPS:</strong> ${latFormatted}, ${lonFormatted}
+                `;
+                
+                display.innerHTML = locationHtml;
+                
+                // Falls die Giftnotruf-Anzeige auch den Standort braucht
+                if (poisonDisplay) {
+                    poisonDisplay.innerHTML = `📍 Dein Standort: ${addressText} (${latFormatted}, ${lonFormatted})`;
+                }
             },
             () => {
-                display.innerHTML = '📍 Standort konnte nicht automatisch ermittelt werden.';
+                display.innerHTML = '📍 Standort konnte nicht automatisch ermittelt werden. Bitte im Notfall Straßenschilder beachten!';
+                if (poisonDisplay) {
+                    poisonDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
             }
         );
+    } else {
+        if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
     }
 }
 
@@ -438,4 +492,3 @@ function resetRiskCheck() {
     document.getElementById('quiz-step-2').style.display = 'block';
     window.scrollTo(0, 0);
 }
-
