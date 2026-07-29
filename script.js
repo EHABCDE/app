@@ -129,7 +129,6 @@ function initGeoLocation() {
                 let addressText = "Adresse konnte nicht geladen werden";
                 
                 try {
-                    // Kostenloses Reverse-Geocoding über OpenStreetMap Nominatim
                     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
                         headers: {
                             'Accept-Language': 'de'
@@ -152,7 +151,6 @@ function initGeoLocation() {
                     addressText = "Offline / Adresse nur über GPS";
                 }
                 
-                // Ausgabe im Notfall-Bildschirm & Globaler Leiste
                 const locationHtml = `
                     📍 <strong>Adresse:</strong> ${addressText}<br>
                     🌍 <strong>GPS:</strong> ${latFormatted}, ${lonFormatted}
@@ -160,7 +158,6 @@ function initGeoLocation() {
                 
                 display.innerHTML = locationHtml;
                 
-                // Falls die Giftnotruf-Anzeige auch den Standort braucht
                 if (poisonDisplay) {
                     poisonDisplay.innerHTML = `📍 Dein Standort: ${addressText} (${latFormatted}, ${lonFormatted})`;
                 }
@@ -237,7 +234,7 @@ function closeInstallGuide() {
 }
 
 // =========================================================
-// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN AMAZON-EMPFEHLUNGEN
+// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN
 // =========================================================
 
 const riskQuestions = [
@@ -256,9 +253,9 @@ const riskQuestions = [
         condition: (cfg) => cfg.grandparents && cfg.stage !== "baby",
         title: "🥜 Oma & Opa: Couchtisch-Fallen & Atemwegs-Notfall",
         text: "Stehen auf niedrigen Tischchen keine offenen Schalen mit Erdnüssen oder harten Bonbons und liegt eine Notfall-Atemwegssicherung bereit?",
-        tip: "Erdnüsse gehören zu den häufigsten Erstickungsursachen. Für den Notfall bietet ein Absauggerät maximale Sicherheit!",
-        amazonText: "🛒 LifeSaveAir Atemwegs-Rettungsgerät auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=lifesaveair+atemwegsretter&tag=ehabc-21"
+        tip: "Erdnüsse gehören zu den häufigsten Erstickungsursachen. Mit dem Rabattcode ABC10 sparst du 10% auf das offizielle LifeSaveAir Rettungsgerät!",
+        amazonText: "🛒 LifeSaveAir Atemwegs-Rettungsgerät ansehen (10% mit ABC10) →",
+        amazonLink: "https://www.lifesaveair.com"
     },
 
     // ALLGEMEINE GRUNDAUSSTATTUNG
