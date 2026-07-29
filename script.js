@@ -1,6 +1,5 @@
 // --- THEMEN-DATENBANK FÜR DIE STARTSEITE ---
 const topics = [
-    { id: 'pravention', title: '🛡️ Zuhause-Check (Prävention)', category: 'Prävention', isSpecial: true, specialBg: '#e8f8f5', specialBorder: '#27ae60', specialColor: '#1e8449' },
     { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
     { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
     { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf' },
