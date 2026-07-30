@@ -49,17 +49,17 @@ function filterTopics() {
     renderTopics(filtered);
 }
 
-// Bildschirm-Wechsel
+// Bildschirm-Wechsel (Jetzt mit sauberen CSS-Klassen)
 function showScreen(screenId) {
     document.querySelectorAll('.app-screen, #screen-start').forEach(s => {
-        s.style.display = 'none';
-        s.classList.remove('active-screen');
+        s.classList.add('screen-hidden');
+        s.classList.remove('screen-active');
     });
     
     const target = document.getElementById(screenId);
     if (target) {
-        target.style.display = 'block';
-        target.classList.add('active-screen');
+        target.classList.remove('screen-hidden');
+        target.classList.add('screen-active');
         window.scrollTo(0, 0);
     }
 }
@@ -190,7 +190,7 @@ function injectInstallModalHtml() {
     if (document.getElementById('install-modal')) return;
     
     const modalHtml = `
-        <div id="install-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
+        <div id="install-modal" class="modal-hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
             <div style="background:#ffffff; max-width:450px; width:100%; padding:25px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.3); color:#2c3e50; position:relative; text-align:left;">
                 <h2 style="margin-top:0; color:#27ae60; font-size:20px;">📲 App zum Startbildschirm</h2>
                 <p style="font-size:14px; color:#555; line-height:1.5;">Installiere diese App auf deinem Handy, um sie wie eine echte App (ohne Adresszeile) und auch offline zu nutzen:</p>
@@ -221,19 +221,21 @@ function injectInstallModalHtml() {
 function showInstallGuide() {
     const modal = document.getElementById('install-modal');
     if (modal) {
-        modal.style.display = 'flex';
+        modal.classList.remove('modal-hidden');
+        modal.classList.add('modal-visible');
     }
 }
 
 function closeInstallGuide() {
     const modal = document.getElementById('install-modal');
     if (modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('modal-visible');
+        modal.classList.add('modal-hidden');
     }
 }
 
 // =========================================================
-// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN & HINTERGRUNDWISSEN
+// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN
 // =========================================================
 
 const riskQuestions = [
@@ -427,7 +429,6 @@ function generateRiskCheck() {
     container.innerHTML = "";
 
     activeQuestions.forEach((q, index) => {
-        // Generiert den Akkordeon-Button nur, wenn eine Erklärung (explanation) existiert
         let explanationHtml = "";
         if (q.explanation) {
             explanationHtml = `
@@ -455,9 +456,11 @@ function generateRiskCheck() {
         `;
     });
 
-    document.getElementById('quiz-step-1').style.display = 'none';
-    document.getElementById('quiz-step-2').style.display = 'none';
-    document.getElementById('quiz-step-3').style.display = 'block';
+    document.getElementById('quiz-step-1').classList.add('screen-hidden');
+    document.getElementById('quiz-step-2').classList.add('screen-hidden');
+    
+    document.getElementById('quiz-step-3').classList.remove('screen-hidden');
+    document.getElementById('quiz-step-3').classList.add('screen-active');
     window.scrollTo(0, 0);
 }
 
@@ -476,8 +479,11 @@ function evaluateRiskCheck() {
 
     const score = Math.round((yesCount / activeQuestions.length) * 100);
     
-    document.getElementById('quiz-step-3').style.display = 'none';
-    document.getElementById('quiz-results').style.display = 'block';
+    document.getElementById('quiz-step-3').classList.add('screen-hidden');
+    document.getElementById('quiz-step-3').classList.remove('screen-active');
+    
+    document.getElementById('quiz-results').classList.remove('screen-hidden');
+    document.getElementById('quiz-results').classList.add('screen-active');
     window.scrollTo(0, 0);
 
     const scoreDisplay = document.getElementById('score-display');
@@ -511,8 +517,13 @@ function evaluateRiskCheck() {
 }
 
 function resetRiskCheck() {
-    document.getElementById('quiz-results').style.display = 'none';
-    document.getElementById('quiz-step-1').style.display = 'block';
-    document.getElementById('quiz-step-2').style.display = 'block';
+    document.getElementById('quiz-results').classList.add('screen-hidden');
+    document.getElementById('quiz-results').classList.remove('screen-active');
+    
+    document.getElementById('quiz-step-1').classList.remove('screen-hidden');
+    document.getElementById('quiz-step-1').classList.add('screen-active');
+    
+    document.getElementById('quiz-step-2').classList.remove('screen-hidden');
+    document.getElementById('quiz-step-2').classList.add('screen-active');
     window.scrollTo(0, 0);
 }
