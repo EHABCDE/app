@@ -1,6 +1,5 @@
-// WICHTIG: Diese Nummer bei jedem Update der App erhöhen (v2, v3, ...),
-// sonst bekommen Nutzer mit installierter App nie deine neuen Dateien!
-const CACHE_NAME = 'eh-abc-v2';
+// WICHTIG: Version auf v3 erhöht, um das Update zu erzwingen!
+const CACHE_NAME = 'eh-abc-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -33,16 +32,22 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Network-First: erst versuchen, frische Version aus dem Netz zu holen,
-// nur bei Netzwerk-Ausfall aus dem Speicher laden (so kommen Updates sofort an)
+// Stale-While-Revalidate: IMMER sofort aus dem Cache laden für maximale Geschwindigkeit.
+// Gleichzeitig im Hintergrund prüfen, ob es im Netz eine neuere Version gibt, und diese in den Cache legen.
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    fetch(e.request)
-      .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-        return response;
-      })
-      .catch(() => caches.match(e.request))
+    caches.match(e.request).then((cachedResponse) => {
+      const fetchPromise = fetch(e.request).then((networkResponse) => {
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(e.request, networkResponse.clone());
+        });
+        return networkResponse;
+      }).catch(() => {
+        // Netzwerk-Fehler ignorieren, da wir die Offline-Dateien haben
+      });
+      
+      // Liefere sofort die Offline-Version, wenn vorhanden. Sonst warte aufs Netz.
+      return cachedResponse || fetchPromise;
+    })
   );
 });
