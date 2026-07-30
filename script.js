@@ -233,7 +233,7 @@ function closeInstallGuide() {
 }
 
 // =========================================================
-// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN
+// 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN & HINTERGRUNDWISSEN
 // =========================================================
 
 const riskQuestions = [
@@ -275,6 +275,7 @@ const riskQuestions = [
         title: "🛏️ Sichere Schlafumgebung (SIDS-Schutz)",
         text: "Schläft dein Baby im Schlafsack auf einer festen Matratze in Rückenlage – ohne Kissen, Nestchen, Felle, Decken oder Kuscheltiere im Bett?",
         tip: "Verhindert Wärmestau und Atemwegsverlegung. Babys geben überschüssige Wärme über den Kopf ab!",
+        explanation: "Verwenden Sie einen Schlafsack ohne zusätzliche Decke, damit die Atmung Ihres Kindes nicht durch das Überdecken des Gesichtes gestört wird. Nutzen Sie eine feste, luftdurchlässige Matratze die sich nur relativ wenig eindrücken lässt. Verzichten Sie auf Kopfkissen, Fellunterlagen und Nestchen. Kuscheltiere, die die Atemwege verschließen könnten oder Kleinteile, die verschluckt werden könnten, haben im Kinderbett nichts zu suchen.",
         amazonText: "📦 Atmungsaktive Baby-Schlafsäcke auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=baby+schlafsack+atmungsaktiv&tag=ehabc-21"
     },
@@ -284,6 +285,7 @@ const riskQuestions = [
         title: "☕ Heißgetränke-Sperre",
         text: "Trinkst du Kaffee oder Tee ausschließlich dann, wenn dein Baby NICHT auf deinem Arm liegt oder nutzt du auslaufsichere Becher?",
         tip: "Eine einzige umkippende Tasse Tee verursacht bei Säuglingen großflächige, lebensbedrohliche Verbrühungen!",
+        explanation: "Verbrühungen passieren meistens, wenn Kinder anfangen, sich an Tischen hochzuziehen oder wenn sie laufen lernen. Auch heiße Flüssigkeiten auf Tischdecken, an denen die Kinder ziehen können, sorgen für Verbrühungen.",
         amazonText: "📦 Auslaufsichere Thermosbecher für Eltern ansehen →",
         amazonLink: "https://www.amazon.de/s?k=thermosbecher+auslaufsicher&tag=ehabc-21"
     },
@@ -295,6 +297,7 @@ const riskQuestions = [
         title: "🔌 Steckdosen in Bodennähe",
         text: "Sind alle erreichbaren Steckdosen mit integrierter oder eingesteckter Kindersicherung versehen?",
         tip: "Steckdosen wirken auf Krabbelkinder wie ein Magnet und bergen hohe Gefahren durch Stromschläge.",
+        explanation: "Wenn Ihr Kind anfängt, die Welt zu erkunden, entwickeln sich Steckdosen zu einem wahren Magnet mit hohem Gefährdungspotential. Sollten Sie nicht über Steckdosen mit eingebauter Kindersicherung verfügen, dann stecken Sie Kindersicherungen in alle Steckdosen, die Sie nicht dauerhaft mit einem Stecker belegen.",
         amazonText: "📦 Steckdosensicherungen zum Drehen auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=steckdosensicherung+zum+drehen&tag=ehabc-21"
     },
@@ -304,6 +307,7 @@ const riskQuestions = [
         title: "🧱 Regale & Schränke an Wand befestigt",
         text: "Sind freistehende Regale, Schränke und Wickelkommoden im oberen Drittel fest an der Wand verankert?",
         tip: "Kinder im Kletteralter verändern beim Hochziehen den Schwerpunkt der Möbel und bringen diese zum Kippen!",
+        explanation: "Es ist absolut wichtig, dass Sie Ihre freistehenden Regale und Schränke im oberen Drittel an der Wand befestigen. Kinder im Kletteralter verändern durch Ihre Kletterversuche den Schwerpunkt von Regalen und Schränken und können diese zum Kippen bringen. Kippt ein Schrank oder Regal auf einen Kinderkörper, kann dies gravierende Folgen nach sich ziehen.",
         amazonText: "📦 Möbel-Möbelkippsicherung (Wandverankerung) ansehen →",
         amazonLink: "https://www.amazon.de/s?k=moebel+kippsicherung+kindersicherung&tag=ehabc-21"
     },
@@ -313,6 +317,7 @@ const riskQuestions = [
         title: "🔋 Schränke & Putzmittel gesichert",
         text: "Sind Schränke mit Glas, Porzellan, Messern sowie Putzmitteln und Spülmaschinen-Pods zuverlässig verschlossen?",
         tip: "Prävention ist der beste Schutz vor Schnittwunden und Vergiftungen im Haushalt.",
+        explanation: "Wenn Sie nicht wollen, dass Ihr Porzellan regelmäßig in vielen kleinen Teilen auf den Küchenfliesen landet, sichern Sie Ihre Schränke mit Schlössern. Dabei gibt es unterschiedliche Ansätze vom Magnetschloss über ein Knopfschloss bis hin zu Schlaufenschlössern.",
         amazonText: "📦 MUTKIND® Magnetische Kindersicherung auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/MUTKIND%C2%AE-Magnetische-Kindersicherung-Starker-Kleber/dp/B0F274BJG4?tag=ehabc-21"
     },
@@ -322,6 +327,7 @@ const riskQuestions = [
         title: "🍳 Herdgitter & Backofenschloss",
         text: "Ist ein Herdschutzgitter montiert und die Backofentür mit einem universellen Ofenschloss gesichert?",
         tip: "Verhindert das Greifen nach heißen Töpfen/Pfannen und das Öffnen des heißen Innenraums beim Backofen.",
+        explanation: "Wenn Kinder anfangen, sich hochzuziehen, kommen sie auch an die Schalter für Ihren Herd. Herdgitter verhindern, dass die kleinen Läufer mit der Hand an die heiße Herdplatte kommen. Backöfen werden von außen in der Regel nicht so heiß, allerdings sind die Temperaturen im inneren sehr gefährlich. Es gibt universelle Ofenschlösser, die verhindern, dass kleine Kinder den Ofen öffnen.",
         amazonText: "📦 Herdschutzgitter & Backofenschloss auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=herdschutzgitter+kindersicherung&tag=ehabc-21"
     },
@@ -331,6 +337,7 @@ const riskQuestions = [
         title: "🚪 Fenster, Türen & Scharfe Kanten",
         text: "Sind Fenstergriffe abschließbar, Türstopper für kleine Finger angebracht und Tischkanten abgepolstert?",
         tip: "Verhindert Stürze aus dem Fenster, eingeklemmte Finger und Kopfplatzwunden an Tischkanten.",
+        explanation: "Nutzen Sie bei Fenstern abschließbare Garnituren, die Sie im Baumarkt als Austauschsatz erhalten können. Tischkanten oder Ecken von kleineren Regalen oder Sideboards können mit selbstklebenden Kantensicherungen gesichert werden. Damit vermeiden Sie eine Vielzahl von blauen Flecken im Bereich des Kopfes.",
         amazonText: "📦 Eckenschutz & Schaumstoff-Türstopper ansehen →",
         amazonLink: "https://www.amazon.de/s?k=tuerstopper+klemmschutz+kinder&tag=ehabc-21"
     },
@@ -340,6 +347,7 @@ const riskQuestions = [
         title: "🚽 Bad & Toilette (Duftsteine)",
         text: "Wurden Urinsteinentferner/Duftsteine unter dem Toilettenrand entfernt oder ist ein WC-Schloss angebracht?",
         tip: "Toilettensteine enthalten hochgiftige Chemikalien, die Kleinkinder beim Hineingreifen sofort am Mund testen.",
+        explanation: "Oftmals sind in Toiletten Urinsteinentferner oder andere Hygieneartikel unter dem Rand angebracht. Diese sind leider für kleine Kinder, ähnlich wie andere Reinigungsmittel, giftig. Verzichten Sie deshalb in der nächsten Zeit auf solche Mittel oder nutzen Sie eine Kindersicherung für Toilettendeckel.",
         amazonText: "📦 Toilettendeckel-Kindersicherung auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=toilettendeckel+kindersicherung&tag=ehabc-21"
     },
@@ -351,6 +359,7 @@ const riskQuestions = [
         title: "🪜 Treppenschutzgitter",
         text: "Ist mindestens an der oberen Etagenseite (idealerweise auch unten) ein verstellbares Treppengitter montiert?",
         tip: "Treppenstürze gehören zu den häufigsten Ursachen für schwere Schädel-Hirn-Traumata.",
+        explanation: "Montieren Sie ein Treppenschutzgitter zumindest an der oberen Etagenseite der Treppe, um das Herunterfallen zu verhindern. Ein weiteres Treppengitter in der unteren Etage schränkt die Möglichkeit ein, dass sich Ihr Krabbelkind ungewollt Zutritt zur Treppe verschafft und Ihnen entwischt.",
         amazonText: "📦 Treppenschutzgitter ohne Bohren auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=treppenschutzgitter+ohne+bohren&tag=ehabc-21"
     },
@@ -362,6 +371,7 @@ const riskQuestions = [
         title: "🔥 Kaminofen & Zündmittel",
         text: "Ist der Kaminofen mit einem Schutzgitter umzäunt und Zündstoffe/Feuerzeuge komplett unzugänglich?",
         tip: "Scheiben von Kaminöfen erreichen extrem hohe Temperaturen, die sofort drittgradige Verbrennungen auslösen.",
+        explanation: "Neben der wohligen Wärme, die er liefert, ist ein Kaminofen leider auch eine Gefahrenquelle. Es gibt im Zubehörhandel spezielle Schutzgitter, die ein Erreichen des Ofens für den Nachwuchs verhindern.",
         amazonText: "📦 Kaminschutzgitter für Kinder auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=kaminschutzgitter+kinder&tag=ehabc-21"
     },
@@ -372,7 +382,8 @@ const riskQuestions = [
         condition: (cfg) => cfg.pets && cfg.stage !== "baby",
         title: "🐈 Haustiere, Katzenklo & Futter",
         text: "Sind Katzenklo, Fressnäpfe und Leinen unzugänglich und wird das Kind NIEMALS allein mit Tieren im Raum gelassen?",
-        tip: "Verhindert Infektionen durch Katzenstreu, Erstickung durch Trockenfutter und unvorhersehbare Tierreaktionen."
+        tip: "Verhindert Infektionen durch Katzenstreu, Erstickung durch Trockenfutter und unvorhersehbare Tierreaktionen.",
+        explanation: "Gerade kleine Kinder sollten Sie nicht mit Haustieren allein in einem Raum lassen. Tiere reagieren oft anders als sonst, wenn diese in einer ungewohnten Situation sind."
     },
 
     // BEREICH: GARTEN, TEICH & POOL
@@ -415,6 +426,21 @@ function generateRiskCheck() {
     container.innerHTML = "";
 
     activeQuestions.forEach((q, index) => {
+        // Generiert den Akkordeon-Button nur, wenn eine Erklärung (explanation) existiert
+        let explanationHtml = "";
+        if (q.explanation) {
+            explanationHtml = `
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1;">
+                    <button onclick="const el = document.getElementById('exp_${index}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';" style="background: none; border: none; color: #2980b9; font-weight: bold; font-size: 14px; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px;">
+                        📖 Warum ist das wichtig? ▾
+                    </button>
+                    <div id="exp_${index}" style="display: none; margin-top: 10px; padding: 12px; background: #f8fafc; border-left: 4px solid #3498db; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.5;">
+                        ${q.explanation}
+                    </div>
+                </div>
+            `;
+        }
+
         container.innerHTML += `
             <div style="background: #ffffff; padding: 15px; border-radius: 10px; margin-bottom: 12px; border-left: 5px solid #27ae60; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
                 <strong style="color: #2c3e50; font-size: 16px;">${q.title}</strong>
@@ -423,6 +449,7 @@ function generateRiskCheck() {
                     <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="yes" checked> Ja / Erfüllt</label>
                     <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="no"> Nein / Handlungsbedarf</label>
                 </div>
+                ${explanationHtml}
             </div>
         `;
     });
