@@ -248,18 +248,12 @@ main.mode-panic #search-input {
     color: #ffffff;
 }
 
-/* Im NOTFALL-Modus nur die kurzen Sofortmaßnahmen zeigen,
-   Hintergrundwissen/Quellen/Produkttipps ausblenden.
-   (Screens ohne eigenes .panic-content, z.B. Prävention/Feedback,
-   nutzen inline style="display:block" auf .learn-content und
-   bleiben davon unberührt.) */
+/* Im NOTFALL-Modus nur die kurzen Sofortmaßnahmen zeigen */
 main.mode-panic .learn-content {
     display: none;
 }
 
-/* Im LERNEN-Modus umgekehrt: die kurze Sofortmaßnahmen-Anleitung
-   (inkl. Metronom) sowie den Schnell-Notruf-Balken ausblenden –
-   dort stehen die ausführlichen Infos & Quellen-Links im Fokus. */
+/* Im LERNEN-Modus kurze Sofortmaßnahmen und Notruf ausblenden */
 main.mode-learn .panic-content {
     display: none;
 }
@@ -301,16 +295,7 @@ main.mode-learn .global-emergency-bar {
     border: 1px solid #e2e8f0;
 }
 
-/* --- DETAIL-BILDSCHIRME --- */
-.app-screen {
-    animation: fadeIn 0.25s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+/* --- DETAIL-BILDSCHIRME & UI-ÜBERGÄNGE --- */
 .back-btn {
     background: #34495e;
     color: white;
@@ -379,4 +364,36 @@ main.mode-learn .global-emergency-bar {
 
 .product-link-btn:active {
     transform: scale(0.98);
+}
+
+/* =========================================================
+   NEU: CSS KLASSEN FÜR SANFTE UI-WECHSEL
+   ========================================================= */
+
+.screen-hidden {
+    display: none !important;
+}
+
+.screen-active {
+    display: block !important;
+    animation: fadeInScreen 0.3s ease-out forwards;
+}
+
+@keyframes fadeInScreen {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-hidden {
+    display: none !important;
+}
+
+.modal-visible {
+    display: flex !important;
+    animation: fadeInModal 0.25s ease-out forwards;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
