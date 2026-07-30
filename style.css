@@ -1,3 +1,4 @@
+CSS
 /* =========================================================
    ERSTE HILFE ABC - MODERN PWA STYLESHEET
    ========================================================= */
@@ -232,7 +233,6 @@ main.mode-panic .topic-card {
     color: #ffffff;
 }
 
-/* Spezial-Kacheln im Notfall-Modus ausblenden */
 main.mode-panic .topic-card.special-card {
     display: none;
 }
@@ -248,12 +248,10 @@ main.mode-panic #search-input {
     color: #ffffff;
 }
 
-/* Im NOTFALL-Modus nur die kurzen Sofortmaßnahmen zeigen */
 main.mode-panic .learn-content {
     display: none;
 }
 
-/* Im LERNEN-Modus kurze Sofortmaßnahmen und Notruf ausblenden */
 main.mode-learn .panic-content {
     display: none;
 }
