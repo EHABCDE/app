@@ -1,4 +1,4 @@
-// WICHTIG: Version auf v3 erhöht, um das Update zu erzwingen!
+// WICHTIG: Version auf v3 erhöht, um das Update bei allen Nutzern zu erzwingen!
 const CACHE_NAME = 'eh-abc-v3';
 const ASSETS = [
   './',
@@ -11,7 +11,7 @@ const ASSETS = [
 
 // Dateien beim ersten Laden in den Speicher des Handys laden
 self.addEventListener('install', (e) => {
-  self.skipWaiting(); // neuer Service Worker übernimmt sofort, statt zu warten
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
@@ -28,12 +28,12 @@ self.addEventListener('activate', (e) => {
           .filter((key) => key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
-    ).then(() => self.clients.claim()) // sofort alle offenen Tabs übernehmen
+    ).then(() => self.clients.claim())
   );
 });
 
 // Stale-While-Revalidate: IMMER sofort aus dem Cache laden für maximale Geschwindigkeit.
-// Gleichzeitig im Hintergrund prüfen, ob es im Netz eine neuere Version gibt, und diese in den Cache legen.
+// Gleichzeitig im Hintergrund prüfen, ob es im Netz eine neuere Version gibt.
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
