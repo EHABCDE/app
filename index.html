@@ -28,7 +28,7 @@
     <main id="app-content" class="mode-learn">
         
         <!-- STARTSEITE -->
-        <section id="screen-start" class="active-screen">
+        <section id="screen-start" class="screen-active">
             
             <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
                 <img src="logo.jpg" alt="Erste Hilfe ABC" class="main-logo">
@@ -48,20 +48,8 @@
             </div>
             
             <div class="grid-container" id="topics-grid">
-    <button class="topic-card special-card" style="background-color: #e8f8f5; border-color: #27ae60; color: #1e8449;" onclick="showScreen('screen-praevention')"><strong>🛡️ Zuhause-Check (Prävention)</strong></button>
-    <button class="topic-card special-card" style="background-color: #ebf5fb; border-color: #2980b9; color: #2980b9;" onclick="showScreen('screen-feedback')"><strong>💬 Feedback & Hilfe</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-reanimation')"><strong>🫀 Reanimation</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-fieberkrampf')"><strong>🌡️ Fieberkrampf</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-insektenstich')"><strong>🐝 Stich im Mund / Schock</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-kleinteile')"><strong>🔋 Knopfzellen & Magnete</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-verbrennung')"><strong>🔥 Verbrennung / Verbrühung</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-pseudokrupp')"><strong>🗣️ Pseudokrupp-Anfall</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-vergiftung')"><strong>🧪 Vergiftungen</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-stuerze')"><strong>🤕 Sturz auf den Kopf</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-strom')"><strong>⚡ Stromunfälle</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-ertrinken')"><strong>🌊 Ertrinken</strong></button>
-    <button class="topic-card" onclick="showScreen('screen-verschlucken')"><strong>⚠️ Akutes Verschlucken</strong></button>
-</div>
+                <!-- Grid wird per JS gefüllt -->
+            </div>
 
             <!-- Installations-Button für das Handy -->
             <button onclick="showInstallGuide()" class="btn-secondary" style="background-color: #27ae60; color: white !important; border: none;">
@@ -85,17 +73,18 @@
         </section>
 
         <!-- BILDSCHIRM: PRÄVENTIONS- & RISIKO-CHECK -->
-        <div class="learn-content" style="display: block;">
+        <section id="screen-pravention" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            
+            <div class="learn-content" style="display: block;">
                 <h1 style="color: #27ae60;">🛡️ Interaktiver Zuhause-Check</h1>
                 
-                <!-- NEU: Prominente Info-Box mit 60% Statistik -->
                 <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 16px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                     <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 8px;">💡 Wusstest Du, dass sich rund 60% der Kindernotfälle präventiv verhindern lassen?</strong>
                     <p style="margin: 0; color: #2c3e50; font-size: 14px; line-height: 1.6;">
                         Die richtigen Sicherheitsmaßnahmen zum richtigen Zeitpunkt sorgen dafür, dass Deine Wohnung kindersicher ist, Du Dich aber darin auch noch frei bewegen kannst. Mache Dein Zuhause jetzt Schritt für Schritt sicher – maßgeschneidert auf das Alter Deines Kindes und Eure Wohnsituation!
                     </p>
                 </div>
-                <!-- Ende Info-Box -->
 
                 <!-- SCHRITT 1: Entwicklungsstufe wählen -->
                 <div id="quiz-step-1" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
@@ -131,7 +120,7 @@
                 </div>
 
                 <!-- SCHRITT 3: Fragen-Katalog -->
-                <div id="quiz-step-3" style="display: none;">
+                <div id="quiz-step-3" class="screen-hidden">
                     <div id="questions-container"></div>
                     
                     <button onclick="evaluateRiskCheck()" style="margin-top: 20px; background: #c0392b; color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
@@ -140,7 +129,7 @@
                 </div>
 
                 <!-- SCHRITT 4: Auswertung -->
-                <div id="quiz-results" style="display: none; background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #cbd5e1;">
+                <div id="quiz-results" class="screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #cbd5e1;">
                     <h2 style="margin-top:0; color: #2c3e50; text-align: center;">🎯 Dein Sicherheits-Ergebnis</h2>
                     <div id="score-display" style="font-size: 32px; font-weight: bold; text-align: center; margin: 15px 0;"></div>
                     <div id="recommendations-container"></div>
@@ -153,7 +142,7 @@
         </section>
 
         <!-- BILDSCHIRM: FEEDBACK & HINWEISE -->
-        <section id="screen-feedback" class="app-screen" style="display: none;">
+        <section id="screen-feedback" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="learn-content" style="display: block;">
@@ -164,7 +153,7 @@
                     <h3 style="margin-top: 0;">🐛 Etwas funktioniert nicht?</h3>
                     <p style="font-size: 14px; line-height: 1.5;">Ein Button reagiert nicht, ein Bild wird nicht geladen oder eine Ansicht sieht komisch aus? Sag mir kurz Bescheid, damit ich es sofort reparieren kann.</p>
                     
-                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Fehlermeldung&amp;body=Hallo%20Erste%20Hilfe%20ABC%20Team%2C%0A%0Amir%20ist%20folgender%20Fehler%20in%20der%20App%20aufgefallen%3A%0A%0A-%20Welcher%20Bereich%2FBildschirm%3A%20%0A-%20Was%20funktioniert%20nicht%3A%20%0A-%20Mein%20Smartphone%2FBrowser%3A%20%0A%0AVielen%20Dank!" target="_blank" style="display: block; background-color: #e74c3c; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Fehlermeldung" target="_blank" style="display: block; background-color: #e74c3c; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
                         🚨 Fehler per E-Mail melden
                     </a>
                 </div>
@@ -173,7 +162,7 @@
                     <h3 style="margin-top: 0;">💡 Idee oder Verbesserungswunsch?</h3>
                     <p style="font-size: 14px; line-height: 1.5;">Vermisst du ein bestimmtes Notfall-Thema, einen Tipp im Zuhause-Check oder hast du Ideen zur Verbesserung? Ich freue mich über jede Nachricht!</p>
                     
-                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Feedback%20%26%20Idee&amp;body=Hallo%20Erste%20Hilfe%20ABC%20Team%2C%0A%0Aich%20habe%20folgendes%20Feedback%20%2F%20folgenden%20Wunsch%20f%C3%BCr%20die%20App%3A%0A%0A%0AViele%20Gr%C3%BC%C3%9Fe" target="_blank" style="display: block; background-color: #2980b9; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Feedback%20%26%20Idee" target="_blank" style="display: block; background-color: #2980b9; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
                         ✉️ Vorschlag per E-Mail senden
                     </a>
                 </div>
@@ -181,7 +170,7 @@
         </section>
 
         <!-- BILDSCHIRM: KINDER-REANIMATION -->
-        <section id="screen-reanimation" class="app-screen" style="display: none;">
+        <section id="screen-reanimation" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -245,7 +234,7 @@
         </section>
 
         <!-- BILDSCHIRM: FIEBERKRAMPF -->
-        <section id="screen-fieberkrampf" class="app-screen" style="display: none;">
+        <section id="screen-fieberkrampf" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -312,7 +301,7 @@
         </section>
 
         <!-- BILDSCHIRM: INSEKTENSTICH / SCHOCK -->
-        <section id="screen-insektenstich" class="app-screen" style="display: none;">
+        <section id="screen-insektenstich" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -375,7 +364,7 @@
         </section>
 
         <!-- BILDSCHIRM: KNOPFZELLEN & MAGNETE -->
-        <section id="screen-kleinteile" class="app-screen" style="display: none;">
+        <section id="screen-kleinteile" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -432,7 +421,7 @@
         </section>
 
         <!-- BILDSCHIRM: VERBRENNUNGEN -->
-        <section id="screen-verbrennung" class="app-screen" style="display: none;">
+        <section id="screen-verbrennung" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -448,7 +437,7 @@
                 <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
                     <span class="step-num">2</span>
                     <strong>RICHTIG KÜHLEN (NUR KLEINE STELLEN):</strong> 
-                    <br>• Kühle verbrannte Stellen **sofort mit handwarmem/Leitungswasser** (ca. 15–20°C) für maximal 10 Minuten. 
+                    <br>• Kühle verbrannte Stellen **sofort mit handwarmem/Leitungswasser** (ca. 15–20°C) für maximal 2 Minuten. 
                     <br>• <strong>Lebenswichtige Warnung:</strong> Niemals Eiswasser oder Kühlakkus verwenden! Niemals großflächig kühlen (Gefahr von Unterkühlung bei Babys)!
                     <br>• Gesicht und Hände immer vorsichtig kühlen.
                 </div>
@@ -469,7 +458,7 @@
                 </div>
             </div>
 
-           <div class="learn-content">
+            <div class="learn-content">
                 <h1>🔬 Hintergrundwissen: Thermische Verletzungen</h1>
                 <p>Verbrühungen passieren am häufigsten in dem Alter, in dem Kinder anfangen, sich an Tischen hochzuziehen und Dinge (wie den Wasserkocher, Kaffeetassen oder Tischdecken) herunterziehen.</p>
                 
@@ -487,7 +476,7 @@
         </section>
 
         <!-- BILDSCHIRM: PSEUDOKRUPP -->
-        <section id="screen-pseudokrupp" class="app-screen" style="display: none;">
+        <section id="screen-pseudokrupp" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -542,7 +531,7 @@
         </section>
 
         <!-- BILDSCHIRM: VERGIFTUNGEN -->
-        <section id="screen-vergiftung" class="app-screen" style="display: none;">
+        <section id="screen-vergiftung" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -611,7 +600,7 @@
         </section>
 
         <!-- BILDSCHIRM: STÜRZE & KOPF -->
-        <section id="screen-stuerze" class="app-screen" style="display: none;">
+        <section id="screen-stuerze" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -680,7 +669,7 @@
         </section>
 
         <!-- BILDSCHIRM: STROMUNFÄLLE -->
-        <section id="screen-strom" class="app-screen" style="display: none;">
+        <section id="screen-strom" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -736,7 +725,7 @@
         </section>
 
         <!-- BILDSCHIRM: ERTRINKEN -->
-        <section id="screen-ertrinken" class="app-screen" style="display: none;">
+        <section id="screen-ertrinken" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -791,7 +780,7 @@
         </section>
 
         <!-- BILDSCHIRM: AKUTES VERSCHLUCKEN -->
-        <section id="screen-verschlucken" class="app-screen" style="display: none;">
+        <section id="screen-verschlucken" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
             
             <div class="panic-content">
@@ -888,7 +877,7 @@
     </main>
 
     <!-- FESTES INSTALLATIONS-MODAL (FÜR DEN GRÜNEN BUTTON) -->
-    <div id="install-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
+    <div id="install-modal" class="modal-hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
         <div style="background:#ffffff; max-width:450px; width:100%; padding:25px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.3); color:#2c3e50; position:relative; text-align:left;">
             <h2 style="margin-top:0; color:#27ae60; font-size:20px;">📲 App zum Startbildschirm</h2>
             <p style="font-size:14px; color:#555; line-height:1.5;">Installiere diese App auf deinem Handy, um sie wie eine echte App (ohne Adresszeile) und auch offline zu nutzen:</p>
@@ -923,11 +912,17 @@
 
       function showInstallGuide() {
           const modal = document.getElementById('install-modal');
-          if (modal) modal.style.display = 'flex';
+          if (modal) {
+              modal.classList.remove('modal-hidden');
+              modal.classList.add('modal-visible');
+          }
       }
       function closeInstallGuide() {
           const modal = document.getElementById('install-modal');
-          if (modal) modal.style.display = 'none';
+          if (modal) {
+              modal.classList.remove('modal-visible');
+              modal.classList.add('modal-hidden');
+          }
       }
     </script>
 </body>
