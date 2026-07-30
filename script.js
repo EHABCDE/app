@@ -2,6 +2,7 @@
 const topics = [
     { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
     { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
+    { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS' },
     { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf' },
     { id: 'insektenstich', title: '🐝 Stich im Mund / Schock', category: 'Allergie' },
     { id: 'kleinteile', title: '🔋 Knopfzellen & Magnete', category: 'Verschlucken' },
@@ -239,7 +240,6 @@ function closeInstallGuide() {
 // =========================================================
 
 const riskQuestions = [
-    // OMA & OPA / VERWANDTE
     {
         id: "gp_meds",
         condition: (cfg) => cfg.grandparents,
@@ -259,8 +259,6 @@ const riskQuestions = [
         amazonText: "🛒 LifeSaveAir Atemwegs-Rettungsgerät ansehen (10% mit ABC10) →",
         amazonLink: "https://www.lifesaveair.com"
     },
-
-    // ALLGEMEINE GRUNDAUSSTATTUNG
     {
         id: "first_aid_kit",
         condition: (cfg) => true,
@@ -270,8 +268,6 @@ const riskQuestions = [
         amazonText: "📦 Kinderspezifische Erste-Hilfe-Box auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=kinder+verbandkasten+erste+hilfe&tag=ehabc-21"
     },
-
-    // SÄUGLING (0-5 Monate)
     {
         id: "baby_sids",
         condition: (cfg) => cfg.stage === "baby",
@@ -292,8 +288,6 @@ const riskQuestions = [
         amazonText: "📦 Auslaufsichere Thermosbecher für Eltern ansehen →",
         amazonLink: "https://www.amazon.de/s?k=thermosbecher+auslaufsicher&tag=ehabc-21"
     },
-
-    // KRABBELKIND & KLEINKIND (Ab 6 Monate)
     {
         id: "sockets",
         condition: (cfg) => cfg.stage !== "baby",
@@ -354,8 +348,6 @@ const riskQuestions = [
         amazonText: "📦 Toilettendeckel-Kindersicherung auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=toilettendeckel+kindersicherung&tag=ehabc-21"
     },
-
-    // BEREICH: TREPPEN
     {
         id: "stairs_gate",
         condition: (cfg) => cfg.stairs && cfg.stage !== "baby",
@@ -366,8 +358,6 @@ const riskQuestions = [
         amazonText: "📦 Treppenschutzgitter ohne Bohren auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=treppenschutzgitter+ohne+bohren&tag=ehabc-21"
     },
-
-    // BEREICH: KAMINOFEN
     {
         id: "fireplace_guard",
         condition: (cfg) => cfg.fireplace && cfg.stage !== "baby",
@@ -378,8 +368,6 @@ const riskQuestions = [
         amazonText: "📦 Kaminschutzgitter für Kinder auf Amazon ansehen →",
         amazonLink: "https://www.amazon.de/s?k=kaminschutzgitter+kinder&tag=ehabc-21"
     },
-
-    // BEREICH: HAUSTIERE
     {
         id: "pets_rules",
         condition: (cfg) => cfg.pets && cfg.stage !== "baby",
@@ -388,8 +376,6 @@ const riskQuestions = [
         tip: "Verhindert Infektionen durch Katzenstreu, Erstickung durch Trockenfutter und unvorhersehbare Tierreaktionen.",
         explanation: "Gerade kleine Kinder sollten Sie nicht mit Haustieren allein in einem Raum lassen. Tiere reagieren oft anders als sonst, wenn diese in einer ungewohnten Situation sind."
     },
-
-    // BEREICH: GARTEN, TEICH & POOL
     {
         id: "water_safety",
         condition: (cfg) => cfg.water && cfg.stage !== "baby",
@@ -399,8 +385,6 @@ const riskQuestions = [
         amazonText: "📦 Kindersicheres Teichnetz & Pool-Sicherungen ansehen →",
         amazonLink: "https://www.amazon.de/s?k=teichnetz+kindersicherung&tag=ehabc-21"
     },
-
-    // BEREICH: GARAGE / SCHUPPEN
     {
         id: "garage_chem",
         condition: (cfg) => cfg.garage && cfg.stage !== "baby",
