@@ -244,6 +244,7 @@ const riskQuestions = [
         title: "👴 Oma & Opa: Medikamente & Handtaschen",
         text: "Sind beim Besuch bei Verwandten alle Pillenboxen, Herz-/Blutdrucktabletten und Omas Handtasche auf dem Boden absolut außer Reichweite?",
         tip: "Opas Blutdruck- oder Herzmedikamente sind für Kleinkinder schon in kleinsten Dosen lebensgefährlich!",
+        explanation: "Vergiftungen mit Medikamenten passieren häufig dort, wo Kinder nicht unter der direkten Aufsicht der Eltern stehen oder in Haushalten, die nicht (mehr) kindgerecht eingerichtet sind. Gerade bei Oma und Opa können Medikamente (wie z. B. Herz- oder Blutdrucktabletten) offen bereitliegen, die für Kleinkinder schon in geringsten Mengen lebensbedrohlich bis hin zu tödlich sind.",
         amazonText: "📦 Abschließbare Medikamententasche für unterwegs ansehen →",
         amazonLink: "https://www.amazon.de/s?k=medikamententasche+abschliessbar&tag=ehabc-21"
     },
