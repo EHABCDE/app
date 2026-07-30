@@ -54,16 +54,15 @@
                 <input type="text" id="search-input" onkeyup="filterTopics()" placeholder="🔍 Situation suchen... (z.B. Strom, Biene, Husten)">
             </div>
             
-            <div class="grid-container" id="topics-grid">
-                <!-- Grid wird per JS gefüllt -->
-            </div>
+            <!-- Hier werden die Kacheln via script.js eingefügt (Feedback, Reanimation, SIDS, etc.) -->
+            <div class="grid-container" id="topics-grid"></div>
 
             <!-- Installations-Button für das Handy -->
             <button onclick="showInstallGuide()" class="btn-secondary" style="background-color: #27ae60; color: white !important; border: none;">
                 📲 App zum Handy-Startbildschirm hinzufügen
             </button>
 
-            <!-- Feedback Button (ausgelagert aus den Kacheln) -->
+            <!-- Feedback Button -->
             <button onclick="showScreen('screen-feedback')" class="btn-secondary">
                 💬 Feedback &amp; Verbesserungsvorschläge
             </button>
@@ -93,7 +92,6 @@
                     </p>
                 </div>
 
-                <!-- SCHRITT 1: Entwicklungsstufe wählen -->
                 <div id="quiz-step-1" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
                     <h3 style="margin-top:0; color: #2c3e50;">👶 1. Wähle die Entwicklungsstufe:</h3>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
@@ -109,7 +107,6 @@
                     </div>
                 </div>
 
-                <!-- SCHRITT 2: Gegebenheiten abfragen -->
                 <div id="quiz-step-2" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
                     <h3 style="margin-top:0; color: #2c3e50;">🏡 2. Was trifft auf eure Wohnsituation zu?</h3>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; color: #2c3e50;">
@@ -126,16 +123,13 @@
                     </button>
                 </div>
 
-                <!-- SCHRITT 3: Fragen-Katalog -->
                 <div id="quiz-step-3" class="screen-hidden">
                     <div id="questions-container"></div>
-                    
                     <button onclick="evaluateRiskCheck()" style="margin-top: 20px; background: #c0392b; color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
                         📊 Ergebnis anzeigen
                     </button>
                 </div>
 
-                <!-- SCHRITT 4: Auswertung -->
                 <div id="quiz-results" class="screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #cbd5e1;">
                     <h2 style="margin-top:0; color: #2c3e50; text-align: center;">🎯 Dein Sicherheits-Ergebnis</h2>
                     <div id="score-display" style="font-size: 32px; font-weight: bold; text-align: center; margin: 15px 0;"></div>
@@ -227,7 +221,6 @@
                     <strong>Wissenschaftliche Quellen (Evidenzbasierte Leitlinien &amp; Fachinfos):</strong><br>
                     <a href="https://www.kinderaerzte-im-netz.de/krankheiten/ploetzlicher-kindstod-anscheinend-lebensbedrohliches-ereignis/ursachen-risikofaktoren/" target="_blank">🔗 Kinderärzte im Netz – Ursachen &amp; Risikofaktoren für lebensbedrohliche Ereignisse</a>
                 </div>
-
             </div>
         </section>
 
@@ -270,17 +263,17 @@
 
             <div class="learn-content">
                 <h1>🔬 Hintergrundwissen: Plötzlicher Kindstod (SIDS)</h1>
-                <p>SIDS (Sudden Infant Death Syndrome) bezeichnet den plötzlichen und unvorhersehbaren Tod eines Säuglings im Schlaf[cite: 6]. Die gute Nachricht: Durch Aufklärung und die konsequente Umsetzung von Präventionsmaßnahmen konnte die Anzahl der Fälle in den letzten 14 Jahren um rund 80% gesenkt werden[cite: 6].</p>
+                <p>SIDS (Sudden Infant Death Syndrome) bezeichnet den plötzlichen und unvorhersehbaren Tod eines Säuglings im Schlaf. Die gute Nachricht: Durch Aufklärung und die konsequente Umsetzung von Präventionsmaßnahmen konnte die Anzahl der Fälle in den letzten 14 Jahren um rund 80% gesenkt werden.</p>
                 
                 <h3>Die wichtigsten Präventions-Maßnahmen:</h3>
                 <ul style="padding-left: 20px; margin-bottom: 20px; line-height: 1.6;">
-                    <li><strong>Rückenlage:</strong> Lass dein Baby immer in Rückenlage schlafen[cite: 6].</li>
-                    <li><strong>Schlafsack statt Decke:</strong> Verwende einen Schlafsack ohne zusätzliche Decke, damit die Atmung deines Kindes nicht durch das Überdecken des Gesichtes gestört wird[cite: 6].</li>
-                    <li><strong>Feste Matratze & leeres Bett:</strong> Nutze eine feste, luftdurchlässige Matratze, die sich nur relativ wenig eindrücken lässt[cite: 6]. Kopfkissen, Fellunterlagen, Nestchen sowie Kuscheltiere haben im Kinderbett absolut nichts zu suchen[cite: 6]!</li>
-                    <li><strong>Temperatur:</strong> Die ideale Raumtemperatur zum Schlafen liegt zwischen 16 und 18°C[cite: 6]. Stelle das Babybett nicht in die pralle Sonne oder direkt neben einen heizenden Heizkörper[cite: 6].</li>
-                    <li><strong>Keine Mütze drinnen:</strong> Keine Kopfbedeckung im Bett, da Babys überschüssige Wärme über den Kopf abgeben[cite: 6].</li>
-                    <li><strong>Rauchfreie Umgebung:</strong> Verzichte während des ersten Lebensjahres auf das Rauchen[cite: 6]. Wenn beide Eltern im Familienbett schlafen und Raucher sind, erhöht sich das SIDS-Risiko[cite: 6].</li>
-                    <li><strong>Krankheiten abklären:</strong> Babys unter 3 Monaten mit Fieber, oder Kinder mit mehr als drei Tagen Fieber/Schnupfen sollten dem Kinderarzt vorgestellt werden, um die Atemwege wieder zu befreien[cite: 6].</li>
+                    <li><strong>Rückenlage:</strong> Lass dein Baby immer in Rückenlage schlafen.</li>
+                    <li><strong>Schlafsack statt Decke:</strong> Verwende einen Schlafsack ohne zusätzliche Decke, damit die Atmung deines Kindes nicht durch das Überdecken des Gesichtes gestört wird.</li>
+                    <li><strong>Feste Matratze & leeres Bett:</strong> Nutze eine feste, luftdurchlässige Matratze, die sich nur relativ wenig eindrücken lässt. Kopfkissen, Fellunterlagen, Nestchen sowie Kuscheltiere haben im Kinderbett absolut nichts zu suchen!</li>
+                    <li><strong>Temperatur:</strong> Die ideale Raumtemperatur zum Schlafen liegt zwischen 16 und 18°C. Stelle das Babybett nicht in die pralle Sonne oder direkt neben einen heizenden Heizkörper.</li>
+                    <li><strong>Keine Mütze drinnen:</strong> Keine Kopfbedeckung im Bett, da Babys überschüssige Wärme über den Kopf abgeben.</li>
+                    <li><strong>Rauchfreie Umgebung:</strong> Verzichte während des ersten Lebensjahres auf das Rauchen. Wenn beide Eltern im Familienbett schlafen und Raucher sind, erhöht sich das SIDS-Risiko.</li>
+                    <li><strong>Krankheiten abklären:</strong> Babys unter 3 Monaten mit Fieber, oder Kinder mit mehr als drei Tagen Fieber/Schnupfen sollten dem Kinderarzt vorgestellt werden, um die Atemwege wieder zu befreien.</li>
                 </ul>
 
                 <div class="product-box">
