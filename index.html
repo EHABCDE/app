@@ -241,9 +241,15 @@
                 <!-- ERGEBNIS: NOTFALL -->
                 <div id="check-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
                     <h2 style="margin-top:0; color: #e74c3c;">🚨 NOTFALL ERKANNT</h2>
-                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px;">
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
                         Eines der lebenswichtigen Vitalzeichen ist gestört oder Dein Bauchgefühl schlägt Alarm. Zögere nicht!
                     </p>
+                    
+                    <!-- NEU: Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="check-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Standort wird ermittelt...
+                    </div>
+
                     <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                         📞 Jetzt 112 anrufen
                     </button>
@@ -443,7 +449,7 @@
 
                 <div class="product-box">
                     <strong>🛡️ Empfehlung für die Hausapotheke:</strong><br>
-                    Um bei einem drohenden Fieberkrampf die Temperatur deines Kindes völlig stressfrei, sekundenschnell und ohne Berührung im Blick zu behalten, empfehlen wir den Marktführer: Das **Braun No-Touch Stirnthermometer** in elegantem Schwarz.
+                    Um bei einem drohenden Fieberkrampf die Temperatur deines Kindes völlig stressfrei, sekundenschnell und ohne Berührung im Blick zu behalten, empfehlen wir das Marktführer: Das **Braun No-Touch Stirnthermometer** in elegantem Schwarz.
                     <br><br>
                     💡 <strong>ABC-Tipp:</strong> Reaktiv und berührungslos messen schützt dein Kind vor zusätzlichem Stress während eines Fieberschubs.
                     <a href="https://www.amazon.de/Braun-Ber%C3%BChrungsfrei-Stirnthermometer-AgePrecision-schwarz/dp/B07R2KJTVY?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
@@ -653,7 +659,7 @@
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
                     <span class="step-num">3</span>
                     <strong>NOTFALLMEDIKAMENT (Falls vorhanden):</strong>
-                    <br>• Hat dir der Kinderarzt bereits ein Notfallmedikament verschrieben? 
+                    <br>• Hat dir the Kinderarzt bereits ein Notfallmedikament verschrieben? 
                     <br>• Gib dem Kind jetzt das **Kortison-Zäpfchen** oder den entsprechenden Saft/Spray nach ärztlicher Anweisung. (Kortison wirkt abschwellend, braucht aber ca. 20–30 Minuten).
                 </div>
 
@@ -902,7 +908,7 @@
                 <div class="emergency-step" style="background-color: #78281f; border-left-color: #ff4d4d;">
                     <span class="step-num">3</span>
                     <strong>WENN KEINE ATMUNG: 5 INITIALE BEATMUNGEN!</strong>
-                    <br>• Da Sauerstoffmangel das Hauptproblem ist: Gib **sofort 5 initiale Beatmungen** (Luft sanft reinblasen, bis der Brustkorb sich hebt).
+                    <br>• Da Sauerstoffmangel das Hauptproblem ist: Gib **sofort 5 initiale Beatmungen** (Luft sanft reinblasen, bis sich der Brustkorb hebt).
                     <br>• Danach 1 Minute lang im Wechsel: **30 Herzdruckmassagen : 2 Beatmungen** durchführen.
                     <br>• *Erst nach dieser 1 Minute Reanimation den Notruf 112 wählen, falls du alleine bist!*
                 </div>
