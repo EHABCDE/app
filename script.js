@@ -1,5 +1,13 @@
+// =========================================================
+// ERSTE HILFE ABC - HAUPTSKRIPT
+// =========================================================
+
 // --- THEMEN-DATENBANK FÜR DIE STARTSEITE ---
 const topics = [
+    // NEU: Der Notfall-Check
+    { id: 'notfallcheck', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
+    
+    // Bestehende Themen
     { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
     { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
     { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS' },
@@ -233,6 +241,42 @@ function closeInstallGuide() {
         modal.classList.remove('modal-visible');
         modal.classList.add('modal-hidden');
     }
+}
+
+// =========================================================
+// 🚦 LOGIK FÜR DEN "NOTFALL ODER NICHT" CHECK (3-A-Regel)
+// =========================================================
+
+function nextCheckStep(currentStepId, nextStepId, isEmergency) {
+    // Aktuellen Schritt ausblenden
+    document.getElementById(currentStepId).classList.add('screen-hidden');
+    document.getElementById(currentStepId).classList.remove('screen-active');
+    
+    if (isEmergency) {
+        // Bei einem Alarmzeichen direkt zum Notfall-Ergebnis springen
+        document.getElementById('check-result-emergency').classList.remove('screen-hidden');
+        document.getElementById('check-result-emergency').classList.add('screen-active');
+    } else {
+        // Ansonsten zum nächsten regulären Schritt
+        document.getElementById(nextStepId).classList.remove('screen-hidden');
+        document.getElementById(nextStepId).classList.add('screen-active');
+    }
+}
+
+function resetNotfallCheck() {
+    // Alle Container verstecken
+    const steps = ['check-step-1', 'check-step-2', 'check-step-3', 'check-step-4', 'check-result-emergency', 'check-result-relax'];
+    steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.add('screen-hidden');
+            el.classList.remove('screen-active');
+        }
+    });
+    
+    // Schritt 1 wieder anzeigen
+    document.getElementById('check-step-1').classList.remove('screen-hidden');
+    document.getElementById('check-step-1').classList.add('screen-active');
 }
 
 // =========================================================
