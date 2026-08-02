@@ -95,7 +95,7 @@ function initModeSwitcher() {
     }
 }
 
-// Metronom für Reanimation
+// Metronom für Reanimation (Lautstärke maximiert & schrillerer Ton für Kurse)
 let metronomeInterval = null;
 function toggleMetronome() {
     const btn = document.getElementById('metronome-btn');
@@ -108,8 +108,14 @@ function toggleMetronome() {
         metronomeInterval = setInterval(() => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.frequency.value = 800;
-            gain.gain.value = 0.3;
+            
+            // Auf 'square' (Rechteck) stellen – das klingt lauter und durchdringender bei Nebengeräuschen
+            osc.type = 'square';
+            osc.frequency.value = 880; // Etwas höherer Ton (880 Hz = A5) für bessere Wahrnehmbarkeit
+            
+            // Gain auf Maximum (1.0) für volle Lautstärke
+            gain.gain.setValueAtTime(1.0, audioCtx.currentTime);
+            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
