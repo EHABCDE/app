@@ -170,6 +170,104 @@
             </div>
         </section>
 
+        <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL) -->
+        <section id="screen-notfallcheck" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="resetNotfallCheck(); goToStart();">⬅ Zurück</button>
+            
+            <div class="learn-content" style="display: block;">
+                <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
+                <p>Nutze die <strong>3-A-Regel</strong>, um herauszufinden, ob Dein Kind sofortige ärztliche Hilfe braucht. Klicke auf die Antwort, die am besten zutrifft.</p>
+
+                <!-- SCHRITT 1: Ansprechbarkeit -->
+                <div id="check-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. A – Ansprechbarkeit</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Wie reagiert Dein Kind auf Deine Ansprache oder Berührung?</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-1', 'check-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Es weint laut, wehrt sich, meckert oder blickt mich an.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Es ist extrem apathisch, schlaff wie ein nasser Sack oder lässt sich gar nicht wecken.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 2: Atmung -->
+                <div id="check-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. A – Atmung</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Atmet Dein Kind normal?</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-2', 'check-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Ja, die Atmung ist ruhig, regelmäßig (auch wenn das Kind z.B. bei Fieber schnieft).
+                        </button>
+                        <button onclick="nextCheckStep('check-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Nein, die Atmung ist pumpend, pfeifend, röchelnd oder die Nasenflügel blähen sich extrem auf.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 3: Aussehen -->
+                <div id="check-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. A – Aussehen</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Wie sieht die Hautfarbe Deines Kindes aus?</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-3', 'check-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Rosig, normale Farbe oder bei Fieber typisch heiße, rote Wangen.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Aschfahl, extrem blass, bläulich (besonders um die Lippen) oder fleckig/marmoriert.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 4: Mama-/Papameter -->
+                <div id="check-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">Das Mama- &amp; Papameter</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Niemand kennt Dein Kind so gut wie Du. Was sagt Dir Dein Bauchgefühl?</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-4', 'check-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Mein Kind ist zwar krank oder unruhig, aber an sich verhält es sich so, wie ich es von ihm kenne.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Irgendetwas ist plötzlich ganz anders als sonst. Mein innerer Alarm schlägt an.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ERGEBNIS: NOTFALL -->
+                <div id="check-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 NOTFALL ERKANNT</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px;">
+                        Eines der lebenswichtigen Vitalzeichen ist gestört oder Dein Bauchgefühl schlägt Alarm. Zögere nicht!
+                    </p>
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Jetzt 112 anrufen
+                    </button>
+                    <button onclick="resetNotfallCheck()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Check neu starten
+                    </button>
+                </div>
+
+                <!-- ERGEBNIS: BAGATELLE / STABIL -->
+                <div id="check-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 KIND IST STABIL</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        Dein Kind ist ansprechbar, atmet normal, sieht rosig aus und Dein Bauchgefühl ist entspannt. Das ist ein sehr gutes Zeichen! Es handelt sich sehr wahrscheinlich um keinen akuten Notfall.
+                        <br><br>
+                        <em>Tipp: Bei Fieber, Schmerzen oder Unwohlsein kannst Du ganz in Ruhe die 116 117 (Ärztlicher Bereitschaftsdienst) kontaktieren oder zum Kinderarzt gehen.</em>
+                    </p>
+                    <button onclick="resetNotfallCheck(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 Zurück zur Startseite
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
         <!-- BILDSCHIRM: KINDER-REANIMATION -->
         <section id="screen-reanimation" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
