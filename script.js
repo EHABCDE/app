@@ -123,9 +123,11 @@ function toggleMetronome() {
 function initGeoLocation() {
     const display = document.getElementById('geo-location-display');
     const poisonDisplay = document.getElementById('poison-center-display');
+    const checkGeoDisplay = document.getElementById('check-geo-display');
     
     if (navigator.geolocation && display) {
         display.innerHTML = '📍 Standort wird ermittelt (GPS & Adresse)...';
+        if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Standort wird ermittelt...';
         
         navigator.geolocation.getCurrentPosition(
             async pos => {
@@ -169,11 +171,19 @@ function initGeoLocation() {
                 if (poisonDisplay) {
                     poisonDisplay.innerHTML = `📍 Dein Standort: ${addressText} (${latFormatted}, ${lonFormatted})`;
                 }
+
+                if (checkGeoDisplay) {
+                    checkGeoDisplay.innerHTML = locationHtml;
+                }
             },
             () => {
-                display.innerHTML = '📍 Standort konnte nicht automatisch ermittelt werden. Bitte im Notfall Straßenschilder beachten!';
+                const errText = '📍 Standort konnte nicht automatisch ermittelt werden. Bitte im Notfall Straßenschilder beachten!';
+                display.innerHTML = errText;
                 if (poisonDisplay) {
                     poisonDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
+                }
+                if (checkGeoDisplay) {
+                    checkGeoDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
                 }
             },
             {
@@ -184,6 +194,7 @@ function initGeoLocation() {
         );
     } else {
         if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
+        if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Geolocation nicht unterstützt.';
     }
 }
 
