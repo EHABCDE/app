@@ -8,7 +8,7 @@ const topics = [
     { id: 'notfallcheck', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
     
     // Bestehende Themen
-    { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
+{ id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
     { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
     { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS' },
     { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf' },
@@ -20,9 +20,17 @@ const topics = [
     { id: 'stuerze', title: '🤕 Sturz auf den Kopf', category: 'Trauma' },
     { id: 'strom', title: '⚡ Stromunfälle', category: 'Unfall' },
     { id: 'ertrinken', title: '🌊 Ertrinken', category: 'Wasser' },
-    { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' }
+    { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' },
+    { 
+        id: 'notrufnummern', 
+        title: '📞 Wichtige Notrufnummern', 
+        category: 'Notruf', 
+        isSpecial: true, 
+        specialBg: '#fadbd8', 
+        specialBorder: '#e74c3c', 
+        specialColor: '#78281f' 
+    }
 ];
-
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
     renderTopics(topics);
