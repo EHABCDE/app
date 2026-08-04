@@ -13,6 +13,7 @@ const topics = [
     { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS' },
     { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf' },
     { id: 'insektenstich', title: '🐝 Stich im Mund / Schock', category: 'Allergie' },
+    { id: 'insektenstich_allgemein', title: '🐝 Insektenstich & Allergie', category: 'Allergie' },
     { id: 'kleinteile', title: '🔋 Knopfzellen & Magnete', category: 'Verschlucken' },
     { id: 'verbrennung', title: '🔥 Verbrennung / Verbrühung', category: 'Hitze' },
     { id: 'pseudokrupp', title: '🗣️ Pseudokrupp-Anfall', category: 'Atemnot' },
@@ -21,14 +22,24 @@ const topics = [
     { id: 'strom', title: '⚡ Stromunfälle', category: 'Unfall' },
     { id: 'ertrinken', title: '🌊 Ertrinken', category: 'Wasser' },
     { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' },
-    { 
-        id: 'notrufnummern', 
-        title: '📞 Wichtige Notrufnummern', 
-        category: 'Notruf', 
-        isSpecial: true, 
-        specialBg: '#fadbd8', 
-        specialBorder: '#e74c3c', 
-        specialColor: '#78281f' 
+    
+    {
+        id: 'notrufnummern',
+        title: '📞 Wichtige Notrufnummern',
+        category: 'Notruf',
+        isSpecial: true,
+        specialBg: '#fadbd8',
+        specialBorder: '#e74c3c',
+        specialColor: '#78281f'
+    },
+    {
+        id: 'notfallpass',
+        title: '📋 Kinder-Notfallpass',
+        category: 'Info',
+        isSpecial: true,
+        specialBg: '#e8f8f5',
+        specialBorder: '#27ae60',
+        specialColor: '#1e8449'
     }
 ];
 // Start-Funktion beim Laden
