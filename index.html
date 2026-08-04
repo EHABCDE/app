@@ -1047,12 +1047,19 @@
             </a>
         </div>
 
-        <!-- GIFTNOTRUF -->
+       <!-- GIFTNOTRUF (DYNAMISCH JE NACH BUNDESLAND) -->
         <div style="background: #ffffff; padding: 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; border-left: 5px solid #27ae60; margin-bottom: 15px;">
             <strong style="font-size: 18px; color: #1e8449;">🧪 Giftnotruf-Zentrale</strong>
-            <p style="margin: 5px 0 12px 0; font-size: 13px; color: #475569;">Bei Verdacht auf Vergiftung mit Pflanzenteilen, Putzmitteln oder Medikamenten.</p>
-            <a href="tel:03019240" style="display: block; background: #27ae60; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 16px;">
-                📞 Giftnotruf (z.B. Berlin / Bundesweit)
+            <p style="margin: 5px 0 8px 0; font-size: 13px; color: #475569;">Bei Verdacht auf Vergiftung mit Pflanzenteilen, Putzmitteln oder Medikamenten.</p>
+            
+            <!-- Dynamischer Standort-Hinweis -->
+            <div id="poison-location-info" style="font-size: 12px; color: #64748b; margin-bottom: 10px;">
+                📍 <em>Giftnotruf passend zu deinem Standort...</em>
+            </div>
+
+            <!-- Dynamischer Anruf-Button -->
+            <a id="poison-call-btn" href="tel:055119240" style="display: block; background: #27ae60; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 16px;">
+                📞 Giftnotruf Anrufen
             </a>
         </div>
 
