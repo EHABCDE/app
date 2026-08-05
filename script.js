@@ -319,160 +319,233 @@ function resetNotfallCheck() {
 // 🛡️ PRÄVENTIONS-CHECK MIT OPTIMIERTEN EMPFEHLUNGEN
 // =========================================================
 
+// =========================================================
+// 🛡️ PRÄVENTIONS- CHECK & EMPFEHLUNGEN (VOLLSTÄNDIG)
+// =========================================================
+
 const riskQuestions = [
+    // --- FLUR, AUSSEN & HAUSTÜR ---
     {
-        id: "gp_meds",
-        condition: (cfg) => cfg.grandparents,
-        title: "👴 Oma & Opa: Medikamente & Handtaschen",
-        text: "Sind beim Besuch bei Verwandten alle Pillenboxen, Herz-/Blutdrucktabletten und Omas Handtasche auf dem Boden absolut außer Reichweite?",
-        tip: "Opas Blutdruck- oder Herzmedikamente sind für Kleinkinder schon in kleinsten Dosen lebensgefährlich!",
-        explanation: "Vergiftungen mit Medikamenten passieren häufig dort, wo Kinder nicht unter der direkten Aufsicht der Eltern stehen oder in Haushalten, die nicht (mehr) kindgerecht eingerichtet sind. Gerade bei Oma und Opa können Medikamente (wie z. B. Herz- oder Blutdrucktabletten) offen bereitliegen, die für Kleinkinder schon in geringsten Mengen lebensbedrohlich bis hin zu tödlich sind.",
-        amazonText: "📦 Abschließbare Medikamententasche für unterwegs ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=medikamententasche+abschliessbar&tag=ehabc-21"
+        id: "hallway_doors",
+        condition: (cfg) => cfg.stage !== "baby",
+        title: "🚪 Haustür & Zugang zur Straße gesichert",
+        text: "Ist die Haustür stets abgeschlossen oder mit Kette/Riegel gesichert und die Gartenpforte unzugänglich?",
+        tip: "Verhindert, dass dein Kind unbemerkt auf die Straße läuft oder Fremde unbemerkt hineinkommen.",
+        explanation: "Sobald Kinder laufen lernen, ziehen sie an Türgriffen. Ein Sicherheitsriegel oder ein Karabiner an der Gartenpforte sorgt dafür, dass die Kleinen nicht unachtsam auf die Straße rennen.",
+        amazonText: "👉 Schau dir mal diese einfachen Türknaufsperren an – haben bei uns super funktioniert →",
+        amazonLink: "https://www.amazon.de/s?k=tuerknaufsperre+kindersicherung&tag=ehabc-21"
     },
     {
-        id: "gp_food",
-        condition: (cfg) => cfg.grandparents && cfg.stage !== "baby",
-        title: "🥜 Oma & Opa: Couchtisch-Fallen & Atemwegs-Notfall",
-        text: "Stehen auf niedrigen Tischchen keine offenen Schalen mit Erdnüssen oder harten Bonbons und liegt eine Notfall-Atemwegssicherung bereit?",
-        tip: "Erdnüsse gehören zu den häufigsten Erstickungsursachen. Mit dem Rabattcode ABC10 sparst du 10% auf das offizielle LifeSaveAir Rettungsgerät!",
-        amazonText: "🛒 LifeSaveAir Atemwegs-Rettungsgerät ansehen (10% mit ABC10) →",
-        amazonLink: "https://www.lifesaveair.com"
+        id: "tripping_hazards",
+        condition: (cfg) => cfg.stage === "baby" || cfg.stage === "crawler",
+        title: "👟 Stolperfallen im Flur & auf Laufwegen",
+        text: "Sind lose Fußmatten, Läufer oder Deko-Gegenstände auf deinen täglichen Laufwegen geräumt?",
+        tip: "Solange du dein Baby trägst, ist jeder Ausrutscher eine direkte Gefahr für euch beide.",
+        explanation: "Solange das Kind regelmäßig getragen wird, führen kleine Stolperfallen schnell zu schweren Stürzen. Verstau lose Teppiche oder sichere sie mit Antirutschmatten.",
+        amazonText: "👉 Ich nutze diese rutschfesten Teppichunterlagen zu Hause – hält bombenfest →",
+        amazonLink: "https://www.amazon.de/s?k=teppich+anti+rutsch+unterlage&tag=ehabc-21"
+    },
+
+    // --- KÜCHE & ESSZIMMER ---
+    {
+        id: "cooktop_guard",
+        condition: (cfg) => cfg.stage === "toddler" || cfg.stage === "crawler",
+        title: "🍳 Herdgitter & Ofenschloss",
+        text: "Ist ein Herdschutzgitter angebracht und das Backofenschloss gesichert?",
+        tip: "Herde und Töpfe sind Hauptursachen für schwere Verbrühungen im Kleinkindalter.",
+        explanation: "Beim Hochziehen greifen Kinder nach Topfgriffen oder schalten Herde ein. Ein Herdschutzgitter blockiert den Zugriff zuverlässig.",
+        amazonText: "👉 Wir hatten ein solches Herdschutzgitter ohne Bohren im Einsatz – echt goldwert →",
+        amazonLink: "https://www.amazon.de/s?k=herdschutzgitter+ohne+bohren&tag=ehabc-21"
     },
     {
-        id: "first_aid_kit",
+        id: "high_chair",
+        condition: (cfg) => cfg.stage !== "baby",
+        title: "🪑 Hochstuhl-Sicherung & Gurt",
+        text: "Wird dein Kind im Hochstuhl konsequent angeschnallt und steht der Stuhl kippsicher?",
+        tip: "Kinder drücken sich mit den Füßen am Esstisch ab und kippen mitsamt Stuhl nach hinten.",
+        explanation: "Stürze aus dem Hochstuhl gehören zu den häufigsten Kopftraumata im Alter von 1–2 Jahren. Im Hochstuhl immer den Schrittgurt schließen!",
+        amazonText: "👉 Schau dir mal diesen universellen 5-Punkt-Gurt für Kinderstühle an →",
+        amazonLink: "https://www.amazon.de/s?k=hochstuhl+5+punkt+gurt&tag=ehabc-21"
+    },
+    {
+        id: "fridge_alcohol",
+        condition: (cfg) => cfg.stage === "toddler",
+        title: "🍾 Alkohol & Kühlschrank gesichert",
+        text: "Stehen alkoholische Getränke hoch oben und ist der Kühlschrank gegen ungewolltes Öffnen geschützt?",
+        tip: "Schon wenige Schlucke hochprozentiger Alkohol führen bei Kleinkindern zu schweren Vergiftungen und Unterzuckerung.",
+        explanation: "Kinder verwechseln bunte Flaschen oder Mixgetränke mit Saft. Alkohol gehört unzugänglich verschlossen.",
+        amazonText: "👉 Solche dezenten Kühlschrankschlösser klappen super und verhindern Frust →",
+        amazonLink: "https://www.amazon.de/s?k=kuehlschrank+kindersicherung&tag=ehabc-21"
+    },
+
+    // --- BAD & HYGIENE ---
+    {
+        id: "bath_mats",
         condition: (cfg) => true,
-        title: "🩹 Kindgerechter Erste-Hilfe-Verbandkasten",
-        text: "Gibt es im Haushalt (und bei Oma/Opa) einen speziellen Kinder-Verbandkasten mit kleingeschnittenen Pflastern und Mini-Binden?",
-        tip: "Auto-Verbandkästen sind für kleine Kinderarme viel zu groß. Kindgerechtes Material schont Nerven im Notfall!",
-        amazonText: "📦 Kinderspezifische Erste-Hilfe-Box auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=kinder+verbandkasten+erste+hilfe&tag=ehabc-21"
+        title: "🧼 Anti-Rutsch-Matte in Wanne & Dusche",
+        text: "Liegen in der Badewanne und Dusche rutschfeste Gummimatten?",
+        tip: "Verhindert böse Platzwunden am Hinterkopf beim Badespaß.",
+        explanation: "Nasse Fliesen und Acrylwannen werden spiegelglatt. Eine einfache Antirutschmatte gibt kleinen Füßen beim Stehen sofort Halt.",
+        amazonText: "👉 Diese süßen Anti-Rutsch-Sticker für die Wanne haben meine Kinder geliebt →",
+        amazonLink: "https://www.amazon.de/s?k=antirutschmatte+badewanne+kinder&tag=ehabc-21"
     },
     {
-        id: "baby_sids",
-        condition: (cfg) => cfg.stage === "baby",
-        title: "🛏️ Sichere Schlafumgebung (SIDS-Schutz)",
-        text: "Schläft dein Baby im Schlafsack auf einer festen Matratze in Rückenlage – ohne Kissen, Nestchen, Felle, Decken oder Kuscheltiere im Bett?",
-        tip: "Verhindert Wärmestau und Atemwegsverlegung. Babys geben überschüssige Wärme über den Kopf ab!",
-        explanation: "Verwenden Sie einen Schlafsack ohne zusätzliche Decke, damit die Atmung Ihres Kindes nicht durch das Überdecken des Gesichtes gestört wird. Nutzen Sie eine feste, luftdurchlässige Matratze die sich nur relativ wenig eindrücken lässt. Verzichten Sie auf Kopfkissen, Fellunterlagen und Nestchen. Kuscheltiere, die die Atemwege verschließen könnten oder Kleinteile, die verschluckt werden könnten, haben im Kinderbett nichts zu suchen.",
-        amazonText: "📦 Atmungsaktive Baby-Schlafsäcke auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=baby+schlafsack+atmungsaktiv&tag=ehabc-21"
+        id: "toilet_chem",
+        condition: (cfg) => cfg.stage !== "baby",
+        title: "🚽 WC-Duftsteine & Reinigungsmittel",
+        text: "Wurden WC-Duftsteine/Urinsteinentferner entfernt oder der Toilettendeckel gesichert?",
+        tip: "Toilettensteine enthalten giftige Chemikalien, die Kleinkinder sofort am Mund testen.",
+        explanation: "Die bunten Steine im WC wirken faszinierend auf Kinder. Verzichte während der Kleinkindphase komplett auf diese Einhänger.",
+        amazonText: "👉 Falls du den WC-Deckel sichern willst: Diese Klickschlösser sind genial →",
+        amazonLink: "https://www.amazon.de/s?k=toilettendeckel+kindersicherung&tag=ehabc-21"
     },
-    {
-        id: "baby_tea",
-        condition: (cfg) => cfg.stage === "baby",
-        title: "☕ Heißgetränke-Sperre",
-        text: "Trinkst du Kaffee oder Tee ausschließlich dann, wenn dein Baby NICHT auf deinem Arm liegt oder nutzt du auslaufsichere Becher?",
-        tip: "Eine einzige umkippende Tasse Tee verursacht bei Säuglingen großflächige, lebensbedrohliche Verbrühungen!",
-        explanation: "Verbrühungen passieren meistens, wenn Kinder anfangen, sich an Tischen hochzuziehen oder wenn sie laufen lernen. Auch heiße Flüssigkeiten auf Tischdecken, an denen die Kinder ziehen können, sorgen für Verbrühungen.",
-        amazonText: "📦 Auslaufsichere Thermosbecher für Eltern ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=thermosbecher+auslaufsicher&tag=ehabc-21"
-    },
+
+    // --- WOHNZIMMER & ELEKTRO ---
     {
         id: "sockets",
-        condition: (cfg) => cfg.stage !== "baby",
+        condition: (cfg) => true,
         title: "🔌 Steckdosen in Bodennähe",
-        text: "Sind alle erreichbaren Steckdosen mit integrierter oder eingesteckter Kindersicherung versehen?",
-        tip: "Steckdosen wirken auf Krabbelkinder wie ein Magnet und bergen hohe Gefahren durch Stromschläge.",
-        explanation: "Wenn Ihr Kind anfängt, die Welt zu erkunden, entwickeln sich Steckdosen zu einem wahren Magnet mit hohem Gefährdungspotential. Sollten Sie nicht über Steckdosen mit eingebauter Kindersicherung verfügen, dann stecken Sie Kindersicherungen in alle Steckdosen, die Sie nicht dauerhaft mit einem Stecker belegen.",
-        amazonText: "📦 Steckdosensicherungen zum Drehen auf Amazon ansehen →",
+        text: "Sind alle erreichbaren Steckdosen mit Dreh- oder Schraubsicherungen versehen?",
+        tip: "Steckdosen wirken wie Magnete. Kindersicherungen verhindern lebensgefährliche Stromschläge.",
+        explanation: "Sobald Kinder krabbeln, erforschen sie Löcher in Bodennähe. Ungesicherte Steckdosen sind eine der größten Gefahrenquellen im Haushalt.",
+        amazonText: "👉 Ich habe damals direkt dieses 20er-Pack Steckdosensicherungen verbaut – sitzt perfekt →",
         amazonLink: "https://www.amazon.de/s?k=steckdosensicherung+zum+drehen&tag=ehabc-21"
     },
     {
         id: "furniture_anchors",
         condition: (cfg) => cfg.stage !== "baby",
         title: "🧱 Regale & Schränke an Wand befestigt",
-        text: "Sind freistehende Regale, Schränke und Wickelkommoden im oberen Drittel fest an der Wand verankert?",
-        tip: "Kinder im Kletteralter verändern beim Hochziehen den Schwerpunkt der Möbel und bringen diese zum Kippen!",
-        explanation: "Es ist absolut wichtig, dass Sie Ihre freistehenden Regale und Schränke im oberen Drittel an der Wand befestigen. Kinder im Kletteralter verändern durch Ihre Kletterversuche den Schwerpunkt von Regalen und Schränken und können diese zum Kippen bringen. Kippt ein Schrank oder Regal auf einen Kinderkörper, kann dies gravierende Folgen nach sich ziehen.",
-        amazonText: "📦 Möbel-Möbelkippsicherung (Wandverankerung) ansehen →",
+        text: "Sind freistehende Schränke, Regale und Kommoden im oberen Drittel fest an der Wand verankert?",
+        tip: "Beim Klettern oder Schubladenaufziehen verlagert sich der Schwerpunkt – das Möbelstück kippt!",
+        explanation: "Kippende Möbel verursachen schwerste Schädel- und Brustkorbverletzungen. Dübel Regale immer fest an der Wand an.",
+        amazonText: "👉 Schau dir diese unsichtbaren Möbel-Kippsicherungen an – einfach zu montieren →",
         amazonLink: "https://www.amazon.de/s?k=moebel+kippsicherung+kindersicherung&tag=ehabc-21"
-    },
-    {
-        id: "small_parts",
-        condition: (cfg) => cfg.stage !== "baby",
-        title: "🔋 Schränke & Putzmittel gesichert",
-        text: "Sind Schränke mit Glas, Porzellan, Messern sowie Putzmitteln und Spülmaschinen-Pods zuverlässig verschlossen?",
-        tip: "Prävention ist der beste Schutz vor Schnittwunden und Vergiftungen im Haushalt.",
-        explanation: "Wenn Sie nicht wollen, dass Ihr Porzellan regelmäßig in vielen kleinen Teilen auf den Küchenfliesen landet, sichern Sie Ihre Schränke mit Schlössern. Dabei gibt es unterschiedliche Ansätze vom Magnetschloss über ein Knopfschloss bis hin zu Schlaufenschlössern.",
-        amazonText: "📦 MUTKIND® Magnetische Kindersicherung auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/MUTKIND%C2%AE-Magnetische-Kindersicherung-Starker-Kleber/dp/B0F274BJG4?tag=ehabc-21"
-    },
-    {
-        id: "cooktop_guard",
-        condition: (cfg) => cfg.stage === "toddler",
-        title: "🍳 Herdgitter & Backofenschloss",
-        text: "Ist ein Herdschutzgitter montiert und die Backofentür mit einem universellen Ofenschloss gesichert?",
-        tip: "Verhindert das Greifen nach heißen Töpfen/Pfannen und das Öffnen des heißen Innenraums beim Backofen.",
-        explanation: "Wenn Kinder anfangen, sich hochzuziehen, kommen sie auch an die Schalter für Ihren Herd. Herdgitter verhindern, dass die kleinen Läufer mit der Hand an die heiße Herdplatte kommen. Backöfen werden von außen in der Regel nicht so heiß, allerdings sind die Temperaturen im inneren sehr gefährlich. Es gibt universelle Ofenschlösser, die verhindern, dass kleine Kinder den Ofen öffnen.",
-        amazonText: "📦 Herdschutzgitter & Backofenschloss auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=herdschutzgitter+kindersicherung&tag=ehabc-21"
-    },
-    {
-        id: "doors_windows",
-        condition: (cfg) => cfg.stage !== "baby",
-        title: "🚪 Fenster, Türen & Scharfe Kanten",
-        text: "Sind Fenstergriffe abschließbar, Türstopper für kleine Finger angebracht und Tischkanten abgepolstert?",
-        tip: "Verhindert Stürze aus dem Fenster, eingeklemmte Finger und Kopfplatzwunden an Tischkanten.",
-        explanation: "Nutzen Sie bei Fenstern abschließbare Garnituren, die Sie im Baumarkt als Austauschsatz erhalten können. Tischkanten oder Ecken von kleineren Regalen oder Sideboards können mit selbstklebenden Kantensicherungen gesichert werden. Damit vermeiden Sie eine Vielzahl von blauen Flecken im Bereich des Kopfes.",
-        amazonText: "📦 Eckenschutz & Schaumstoff-Türstopper ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=tuerstopper+klemmschutz+kinder&tag=ehabc-21"
-    },
-    {
-        id: "toilet_chem",
-        condition: (cfg) => cfg.stage !== "baby",
-        title: "🚽 Bad & Toilette (Duftsteine)",
-        text: "Wurden Urinsteinentferner/Duftsteine unter dem Toilettenrand entfernt oder ist ein WC-Schloss angebracht?",
-        tip: "Toilettensteine enthalten hochgiftige Chemikalien, die Kleinkinder beim Hineingreifen sofort am Mund testen.",
-        explanation: "Oftmals sind in Toiletten Urinsteinentferner oder andere Hygieneartikel unter dem Rand angebracht. Diese sind leider für kleine Kinder, ähnlich wie andere Reinigungsmittel, giftig. Verzichten Sie deshalb in der nächsten Zeit auf solche Mittel oder nutzen Sie eine Kindersicherung für Toilettendeckel.",
-        amazonText: "📦 Toilettendeckel-Kindersicherung auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=toilettendeckel+kindersicherung&tag=ehabc-21"
-    },
-    {
-        id: "stairs_gate",
-        condition: (cfg) => cfg.stairs && cfg.stage !== "baby",
-        title: "🪜 Treppenschutzgitter",
-        text: "Ist mindestens an der oberen Etagenseite (idealerweise auch unten) ein verstellbares Treppengitter montiert?",
-        tip: "Treppenstürze gehören zu den häufigsten Ursachen für schwere Schädel-Hirn-Traumata.",
-        explanation: "Montieren Sie ein Treppenschutzgitter zumindest an der oberen Etagenseite der Treppe, um das Herunterfallen zu verhindern. Ein weiteres Treppengitter in der unteren Etage schränkt die Möglichkeit ein, dass sich Ihr Krabbelkind ungewollt Zutritt zur Treppe verschafft und Ihnen entwischt.",
-        amazonText: "📦 Treppenschutzgitter ohne Bohren auf Amazon ansehen →",
-        amazonLink: "https://www.amazon.de/s?k=treppenschutzgitter+ohne+bohren&tag=ehabc-21"
     },
     {
         id: "fireplace_guard",
         condition: (cfg) => cfg.fireplace && cfg.stage !== "baby",
         title: "🔥 Kaminofen & Zündmittel",
-        text: "Ist der Kaminofen mit einem Schutzgitter umzäunt und Zündstoffe/Feuerzeuge komplett unzugänglich?",
-        tip: "Scheiben von Kaminöfen erreichen extrem hohe Temperaturen, die sofort drittgradige Verbrennungen auslösen.",
-        explanation: "Neben der wohligen Wärme, die er liefert, ist ein Kaminofen leider auch eine Gefahrenquelle. Es gibt im Zubehörhandel spezielle Schutzgitter, die ein Erreichen des Ofens für den Nachwuchs verhindern.",
-        amazonText: "📦 Kaminschutzgitter für Kinder auf Amazon ansehen →",
+        text: "Ist der Kamin mit einem Schutzgitter umzäunt und sind Feuerzeuge komplett unerreichbar?",
+        tip: "Kaminscheiben werden extrem heiß – das Berühren führt sofort zu drittgradigen Verbrennungen.",
+        explanation: "Neben der Verbrennungsgefahr am Glas sind Streichhölzer und Grillanzünder toxisch und brandgefährlich.",
+        amazonText: "👉 Ein solches Kaminschutzgitter mit Tür nutzen wir in der Heizperiode – sehr stabil →",
         amazonLink: "https://www.amazon.de/s?k=kaminschutzgitter+kinder&tag=ehabc-21"
+    },
+
+    // --- KINDER- & SCHLAFZIMMER ---
+    {
+        id: "baby_sids",
+        condition: (cfg) => cfg.stage === "baby",
+        title: "🛏️ Sichere Schlafumgebung (SIDS-Schutz)",
+        text: "Schläft dein Baby im Schlafsack auf einer festen Matratze – ohne Kissen, Nestchen, Felle oder Kuscheltiere?",
+        tip: "Verhindert Überwärmung und das Verlegen der Atempfade im Bettchen.",
+        explanation: "Keine Decken oder Kissen im ersten Lebensjahr! Babys regulieren ihre Wärme über den Kopf und dürfen nicht überhitzen.",
+        amazonText: "👉 Wir haben immer diese atmungsaktiven Baby-Schlafsäcke verwendet – absolut top →",
+        amazonLink: "https://www.amazon.de/s?k=baby+schlafsack+atmungsaktiv&tag=ehabc-21"
+    },
+    {
+        id: "cords_blind",
+        condition: (cfg) => cfg.stage !== "baby",
+        title: "🧵 Schnüre von Jalousien & Vorhängen",
+        text: "Sind Schnüre von Rollos, Jalousien oder Kordeln unzugänglich weit oben aufgewickelt?",
+        tip: "Strangulationsgefahr! Kinder verfangen sich beim Spielen schnell in herabhängenden Schlingen.",
+        explanation: "Lange Schnüre auf Kinderhöhe sind eine unterschätzte Gefahr. Wickel sie auf Kordelwickler auf oder kürze sie.",
+        amazonText: "👉 Diese kleinen Schnurwickler fürs Fenster machen die Kordeln sofort sicher →",
+        amazonLink: "https://www.amazon.de/s?k=schnurwickler+jalousie+kindersicherung&tag=ehabc-21"
+    },
+    {
+        id: "doors_windows",
+        condition: (cfg) => cfg.stage !== "baby",
+        title: "🚪 Fenster, Türen & Kanten",
+        text: "Sind Fenstergriffe abschließbar, Türstopper angebracht und Tischecken abgepolstert?",
+        tip: "Verhindert Stürze aus dem Fenster, eingeklemmte Finger und Platzwunden am Kopf.",
+        explanation: "Fenstergriffe im Baumarkt gegen abschließbare Ausführungen tauschen. Klemmschutz an Türen verhindert gequetschte Finger.",
+        amazonText: "👉 Diese weichen Schaumstoff-Türstopper schieben wir einfach oben auf das Türblatt →",
+        amazonLink: "https://www.amazon.de/s?k=tuerstopper+klemmschutz+kinder&tag=ehabc-21"
+    },
+
+    // --- OMA & OPA / VERWANDTE ---
+    {
+        id: "gp_meds",
+        condition: (cfg) => cfg.grandparents,
+        title: "👴 Oma & Opa: Medikamente & Handtaschen",
+        text: "Sind beim Besuch bei Verwandten alle Pillenboxen, Herz-/Blutdrucktabletten und Handtaschen außer Reichweite?",
+        tip: "Herz- oder Blutdrucktabletten von Großeltern sind für Kleinkinder schon in kleinsten Dosen tödlich!",
+        explanation: "Vergiftungen passieren oft dort, wo die Umgebung nicht dauerhaft kindersicher ist. Omas Handtasche auf dem Boden ist eine klassische Gefahrenquelle.",
+        amazonText: "👉 Schau dir mal diese abschließbaren Medikamententaschen für Besuche an →",
+        amazonLink: "https://www.amazon.de/s?k=medikamententasche+abschliessbar&tag=ehabc-21"
+    },
+
+    // --- PFLANZEN & HAUSTIERE ---
+    {
+        id: "toxic_plants",
+        condition: (cfg) => true,
+        title: "🪴 Giftpflanzen & Blumenerde",
+        text: "Sind giftige Zimmerpflanzen (z. B. Dieffenbachie, Orchideen, Efeu) entfernt und Blumenerde abgedeckt?",
+        tip: "Blumenerde lädt zum Ausbuddeln ein; viele Zimmerpflanzen verursachen beim Kauen schwere Verätzungen.",
+        explanation: "Frag im Zweifel deinen Floristen. Wenn du unsicher bist, verschenke potenziell giftige Pflanzen lieber.",
+        amazonText: "👉 Es gibt diese praktischen Pflanzentopfgitter gegen das Erde-Ausbuddeln →",
+        amazonLink: "https://www.amazon.de/s?k=pflanzentopf+abdeckung+kinder&tag=ehabc-21"
     },
     {
         id: "pets_rules",
         condition: (cfg) => cfg.pets && cfg.stage !== "baby",
         title: "🐈 Haustiere, Katzenklo & Futter",
-        text: "Sind Katzenklo, Fressnäpfe und Leinen unzugänglich und wird das Kind NIEMALS allein mit Tieren im Raum gelassen?",
-        tip: "Verhindert Infektionen durch Katzenstreu, Erstickung durch Trockenfutter und unvorhersehbare Tierreaktionen.",
-        explanation: "Gerade kleine Kinder sollten Sie nicht mit Haustieren allein in einem Raum lassen. Tiere reagieren oft anders als sonst, wenn diese in einer ungewohnten Situation sind."
+        text: "Sind Katzenklo und Fressnäpfe unzugänglich und bleibt das Kind NIEMALS alleine mit Tieren?",
+        tip: "Tiere reagieren in ungewohnten Situationen unvorhersehbar – besonders, wenn sie am Fell gezogen werden.",
+        explanation: "Bring deinem Kind früh bei, dass Napf und Schlafplatz absolut tabu sind. Lass Kind und Tier nie unbeaufsichtigt im Raum.",
+        amazonText: "👉 Wir nutzen dieses Türgitter mit Katzenklappe – Hund/Katze kommen durch, das Kind nicht →",
+        amazonLink: "https://www.amazon.de/s?k=schutzgitter+mit+katzenklappe&tag=ehabc-21"
     },
+
+    // --- DRAUSSEN & WASSER ---
     {
         id: "water_safety",
         condition: (cfg) => cfg.water && cfg.stage !== "baby",
-        title: "🌊 Teich, Pool, Brunnen & Regentonne",
-        text: "Sind Gartenteich/Pool lückenlos eingezäunt, Brunnen/Regentonnen fest verschraubt oder mit Gittern gesichert?",
-        tip: "Ertrinken ist ein leiser Unfall! Kleinkinder gehen ohne Hilferuf unter – selbst in wenigen Zentimetern Wassertiefe.",
-        amazonText: "📦 Kindersicheres Teichnetz & Pool-Sicherungen ansehen →",
+        title: "🌊 Gartenteich, Pool & Regentonne",
+        text: "Sind Teiche/Pools komplett eingezäunt und Regentonnen fest verschraubt?",
+        tip: "Ertrinken ist leise! Kleinkinder gehen ohne Hilferuf lautlos unter – selbst in flachem Wasser.",
+        explanation: "Kleinkinder haben einen schweren Kopf und reflexartige Schockreaktionen. Teiche lückenlos einzäunen oder mit festem Gitter sichern.",
+        amazonText: "👉 Dieses reißfeste Teich-Sicherheitsnetz hält absolut zuverlässig →",
         amazonLink: "https://www.amazon.de/s?k=teichnetz+kindersicherung&tag=ehabc-21"
     },
     {
         id: "garage_chem",
         condition: (cfg) => cfg.garage && cfg.stage !== "baby",
-        title: "🧰 Garage, Schuppen & Werkzeug",
-        text: "Sind Schuppen und Garage mit Chemikalien, Dünger, Schmiermitteln und Werkzeugen stets abgeschlossen?",
-        tip: "Verhindert schwerste Vergiftungen durch Pflanzenschutzmittel und Verletzungen durch scharfes Werkzeug."
+        title: "🧰 Garage, Schuppen & Dünger",
+        text: "Sind Schuppen und Garage mit Pflanzenschutzmitteln, Schmiermitteln und Werkzeug stets abgeschlossen?",
+        tip: "Pflanzengifte und Grillanzünder führen zu schwersten Vergiftungen.",
+        explanation: "Garage und Schuppen müssen immer abgeschlossen bleiben. Dünger und Reiniger nie in Getränkeflaschen umfüllen!",
+        amazonText: "👉 Ein robustes Vorhängeschloss schützt den Gartenschuppen zuverlässig →",
+        amazonLink: "https://www.amazon.de/s?k=vorhaengeschloss+wetterfest&tag=ehabc-21"
+    },
+
+    // --- KINDERSITZE & AUTO-SICHERHEIT ---
+    {
+        id: "child_seat_condition",
+        condition: (cfg) => true,
+        title: "🚗 Kindersitz: Zustand & Unfallfreiheit",
+        text: "Nutzt ihr einen neu gekauften Kindersitz bzw. einen Sitz, dessen Historie ihr zu 100 % kennt?",
+        tip: "Kindersitze sollten in der Regel NEU gekauft werden! Bereits kleine Unfälle oder Stürze können unsichtbare Mikrorisse im Material verursachen, die den Schutz im Ernstfall zunichte machen.",
+        explanation: "Gebrauchte Sitze von Fremden bergen ein hohes Risiko: Mikrorisse im Kunststoffgefüge sieht man von außen nicht. Nach jedem Unfall (auch bei geringer Geschwindigkeit) muss der Sitz ausgetauscht werden. Achtet zudem darauf, Kinder im Sitz nicht mit dicken Winterjacken anzuschnallen, da der Gurt sonst zu viel Spiel hat.",
+        amazonText: "👉 Wir setzen auf Reboarder mit ISOFIX – schau dir mal die aktuellen Testsieger an →",
+        amazonLink: "https://www.amazon.de/s?k=reboarder+kindersitz+isofix&tag=ehabc-21"
+    },
+    {
+        id: "child_seat_sos_label",
+        condition: (cfg) => true,
+        title: "🏷️ Notfall-Karten & Kontaktdaten am Kindersitz",
+        text: "Ist der Kindersitz mit euren Kontaktdaten, Vorerkrankungen und dem Namen des Kindes markiert?",
+        tip: "Wenn Fahrer oder Fahrerin nach einem Unfall nicht ansprechbar sind, weiß der Rettungsdienst sofort, wie das Kind heißt und wen er benachrichtigen muss!",
+        explanation: "Im Notfall zählt jede Sekunde. Eine wasserfeste Notfall-Karte oder ein Aufkleber direkt hinten am Kindersitz liefert den Einsatzkräften lebenswichtige Infos (Name, Alter, Allergien, Notfallkontakte der Großeltern/Eltern), wenn die Eltern selbst nicht auskunftsfähig sind.",
+        amazonText: "👉 Diese Notfall-Aufkleber für Kindersitze nutzen wir selbst – direkt beschriftbar & auffällig →",
+        amazonLink: "https://www.amazon.de/s?k=notfall+aufkleber+kindersitz&tag=ehabc-21"
     }
 ];
+
+// =========================================================
+// GENERIEREN DER FRAGEN FÜR DEN USER
+// =========================================================
 
 let activeQuestions = [];
 
@@ -528,6 +601,10 @@ function generateRiskCheck() {
     window.scrollTo(0, 0);
 }
 
+// =========================================================
+// AUSWERTUNG, BERICHT & PRINT/PDF-BUTTON
+// =========================================================
+
 function evaluateRiskCheck() {
     let yesCount = 0;
     const recommendations = [];
@@ -546,8 +623,9 @@ function evaluateRiskCheck() {
     document.getElementById('quiz-step-3').classList.add('screen-hidden');
     document.getElementById('quiz-step-3').classList.remove('screen-active');
     
-    document.getElementById('quiz-results').classList.remove('screen-hidden');
-    document.getElementById('quiz-results').classList.add('screen-active');
+    const resultsScreen = document.getElementById('quiz-results');
+    resultsScreen.classList.remove('screen-hidden');
+    resultsScreen.classList.add('screen-active');
     window.scrollTo(0, 0);
 
     const scoreDisplay = document.getElementById('score-display');
@@ -555,10 +633,26 @@ function evaluateRiskCheck() {
     scoreDisplay.style.color = score >= 80 ? '#27ae60' : (score >= 50 ? '#f39c12' : '#c0392b');
 
     const recContainer = document.getElementById('recommendations-container');
+    recContainer.innerHTML = "";
+
+    // 1. Pädagogische Einleitung
+    const introHtml = `
+        <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
+            <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Dein persönliches Präventions-Ergebnis</strong>
+            Wusstest du, dass sich rund <strong>60 % der Unfälle im Kindesalter präventiv verhindern lassen</strong>? Die richtigen Sicherheitsmaßnahmen zur rechten Zeit sorgen dafür, dass dein Zuhause ein geschützter Raum ist.
+            <br><br>
+            <strong>Erziehung vs. Sicherung:</strong> Deine Wohnung muss nicht zu einem unüberwindbaren <em>Fort Knox</em> werden! Kinder müssen eigene Erfahrungen sammeln. Während lebensbedrohliche Gefahren (wie offene Steckdosen, Klippen an Treppen oder Gifte) konsequent gesichert werden müssen, spielt in vielen Bereichen die aktive Erziehung von Beginn an eine wichtige Rolle.
+            <br><br>
+            ⚠️ <strong>Wichtig:</strong> Kinder entwickeln sich rasend schnell! Führe diesen Check bei jedem großen Entwicklungsschritt (z. B. wenn dein Kind anfängt zu krabbeln oder zu klettern) einfach noch einmal durch.
+        </div>
+    `;
+    recContainer.innerHTML += introHtml;
+
+    // 2. Empfehlungen rendern
     if (recommendations.length === 0) {
-        recContainer.innerHTML = "<p style='color: #27ae60; font-weight: bold; text-align: center;'>🎉 Hervorragend! Dein Zuhause ist perfekt auf diese Entwicklungsstufe abgestimmt.</p>";
+        recContainer.innerHTML += "<p style='color: #27ae60; font-weight: bold; text-align: center; font-size: 16px;'>🎉 Hervorragend! Dein Zuhause ist perfekt auf diese Entwicklungsstufe abgestimmt.</p>";
     } else {
-        recContainer.innerHTML = "<h3 style='color: #c0392b; margin-top: 15px;'>⚠️ Hier besteht Handlungsbedarf:</h3>";
+        recContainer.innerHTML += "<h3 style='color: #c0392b; margin-top: 15px; margin-bottom: 15px;'>⚠️ Hier besteht Handlungsbedarf in deinem Zuhause:</h3>";
         recommendations.forEach(r => {
             let amazonBtnHtml = "";
             if (r.amazonLink && r.amazonText) {
@@ -570,14 +664,24 @@ function evaluateRiskCheck() {
             }
 
             recContainer.innerHTML += `
-                <div style="background: #fadbd8; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #e74c3c; color: #2c3e50;">
-                    <strong>${r.title}</strong>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #78281f;">💡 <em>Tipp:</em> ${r.tip}</p>
+                <div style="background: #ffffff; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #e74c3c; border: 1px solid #cbd5e1; border-left-width: 5px; color: #2c3e50;">
+                    <strong style="font-size: 16px; color: #1e293b;">${r.title}</strong>
+                    <p style="margin: 6px 0 8px 0; font-size: 14px; color: #475569;">${r.text}</p>
+                    <div style="background: #fef2f2; padding: 8px 12px; border-radius: 6px; font-size: 13px; color: #991b1b; margin-bottom: 8px;">
+                        💡 <em>Warum wichtig:</em> ${r.explanation || r.tip}
+                    </div>
                     ${amazonBtnHtml}
                 </div>
             `;
         });
     }
+
+    // 3. Print / PDF Button am Ende
+    recContainer.innerHTML += `
+        <button onclick="window.print()" style="margin-top: 20px; background: #27ae60; color: white; border: none; padding: 14px 20px; border-radius: 25px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 8px;">
+            🖨️ Auswertung als PDF speichern / ausdrucken
+        </button>
+    `;
 }
 
 function resetRiskCheck() {
