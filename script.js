@@ -6,7 +6,7 @@
 const topics = [
     // NEU: Der Notfall-Check
     { id: 'notfallcheck', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
-    
+
     // Bestehende Themen
 { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
     { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
@@ -22,7 +22,7 @@ const topics = [
     { id: 'strom', title: '⚡ Stromunfälle', category: 'Unfall' },
     { id: 'ertrinken', title: '🌊 Ertrinken', category: 'Wasser' },
     { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' },
-    
+
     {
         id: 'notrufnummern',
         title: '📞 Wichtige Notrufnummern',
@@ -42,10 +42,54 @@ const topics = [
         specialColor: '#1e8449'
     }
 ];
+
+// --- THEMEN-DATENBANK FÜR DIE ERWACHSENEN-STARTSEITE ---
+// Wird nach und nach mit Themen befüllt (gleiche Struktur wie "topics" oben).
+const adultTopics = [
+    // NEU: Der Notfall-Check für Erwachsene
+    { id: 'notfallcheck_erw', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
+
+    { id: 'bewusstlosigkeit_erw', title: '😵 Bewusstlosigkeit & Seitenlage', category: 'Bewusstlosigkeit' },
+    { id: 'reanimation_erw', title: '🫀 Reanimation & Defibrillation', category: 'Notfall' },
+    { id: 'ersticken_erw', title: '🫁 Ersticken (Fremdkörper)', category: 'Atemnot' },
+    { id: 'insektenstich_mund_erw', title: '🐝 Insektenstich im Mund/Rachen', category: 'Allergie' },
+    { id: 'elektrounfall_erw', title: '⚡ Elektrounfälle', category: 'Unfall' },
+    { id: 'schock_erw', title: '🆘 Schock', category: 'Kreislauf' },
+    { id: 'allergie_erw', title: '🤧 Schwere allergische Reaktion', category: 'Allergie' },
+
+    // Niederschwellige / alltägliche Themen
+    { id: 'zahnverletzung_erw', title: '🦷 Zahnverletzung', category: 'Zahn' },
+    { id: 'nasenbluten_erw', title: '🩸 Nasenbluten', category: 'Blutung' },
+    { id: 'zeckenstich_erw', title: '🕷️ Zeckenstich', category: 'Zecke' },
+    { id: 'wundversorgung_erw', title: '🩹 Wunden & Wundversorgung', category: 'Wunde' },
+    { id: 'fremdkoerper_auge_erw', title: '👁️ Fremdkörper im Auge', category: 'Auge' },
+    { id: 'tierbiss_erw', title: '🐕 Tierbissverletzung', category: 'Biss' },
+    { id: 'gelenkverletzung_erw', title: '🦵 Prellung, Zerrung & Verstauchung', category: 'Gelenk' },
+    { id: 'sonnenbrand_erw', title: '☀️ Sonnenbrand', category: 'Sonne' },
+    { id: 'kopfverletzung_erw', title: '🤕 Kopfverletzung & Gehirnerschütterung', category: 'Kopf' },
+    { id: 'starke_blutung_erw', title: '💥 Starke Blutung', category: 'Blutung' },
+    { id: 'amputationsverletzung_erw', title: '✂️ Amputationsverletzung', category: 'Trauma' },
+    { id: 'bauch_brustverletzung_erw', title: '🩻 Bauch- & Brustkorbverletzung', category: 'Trauma' },
+    { id: 'knochenbruch_erw', title: '🦴 Knochenbruch', category: 'Knochen' },
+    { id: 'hitzschlag_erw', title: '🥵 Hitzschlag & Sonnenstich', category: 'Hitze' },
+    { id: 'unterkuehlung_erw', title: '🥶 Unterkühlung & Erfrierung', category: 'Kälte' },
+    { id: 'verbrennung_erw', title: '🔥 Verbrennung & Verbrühung', category: 'Hitze' },
+    { id: 'vergiftung_erw', title: '🧪 Vergiftung', category: 'Gift' },
+    { id: 'veraetzung_erw', title: '⚗️ Verätzung (Haut & Auge)', category: 'Verätzung' },
+
+    // Akute Erkrankungen
+    { id: 'herzinfarkt_erw', title: '❤️‍🩹 Herzinfarkt', category: 'Herz' },
+    { id: 'schlaganfall_erw', title: '🧠 Schlaganfall', category: 'Hirn' },
+    { id: 'diabetes_erw', title: '🍬 Diabetischer Notfall', category: 'Zucker' },
+    { id: 'sepsis_erw', title: '🦠 Sepsis (Blutvergiftung)', category: 'Infektion' },
+    { id: 'bauchschmerz_erw', title: '🤢 Akute Baucherkrankung', category: 'Bauch' },
+    { id: 'asthma_erw', title: '😮‍💨 Asthmaanfall', category: 'Atemnot' },
+    { id: 'krampfanfall_erw', title: '⚡ Krampfanfall (Epilepsie)', category: 'Krampf' }
+];
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
     renderTopics(topics);
-    initModeSwitcher();
+    renderAdultTopics(adultTopics);
     initGeoLocation();
     injectInstallModalHtml();
 });
@@ -55,7 +99,7 @@ function renderTopics(topicList) {
     const grid = document.getElementById('topics-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    
+
     topicList.forEach(topic => {
         const btn = document.createElement('button');
         btn.className = topic.isSpecial ? 'topic-card special-card' : 'topic-card';
@@ -77,13 +121,50 @@ function filterTopics() {
     renderTopics(filtered);
 }
 
+// Rendert die Themen-Buttons auf der Erwachsenen-Startseite (gleiche Logik wie renderTopics)
+function renderAdultTopics(topicList) {
+    const grid = document.getElementById('topics-grid-erwachsene');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    topicList.forEach(topic => {
+        const btn = document.createElement('button');
+        btn.className = topic.isSpecial ? 'topic-card special-card' : 'topic-card';
+        if (topic.isSpecial) {
+            btn.style.backgroundColor = topic.specialBg;
+            btn.style.borderColor = topic.specialBorder;
+            btn.style.color = topic.specialColor;
+        }
+        btn.innerHTML = `<strong>${topic.title}</strong>`;
+        btn.onclick = () => showScreen(`screen-${topic.id}`);
+        grid.appendChild(btn);
+    });
+}
+
+// Suche / Filterfunktion für die Erwachsenen-Themen
+function filterAdultTopics() {
+    const query = document.getElementById('search-input-erwachsene').value.toLowerCase();
+    const filtered = adultTopics.filter(t => t.title.toLowerCase().includes(query) || t.category.toLowerCase().includes(query));
+    renderAdultTopics(filtered);
+}
+
 // Bildschirm-Wechsel (Jetzt mit sauberen CSS-Klassen)
+// Merkt sich zusätzlich, ob zuletzt "Baby & Kind" oder "Erwachsene" aktiv war,
+// damit die "Zurück"-Buttons in den Notfall-Screens zur richtigen Startseite führen.
+let currentCategory = 'kind';
+
 function showScreen(screenId) {
+    if (screenId === 'screen-start') {
+        currentCategory = 'kind';
+    } else if (screenId === 'screen-erwachsene') {
+        currentCategory = 'erwachsene';
+    }
+
     document.querySelectorAll('.app-screen, #screen-start').forEach(s => {
         s.classList.add('screen-hidden');
         s.classList.remove('screen-active');
     });
-    
+
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.remove('screen-hidden');
@@ -92,55 +173,70 @@ function showScreen(screenId) {
     }
 }
 
+// Zurück zur zuletzt aktiven Startseite (Baby & Kind ODER Erwachsene)
 function goToStart() {
-    showScreen('screen-start');
+    showScreen(currentCategory === 'erwachsene' ? 'screen-erwachsene' : 'screen-start');
 }
 
-// Modus-Umschalter (Lernen vs. Notfall)
-function initModeSwitcher() {
-    const toggle = document.getElementById('mode-toggle');
+// Zurück zur allerersten Auswahl (Baby/Kind vs. Erwachsene)
+function goToCategoryChooser() {
+    showScreen('screen-category');
+}
+
+// Notfall-Button: schaltet von überall in den Notfallmodus, im Notfallmodus
+// selbst schaltet der gleiche Button wieder zurück in den Lernmodus.
+function toggleEmergencyMode() {
     const main = document.getElementById('app-content');
-    
-    if (toggle && main) {
-        toggle.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                main.classList.remove('mode-learn');
-                main.classList.add('mode-panic');
-            } else {
-                main.classList.remove('mode-panic');
-                main.classList.add('mode-learn');
-            }
-        });
+    const btn = document.getElementById('emergency-toggle-btn');
+    if (!main || !btn) return;
+
+    const isPanicNow = main.classList.contains('mode-panic');
+
+    if (isPanicNow) {
+        // Zurück in den Lernmodus
+        main.classList.remove('mode-panic');
+        main.classList.add('mode-learn');
+        btn.classList.remove('is-panic');
+        btn.innerHTML = '🚨 NOTFALL';
+    } else {
+        // In den Notfallmodus wechseln
+        main.classList.remove('mode-learn');
+        main.classList.add('mode-panic');
+        btn.classList.add('is-panic');
+        btn.innerHTML = '📚 Zurück zum Lernmodus';
     }
 }
 
 // Metronom für Reanimation (Lautstärke maximiert & schrillerer Ton für Kurse)
 let metronomeInterval = null;
 function toggleMetronome() {
-    const btn = document.getElementById('metronome-btn');
+    // Klassenbasiert statt ID-basiert: so werden ALLE Taktgeber-Buttons
+    // (Baby/Kind- und Erwachsenen-Reanimation, sowie künftig weitere) synchron
+    // aktualisiert, unabhängig davon, von welchem Screen aus gestartet wurde.
+    const btns = document.querySelectorAll('.metronome-btn');
     if (metronomeInterval) {
         clearInterval(metronomeInterval);
         metronomeInterval = null;
-        if (btn) btn.innerHTML = '🔊 Taktgeber starten (110 BPM)';
+        btns.forEach(btn => btn.innerHTML = '🔊 Taktgeber starten (110 BPM)');
     } else {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         metronomeInterval = setInterval(() => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
+
             // Auf 'square' (Rechteck) stellen – das klingt lauter und durchdringender bei Nebengeräuschen
             osc.type = 'square';
             osc.frequency.value = 880; // Etwas höherer Ton (880 Hz = A5) für bessere Wahrnehmbarkeit
-            
+
             // Gain auf Maximum (1.0) für volle Lautstärke
             gain.gain.setValueAtTime(1.0, audioCtx.currentTime);
-            
+
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.08);
         }, (60 / 110) * 1000);
-        if (btn) btn.innerHTML = '⏹️ Taktgeber stoppen';
+        btns.forEach(btn => btn.innerHTML = '⏹️ Taktgeber stoppen');
     }
 }
 
@@ -149,20 +245,22 @@ function initGeoLocation() {
     const display = document.getElementById('geo-location-display');
     const poisonDisplay = document.getElementById('poison-center-display');
     const checkGeoDisplay = document.getElementById('check-geo-display');
-    
+    const checkGeoDisplayErw = document.getElementById('checkerw-geo-display');
+
     if (navigator.geolocation && display) {
         display.innerHTML = '📍 Standort wird ermittelt (GPS & Adresse)...';
         if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Standort wird ermittelt...';
-        
+        if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Standort wird ermittelt...';
+
         navigator.geolocation.getCurrentPosition(
             async pos => {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
                 const latFormatted = lat.toFixed(4);
                 const lonFormatted = lon.toFixed(4);
-                
+
                 let addressText = "Adresse konnte nicht geladen werden";
-                
+
                 try {
                     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
                         headers: {
@@ -175,7 +273,7 @@ function initGeoLocation() {
                         const houseNumber = data.address.house_number || '';
                         const postcode = data.address.postcode || '';
                         const city = data.address.city || data.address.town || data.address.village || '';
-                        
+
                         if (road || city) {
                             addressText = `${road} ${houseNumber}, ${postcode} ${city}`.trim();
                         } else {
@@ -185,20 +283,24 @@ function initGeoLocation() {
                 } catch (e) {
                     addressText = "Offline / Adresse nur über GPS";
                 }
-                
+
                 const locationHtml = `
                     📍 <strong>Adresse:</strong> ${addressText}<br>
                     🌍 <strong>GPS:</strong> ${latFormatted}, ${lonFormatted}
                 `;
-                
+
                 display.innerHTML = locationHtml;
-                
+
                 if (poisonDisplay) {
                     poisonDisplay.innerHTML = `📍 Dein Standort: ${addressText} (${latFormatted}, ${lonFormatted})`;
                 }
 
                 if (checkGeoDisplay) {
                     checkGeoDisplay.innerHTML = locationHtml;
+                }
+
+                if (checkGeoDisplayErw) {
+                    checkGeoDisplayErw.innerHTML = locationHtml;
                 }
             },
             () => {
@@ -210,6 +312,10 @@ function initGeoLocation() {
                 if (checkGeoDisplay) {
                     checkGeoDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
                 }
+
+                if (checkGeoDisplayErw) {
+                    checkGeoDisplayErw.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
+                }
             },
             {
                 enableHighAccuracy: true,
@@ -220,6 +326,7 @@ function initGeoLocation() {
     } else {
         if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
         if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Geolocation nicht unterstützt.';
+        if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Geolocation nicht unterstützt.';
     }
 }
 
@@ -233,13 +340,13 @@ function triggerEmergencyCall() {
 
 function injectInstallModalHtml() {
     if (document.getElementById('install-modal')) return;
-    
+
     const modalHtml = `
         <div id="install-modal" class="modal-hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
             <div style="background:#ffffff; max-width:450px; width:100%; padding:25px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.3); color:#2c3e50; position:relative; text-align:left;">
                 <h2 style="margin-top:0; color:#27ae60; font-size:20px;">📲 App zum Startbildschirm</h2>
                 <p style="font-size:14px; color:#555; line-height:1.5;">Installiere diese App auf deinem Handy, um sie wie eine echte App (ohne Adresszeile) und auch offline zu nutzen:</p>
-                
+
                 <div id="install-ios-instructions" style="background:#f8fafc; padding:12px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:15px; font-size:14px; line-height:1.6;">
                     <strong>🍎 Für iPhone / iPad (Safari):</strong><br>
                     1. Tippe unten in Safari auf das <strong>Teilen-Symbol</strong> <span style="font-size:16px;">(Viereck mit Pfeil nach oben 📤)</span>.<br>
@@ -287,7 +394,7 @@ function nextCheckStep(currentStepId, nextStepId, isEmergency) {
     // Aktuellen Schritt ausblenden
     document.getElementById(currentStepId).classList.add('screen-hidden');
     document.getElementById(currentStepId).classList.remove('screen-active');
-    
+
     if (isEmergency) {
         // Bei einem Alarmzeichen direkt zum Notfall-Ergebnis springen
         document.getElementById('check-result-emergency').classList.remove('screen-hidden');
@@ -309,10 +416,47 @@ function resetNotfallCheck() {
             el.classList.remove('screen-active');
         }
     });
-    
+
     // Schritt 1 wieder anzeigen
     document.getElementById('check-step-1').classList.remove('screen-hidden');
     document.getElementById('check-step-1').classList.add('screen-active');
+}
+
+// =========================================================
+// 🚦 LOGIK FÜR DEN "NOTFALL ODER NICHT" CHECK – ERWACHSENE
+// (3-A-Regel + Alarmsignale + Bauchgefühl)
+// =========================================================
+
+function nextCheckStepErw(currentStepId, nextStepId, isEmergency) {
+    // Aktuellen Schritt ausblenden
+    document.getElementById(currentStepId).classList.add('screen-hidden');
+    document.getElementById(currentStepId).classList.remove('screen-active');
+
+    if (isEmergency) {
+        // Bei einem Alarmzeichen direkt zum Notfall-Ergebnis springen
+        document.getElementById('checkerw-result-emergency').classList.remove('screen-hidden');
+        document.getElementById('checkerw-result-emergency').classList.add('screen-active');
+    } else {
+        // Ansonsten zum nächsten regulären Schritt
+        document.getElementById(nextStepId).classList.remove('screen-hidden');
+        document.getElementById(nextStepId).classList.add('screen-active');
+    }
+}
+
+function resetNotfallCheckErw() {
+    // Alle Container verstecken
+    const steps = ['checkerw-step-1', 'checkerw-step-2', 'checkerw-step-3', 'checkerw-step-4', 'checkerw-step-5', 'checkerw-result-emergency', 'checkerw-result-relax'];
+    steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.add('screen-hidden');
+            el.classList.remove('screen-active');
+        }
+    });
+
+    // Schritt 1 wieder anzeigen
+    document.getElementById('checkerw-step-1').classList.remove('screen-hidden');
+    document.getElementById('checkerw-step-1').classList.add('screen-active');
 }
 
 // =========================================================
@@ -595,7 +739,7 @@ function generateRiskCheck() {
 
     document.getElementById('quiz-step-1').classList.add('screen-hidden');
     document.getElementById('quiz-step-2').classList.add('screen-hidden');
-    
+
     document.getElementById('quiz-step-3').classList.remove('screen-hidden');
     document.getElementById('quiz-step-3').classList.add('screen-active');
     window.scrollTo(0, 0);
@@ -619,10 +763,10 @@ function evaluateRiskCheck() {
     });
 
     const score = Math.round((yesCount / activeQuestions.length) * 100);
-    
+
     document.getElementById('quiz-step-3').classList.add('screen-hidden');
     document.getElementById('quiz-step-3').classList.remove('screen-active');
-    
+
     const resultsScreen = document.getElementById('quiz-results');
     resultsScreen.classList.remove('screen-hidden');
     resultsScreen.classList.add('screen-active');
@@ -687,10 +831,10 @@ function evaluateRiskCheck() {
 function resetRiskCheck() {
     document.getElementById('quiz-results').classList.add('screen-hidden');
     document.getElementById('quiz-results').classList.remove('screen-active');
-    
+
     document.getElementById('quiz-step-1').classList.remove('screen-hidden');
     document.getElementById('quiz-step-1').classList.add('screen-active');
-    
+
     document.getElementById('quiz-step-2').classList.remove('screen-hidden');
     document.getElementById('quiz-step-2').classList.add('screen-active');
     window.scrollTo(0, 0);
