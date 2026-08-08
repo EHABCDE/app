@@ -16,33 +16,49 @@
 </head>
 <body>
 
-    <!-- Globale Navigation: Der Modus-Umschalter -->
+    <!-- Globale Navigation: Notfall-Button (auf allen Screens an gleicher Stelle) -->
     <div id="mode-switcher-container">
         <div class="switch-inner">
-            <div class="switch-label">LERNEN</div>
-            <label class="switch">
-                <input type="checkbox" id="mode-toggle">
-                <span class="slider round"></span>
-            </label>
-            <div class="switch-label" style="color: #c0392b; font-weight: bold;">NOTFALL</div>
+            <button id="emergency-toggle-btn" class="emergency-toggle-btn" onclick="toggleEmergencyMode()">
+                🚨 NOTFALL
+            </button>
         </div>
         
         <!-- Kleines Logo im Header -->
-        <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToStart()" style="cursor: pointer;">
+        <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToCategoryChooser()" style="cursor: pointer;">
     </div>
 
     <!-- Hauptinhalt der App -->
     <main id="app-content" class="mode-learn">
-        
-        <!-- STARTSEITE -->
-        <section id="screen-start" class="screen-active">
-            
+
+        <!-- KATEGORIE-AUSWAHL (NEUE STARTSEITE) -->
+        <section id="screen-category" class="app-screen screen-active">
+
             <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
                 <img src="logo.jpg" alt="Erste Hilfe ABC" class="main-logo">
             </div>
 
             <h1 id="main-title">Erste Hilfe ABC</h1>
-            <p id="main-subtitle">Wähle eine Situation aus:</p>
+            <p id="main-subtitle">Für wen brauchst du Hilfe?</p>
+
+            <div class="category-grid">
+                <button class="category-card" onclick="showScreen('screen-start')">
+                    <span class="category-icon">👶</span>
+                    <strong>Baby &amp; Kind</strong>
+                </button>
+                <button class="category-card" onclick="showScreen('screen-erwachsene')">
+                    <span class="category-icon">🧑</span>
+                    <strong>Erwachsene</strong>
+                </button>
+            </div>
+        </section>
+
+        <!-- STARTSEITE: BABY & KIND -->
+        <section id="screen-start" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+
+            <h1 id="main-title-kind">👶 Baby &amp; Kind</h1>
+            <p id="main-subtitle-kind">Wähle eine Situation aus:</p>
 
             <!-- Prominenter Präventions-Banner -->
             <button onclick="showScreen('screen-pravention')" class="promo-banner">
@@ -77,6 +93,1633 @@
                 <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
             </div>
         </section>
+
+        <!-- STARTSEITE: ERWACHSENE -->
+        <section id="screen-erwachsene" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+
+            <h1 id="main-title-erwachsene">🧑 Erwachsene</h1>
+            <p id="main-subtitle-erwachsene">Wähle eine Situation aus:</p>
+
+            <!-- Suche -->
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="search-input-erwachsene" onkeyup="filterAdultTopics()" placeholder="🔍 Situation suchen...">
+            </div>
+
+            <!-- Hier werden die Kacheln via script.js eingefügt -->
+            <div class="grid-container" id="topics-grid-erwachsene"></div>
+
+            <!-- Feedback Button -->
+            <button onclick="showScreen('screen-feedback')" class="btn-secondary">
+                💬 Feedback &amp; Verbesserungsvorschläge
+            </button>
+
+            <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
+            <div class="app-disclaimer">
+                <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
+                Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung. 
+                <br><br>
+                <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
+                <br><br>
+                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+            </div>
+        </section>
+
+        <!-- Ab hier werden nach und nach die einzelnen Erwachsenen-Themen-Screens ergänzt -->
+
+        <!-- BILDSCHIRM: BEWUSSTLOSIGKEIT & SEITENLAGE (ERWACHSENE) -->
+        <section id="screen-bewusstlosigkeit_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #34495e;">😵 NOTFALL: BEWUSSTLOSIGKEIT</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ANSPRECHEN &amp; RÜTTELN:</strong> Person laut ansprechen ("Hören Sie mich?") und kräftig an beiden Schultern rütteln. Keine Reaktion? Laut um Hilfe rufen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ATMUNG PRÜFEN (max. 10 Sek.):</strong> Kopf vorsichtig überstrecken (Kinn anheben, Stirn nach hinten drücken) und mit Wange/Ohr über Mund und Nase Atmung sehen, hören und fühlen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ENTSCHEIDEN:</strong><br>
+                    • Atmet <strong>normal</strong> → Sofort in die <strong>Seitenlage</strong> bringen (Schritt 4).<br>
+                    • Atmet <strong>nicht oder nicht normal</strong> (z. B. Schnappatmung) → Notruf 112 und sofort mit der <strong>Reanimation</strong> beginnen!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>SEITENLAGE:</strong><br>
+                    • Seitlich neben die Person knien, nahen Arm angewinkelt neben den Kopf legen.<br>
+                    • Fernen Arm über die Brust führen und die Hand an die nahe Wange legen und dort halten.<br>
+                    • Fernes Bein am Knie fassen und die Person vorsichtig zu sich auf die Seite ziehen.<br>
+                    • Kopf leicht in den Nacken beugen und Mund öffnen, damit Flüssigkeit ablaufen kann. Zudecken und bis zum Eintreffen der Rettung ständig die Atmung kontrollieren.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> nicht vergessen, sobald die Situation klar ist.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Bewusstlosigkeit</h1>
+                <p>Ist jemand bewusstlos, sind die schützenden Reflexe des Körpers ausgeschaltet und die Muskulatur vollkommen erschlafft. Dadurch kann die Zunge in den Rachen zurücksinken und die Atemwege blockieren. Weil auch der Hustenreflex fehlt, können außerdem Speichel, Erbrochenes oder Blut ungehindert in die Atemwege gelangen und zum Ersticken führen.</p>
+
+                <h3>Mögliche Ursachen</h3>
+                <p>Bewusstlosigkeit kann viele Auslöser haben: schwere Kopfverletzungen, Hitzschlag, Krampfanfälle, starke Blutungen sowie – speziell bei Erwachsenen – akute Erkrankungen wie Schlaganfall, Herzinfarkt oder Herzrhythmusstörungen.</p>
+
+                <h3>Warum die Atemkontrolle so wichtig ist</h3>
+                <p>Sobald du feststellst, dass jemand nicht reagiert, sich nicht bewegt und die Augen geschlossen bleiben, musst du als Erstes die Atmung überprüfen. Eine bewusstlose Person, die noch normal atmet, darf niemals auf dem Rücken liegen bleiben – sie könnte daran ersticken, dass die Zunge die Atemwege verlegt. Deshalb bringt man sie in die stabile Seitenlage. Atmet die Person hingegen nicht oder nur unregelmäßig (z. B. mit einzelnen "schnappenden" Atemzügen), ist sofortiges Handeln mit Wiederbelebungsmaßnahmen entscheidend.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: REANIMATION & DEFIBRILLATION (ERWACHSENE) -->
+        <section id="screen-reanimation_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">🫀 NOTFALL: REANIMATION</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Person reagiert nicht und atmet nicht oder nicht normal? Sofort handeln!</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>HILFE HOLEN:</strong> Laut um Hilfe rufen. Notruf 112 wählen (Lautsprecher an!). Ist eine zweite Person da, soll sie sofort ein Defibrillationsgerät (AED) holen, falls in der Nähe eines vorhanden ist.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>HERZDRUCKMASSAGE:</strong><br>
+                    • Person auf harten Untergrund legen, Oberkörper freimachen.<br>
+                    • Handballen auf die untere Hälfte des Brustbeins setzen, zweite Hand darüber, Finger verschränken.<br>
+                    • Mit gestreckten Armen <strong>5–6 cm tief</strong> drücken, Frequenz <strong>100–120 Kompressionen/Minute</strong>. Nach jedem Druck das Brustbein vollständig entlasten.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>IM WECHSEL BEATMEN:</strong> Nach 30 Herzdruckmassagen: Kopf überstrecken, Nase zuhalten, normal einatmen und ca. 1 Sekunde lang gleichmäßig in den Mund blasen, bis sich der Brustkorb hebt. Zweimal beatmen, dann wieder 30 Kompressionen. Immer im Rhythmus <strong>30 : 2</strong> weitermachen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>AED (DEFIBRILLATOR) NUTZEN, SOBALD VERFÜGBAR:</strong> Gerät einschalten und den Sprachanweisungen folgen. Elektroden wie abgebildet auf den freien Brustkorb kleben. <strong>Bei der Analyse/Schockabgabe darf niemand die Person berühren!</strong> Zwischen den Analysen jeweils 2 Minuten mit Herzdruckmassage/Beatmung weitermachen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>WEITERMACHEN</strong> bis der Rettungsdienst übernimmt oder die Person Lebenszeichen zeigt (z. B. eigene Atmung, Husten, Bewegung) – dann in die Seitenlage bringen und die Atmung weiter beobachten.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button class="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        🔊 Taktgeber starten (110 BPM)
+                    </button>
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Reanimation</h1>
+                <p>Bei einem Herz-Kreislauf-Stillstand verliert die betroffene Person innerhalb weniger Sekunden das Bewusstsein und reagiert nicht mehr auf Ansprache oder Berührung. Fast zeitgleich setzt die Atmung aus oder wird unregelmäßig. Bei Erwachsenen ist die häufigste Ursache eine Verengung oder ein Verschluss der Herzkranzgefäße, also ein Herzinfarkt. Aber auch starke Blutungen, Stromunfälle oder schwere Vergiftungen können den Kreislauf so stark schwächen, dass das Herz stehen bleibt.</p>
+
+                <h3>Warum Tempo entscheidend ist</h3>
+                <p>Wird das Gehirn nur wenige Minuten nicht mit Sauerstoff versorgt, entstehen bleibende Schäden. Deshalb zählt jede Sekunde – und deshalb ist die Kombination aus Herzdruckmassage und Beatmung so wichtig: Die Massage hält den Kreislauf notdürftig aufrecht, die Beatmung versorgt das Blut mit Sauerstoff.</p>
+
+                <h3>Der Defibrillator (AED)</h3>
+                <p>Ein automatisierter externer Defibrillator führt per Sprachansage durch die Anwendung und erkennt selbstständig, ob ein Schock notwendig ist – als Laie kann man dabei nichts falsch machen. Je schneller ein AED bei einem Herz-Kreislauf-Stillstand eingesetzt wird, desto größer die Überlebenschance.</p>
+
+                <h3>Kinder und Säuglinge</h3>
+                <p>Bei ihnen läuft die Wiederbelebung etwas anders ab: Es wird zunächst mit fünf Beatmungen begonnen, erst danach folgt die Herzdruckmassage. Details dazu findest du im Baby/Kind-Bereich unter "Reanimation".</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ERSTICKEN / FREMDKÖRPER (ERWACHSENE) -->
+        <section id="screen-ersticken_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">🫁 NOTFALL: VERSCHLUCKT / ERSTICKUNGSGEFAHR</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ERKENNEN:</strong> Starker Husten, evtl. pfeifende Atemgeräusche, Schluckbeschwerden, bläuliche Gesichtsfarbe, Erstickungsangst.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>SOLANGE HUSTEN MÖGLICH IST:</strong> Die Person aktiv zum kräftigen Husten auffordern – das ist der wirksamste Weg, den Fremdkörper alleine zu lösen. Notruf 112 verständigen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>WIRD ES SCHLIMMER – RÜCKENSCHLÄGE:</strong> Oberkörper der Person weit nach vorne beugen lassen. Mit dem Handballen bis zu <strong>5 kräftige Schläge</strong> zwischen die Schulterblätter geben. Nach jedem Schlag prüfen, ob sich der Fremdkörper gelöst hat.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ALLERLETZTES MITTEL – OBERBAUCHKOMPRESSION:</strong> Hilft das nicht, von hinten an die Person herantreten, mit beiden Armen den Oberbauch umfassen. Eine Faust zwischen Nabel und Brustbeinende setzen, mit der anderen Hand umfassen und bis zu <strong>5-mal kräftig nach hinten-oben</strong> ziehen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>WEITER IM WECHSEL:</strong> Rückenschläge und Oberbauchkompression abwechselnd (je max. 5) fortsetzen, bis sich der Fremdkörper löst oder der Rettungsdienst eintrifft.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>WIRD DIE PERSON BEWUSSTLOS:</strong> Sofort auf den Boden legen und mit der <strong>Reanimation</strong> beginnen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Ersticken durch Fremdkörper</h1>
+                <p>Ob ein verschluckter Bissen in der Luftröhre oder in der Speiseröhre steckt, ist im ersten Moment oft nicht sicher zu erkennen – wichtig ist, dass schnell reagiert wird. Solange die betroffene Person noch atmen, sprechen oder husten kann, ist der eigene Hustenstoß die sicherste Methode, um den Fremdkörper wieder loszuwerden.</p>
+
+                <h3>Warum die Oberbauchkompression nur die letzte Option ist</h3>
+                <p>Rückenschläge und die Oberbauchkompression (auch als Heimlich-Handgriff bekannt) werden erst eingesetzt, wenn Husten allein nicht mehr hilft und sich die Situation verschlechtert – etwa wenn kein Atemstoß mehr erfolgt. Die kräftige, ruckartige Kompression des Oberbauchs kann Verletzungen verursachen, ist in dieser Notlage aber gerechtfertigt, weil akute Erstickungsgefahr besteht.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: INSEKTENSTICH IM MUND-RACHENRAUM (ERWACHSENE) -->
+        <section id="screen-insektenstich_mund_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">🐝 NOTFALL: INSEKTENSTICH IM MUND/RACHEN</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>SOFORT NOTRUF 112</strong> – ein Stich im Mund- oder Rachenraum kann sehr schnell gefährlich werden.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>BERUHIGEN:</strong> Betroffene reagieren oft panisch. Ruhig und bestimmt zusprechen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>KÜHLEN:</strong> Speiseeis oder Eiswürfel lutschen lassen, um die Schwellung im Rachen zu bremsen. Hals zusätzlich von außen mit einem Kühlpack oder kalten Umschlägen kühlen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>NOTFALLSET?</strong> Bei bekannter Allergie nach einem mitgeführten Adrenalin-Autoinjektor (Pen) fragen und bei der Anwendung helfen (senkrecht in den äußeren Oberschenkel drücken, 5–10 Sekunden halten).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>BEI ATEMSTILLSTAND:</strong> Sofort mit Beatmung/Reanimation beginnen und bis zum Eintreffen der Rettung weitermachen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Insektenstich im Mund-Rachenraum</h1>
+                <p>Gelangt im Sommer versehentlich ein Insekt, etwa eine Wespe, beim Essen oder Trinken in den Mund, kann ein Stich im empfindlichen Rachenraum schwerwiegende Folgen haben. Die Schleimhäute oder die Zunge schwellen durch das Insektengift an, die Atemwege verengen sich – es droht akute Erstickungsgefahr. Bei Allergikern kommt zusätzlich das Risiko eines allergischen Schocks hinzu.</p>
+
+                <h3>Typische Anzeichen</h3>
+                <p>Starker Schmerz an der Stichstelle, zunehmende Schwellung im Mund oder an der Zunge sowie wachsende Atemnot mit bläulicher Gesichtsfarbe sind Warnsignale, die sofortiges Handeln erfordern.</p>
+
+                <h3>Vorbeugen</h3>
+                <p>Beim Essen und Trinken im Freien in der warmen Jahreszeit aufmerksam bleiben und z. B. einen Strohhalm benutzen. Wer eine bekannte Insektengiftallergie hat, sollte nach ärztlicher Absprache ein Notfallset mit sich führen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ELEKTROUNFÄLLE (ERWACHSENE) -->
+        <section id="screen-elektrounfall_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #3498db;">⚡ NOTFALL: ELEKTROUNFALL</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Eigenschutz zuerst – nie selbst in den Stromkreis geraten!</p>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>STROMKREIS UNTERBRECHEN:</strong> Stecker ziehen oder Gerät ausschalten. Geht das nicht, die Hauptsicherung ausschalten. Die betroffene Person dabei nie direkt berühren!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>WENN DAS NICHT MÖGLICH IST:</strong> Person nur mit nichtleitenden Gegenständen (trockene Kleidung, Holzstiel, Decke) von der Stromquelle wegziehen. In feuchten Räumen besonders vorsichtig sein.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>NACH DER RETTUNG:</strong> Sofort Bewusstsein und Atmung prüfen. Notruf 112 verständigen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>FALLS NÖTIG:</strong> Sofort mit der Reanimation beginnen – ein AED ist bei Elektrounfällen besonders oft lebensrettend. Brandwunden erst nach den lebensrettenden Maßnahmen versorgen, Person warmhalten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>BEI HOCHSPANNUNG (z. B. Freileitung, Bahnstrom, Umspannwerk):</strong> Mindestens <strong>20 Meter Abstand</strong> halten – ein Lichtbogen kann überspringen! Sofort Notruf 112 mit dem Hinweis "Hochspannungsunfall" und genauer Ortsangabe. Die Rettung übernimmt ausschließlich die Feuerwehr/Fachpersonal.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Auch wenn sich die betroffene Person wieder gut fühlt: <strong>immer ärztlich abklären lassen</strong>, da Herzrhythmusstörungen erst zeitverzögert auftreten können.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Elektrounfälle</h1>
+                <p>Wie gefährlich ein Stromunfall ist, hängt von Stromstärke, Spannung und Einwirkdauer ab. Schon eine kurze Stromeinwirkung kann Atemnot, Herzjagen, ein Engegefühl in der Brust und Unruhe auslösen – meist klingen diese Beschwerden wieder ab. Bei stärkerer Durchströmung drohen dagegen Verbrennungen an Ein- und Austrittsstelle des Stroms sowie ernste Störungen der Herztätigkeit bis hin zum Herz-Kreislauf-Stillstand.</p>
+
+                <h3>Warum das Herz so gefährdet ist</h3>
+                <p>Weil das Herz seinen Rhythmus über eigene elektrische Impulse steuert, kann bereits eine kurze äußere Stromeinwirkung dieses System durcheinanderbringen – es kommt zum sogenannten Kammerflimmern, bei dem das Herz keine wirksame Pumpleistung mehr erbringt. Auch das Gehirn kann betroffen sein: Bewusstlosigkeit, Krämpfe und Atemstillstand sind mögliche Folgen.</p>
+
+                <h3>Vorbeugen</h3>
+                <p>Die meisten Stromunfälle entstehen durch leichtsinnigen Umgang mit Elektrogeräten, unsachgemäße Reparaturen oder das Missachten von Warnhinweisen. Elektrogeräte regelmäßig von einer Fachkraft prüfen zu lassen, senkt das Risiko deutlich.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: SCHOCK (ERWACHSENE) -->
+        <section id="screen-schock_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #34495e;">🆘 NOTFALL: SCHOCK</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>NOTRUF 112</strong> verständigen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>BETREUEN:</strong> Bei der Person bleiben, beruhigen, nicht allein lassen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>WARMHALTEN:</strong> Mit Rettungsdecke oder Decke zudecken – auch unter dem Körper, um Auskühlen am Boden zu verhindern.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>BEINE HOCHLAGERN</strong> (ca. 20 cm), das unterstützt den Kreislauf.<br>
+                    <strong>AUSNAHME:</strong> Bei Atemnot oder Beschwerden im Brust-/Herzbereich die Beine <strong>nicht</strong> hochlagern – stattdessen den Oberkörper leicht erhöht lagern.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Zustand und Atmung bis zum Eintreffen des Rettungsdienstes ständig weiter beobachten.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Schock</h1>
+                <p>Der Begriff "Schock" beschreibt allgemein eine schwere Störung des Kreislaufs, bei der die Körperzellen nicht mehr ausreichend mit Sauerstoff versorgt werden. Je länger dieser Zustand andauert, desto schneller verschlechtert sich das Befinden der betroffenen Person.</p>
+
+                <h3>Mögliche Ursachen</h3>
+                <p>Ein größerer Blutverlust – ob durch eine äußere Wunde oder eine innere Verletzung – kann ebenso zum Schock führen wie starker Flüssigkeitsverlust durch Erbrechen, Durchfall oder starkes Schwitzen. Auch plötzlicher Schreck, Angst oder Schmerz können über eine nervöse Fehlsteuerung der Blutgefäße einen sogenannten Kollaps auslösen. Vergiftungen und allergische Reaktionen zählen ebenfalls zu den möglichen Auslösern.</p>
+
+                <h3>Typische Anzeichen</h3>
+                <p>Betroffene wirken blass, unruhig und ängstlich, zittern, fühlen sich schwach und können sich oft nicht mehr auf den Beinen halten. Die Haut fühlt sich kalt und schweißig an, der Puls ist schwach und beschleunigt.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: SCHWERE ALLERGISCHE REAKTION (ERWACHSENE) -->
+        <section id="screen-allergie_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">🤧 NOTFALL: SCHWERE ALLERGISCHE REAKTION</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>NOTRUF 112</strong> – so schnell wie möglich.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>AUSLÖSER STOPPEN, wenn möglich:</strong> z. B. Insektenstachel entfernen und die Einstichstelle kühlen, oder die Zufuhr eines auslösenden Medikaments unterbrechen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>BERUHIGEN &amp; WARMHALTEN:</strong> Betroffene beruhigen, betreuen und mit einer Decke zudecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>BEI ATEMNOT:</strong> Enge Kleidung öffnen, Oberkörper erhöht lagern, für frische Luft sorgen (z. B. Fenster öffnen).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>NOTFALLSET?</strong> Nach einem mitgeführten Adrenalin-Autoinjektor fragen und bei der Anwendung helfen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Zustand ständig beobachten – bei Bewusstlosigkeit oder Atemstillstand sofort mit der <strong>Reanimation</strong> beginnen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Schwere allergische Reaktion</h1>
+                <p>Bei manchen Menschen lösen bestimmte Stoffe – etwa Insektengift, bestimmte Lebensmittel oder Medikamente – eine heftige allergische Reaktion des Körpers aus. Diese kann sich innerhalb von Sekunden entwickeln, manchmal aber auch zeitverzögert auftreten.</p>
+
+                <h3>Typische Anzeichen</h3>
+                <p>Oft beginnt es mit einem Kribbeln im Mund, an Zunge oder Lippen sowie Quaddeln und Juckreiz auf der Haut. Zunehmende Atemnot durch anschwellende Atemwege ist ein ernstes Warnzeichen. Im weiteren Verlauf können Erbrechen, Kreislaufkollaps und Bewusstlosigkeit hinzukommen.</p>
+
+                <h3>Warum das Notfallset so wichtig ist</h3>
+                <p>Wer eine bekannte schwere Allergie hat, führt häufig ein Notfallset mit einem Adrenalin-Autoinjektor bei sich. Diese Sets sind bewusst für Laien entwickelt und einfach in der Anwendung – die Verabreichung durch Ersthelfende kann im Ernstfall Leben retten.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ZAHNVERLETZUNG (ERWACHSENE) -->
+        <section id="screen-zahnverletzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #8e44ad;">🦷 NOTFALL: ZAHNVERLETZUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RICHTIG ANFASSEN:</strong> Einen ausgeschlagenen Zahn nur an der Zahnkrone (dem weißen, sichtbaren Teil) anfassen – niemals an der Wurzel, dort sitzen empfindliche Zellen, die für den Wiedereinsatz entscheidend sind.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ZAHN RICHTIG LAGERN:</strong> Am besten in einer Zahnrettungsbox (Apotheke) aufbewahren. Ersatzweise in kalter H-Milch. Den Zahn <strong>nicht</strong> trocken lagern, nicht abreiben und nicht desinfizieren.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>BLUTUNG STOPPEN:</strong> Auf ein sauberes Taschentuch oder eine sterile Kompresse beißen lassen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>SOFORT ZUM ZAHNARZT / ZUR KLINIK:</strong> Je schneller (idealerweise innerhalb von 30–60 Minuten) der Zahn wieder eingesetzt wird, desto größer die Chance, ihn zu erhalten. Zahnärztlichen Notdienst kontaktieren.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Auch ein nur <strong>abgebrochenes Zahnstück</strong> aufbewahren und mitbringen – oft kann es angeklebt werden. Ging der Vorfall mit einem Sturz auf den Kopf einher, zusätzlich auf Anzeichen einer <strong>Gehirnerschütterung</strong> achten.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Zahnverletzung</h1>
+                <p>Ausgeschlagene oder abgebrochene Zähne gehören zu den häufigsten Verletzungen bei Stürzen, im Sport oder bei einem Schlag ins Gesicht. Entscheidend für den Erhalt des Zahnes ist, wie schnell und wie schonend er behandelt wird.</p>
+
+                <h3>Warum die Lagerung so wichtig ist</h3>
+                <p>An der Zahnwurzel befinden sich feine Zellen des Zahnhalteapparats, die für ein erneutes Anwachsen nötig sind. Trocknet der Zahn aus oder wird die Wurzel berührt, sterben diese Zellen ab. Eine Zahnrettungsbox oder kalte H-Milch hat eine ähnliche Zusammensetzung wie das körpereigene Gewebe und hält die Zellen am Leben, bis der Zahn wieder eingesetzt werden kann.</p>
+
+                <h3>Auch bei losen oder verschobenen Zähnen handeln</h3>
+                <p>Nicht nur komplett ausgeschlagene, auch stark gelockerte oder verschobene Zähne gehören zeitnah in zahnärztliche Behandlung, damit sie wieder fest einheilen können.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: NASENBLUTEN (ERWACHSENE) -->
+        <section id="screen-nasenbluten_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">🩸 NOTFALL: NASENBLUTEN</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>HINSETZEN, KOPF LEICHT NACH VORNE:</strong> Niemals den Kopf in den Nacken legen – sonst läuft Blut in den Rachen und kann Übelkeit auslösen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>NASENFLÜGEL ZUDRÜCKEN:</strong> Den weichen Teil der Nase (unterhalb des Nasenbeins) für mindestens 5–10 Minuten fest zusammendrücken, dabei durch den Mund atmen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>KÜHLEN:</strong> Einen kühlen, feuchten Waschlappen oder ein Kühlpack in den Nacken legen – das verengt reflektorisch die Blutgefäße.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Nach 10 Minuten prüfen, ob die Blutung steht. Falls nicht, den Druck erneut für 10 Minuten anwenden.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ARZT AUFSUCHEN</strong>, wenn die Blutung nach 20–30 Minuten nicht steht, sehr stark ist, nach einer Kopfverletzung auftritt oder häufiger vorkommt (z. B. unter Blutverdünnern).
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Nasenbluten</h1>
+                <p>Nasenbluten entsteht meist durch kleine, oberflächliche Gefäße in der Nasenscheidewand, die z. B. durch trockene Heizungsluft, kräftiges Schnäuzen, Nasenbohren oder eine leichte Verletzung aufreißen. Auch Bluthochdruck oder blutverdünnende Medikamente begünstigen es.</p>
+
+                <h3>Warum der Kopf nach vorne gehört</h3>
+                <p>Wird der Kopf in den Nacken gelegt, läuft das Blut ungehindert den Rachen hinunter, gelangt in den Magen und kann dort Übelkeit und Erbrechen auslösen. Mit nach vorne geneigtem Kopf fließt das Blut sichtbar nach außen ab und der Druck auf die Nasenflügel kann die Blutung gezielt stoppen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ZECKENSTICH (ERWACHSENE) -->
+        <section id="screen-zeckenstich_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #16a085;">🕷️ NOTFALL: ZECKENSTICH</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ZECKE ENTFERNEN:</strong> Mit einer Zeckenzange oder -karte möglichst hautnah am Kopf der Zecke fassen und gerade herausziehen. Nicht drehen und den Körper der Zecke nicht quetschen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STICHSTELLE DESINFIZIEREN</strong> und anschließend gründlich Hände waschen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>DATUM NOTIEREN:</strong> Tag des Stichs und Stelle merken oder fotografieren – das erleichtert später die Einordnung von Hautveränderungen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>BEOBACHTEN:</strong> In den folgenden Tagen und Wochen auf eine sich ausbreitende, ringförmige Rötung um die Einstichstelle sowie grippeähnliche Beschwerden achten.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ARZT AUFSUCHEN</strong> bei Wanderröte, Fieber, Kopf- oder Gliederschmerzen, oder wenn Teile der Zecke in der Haut stecken geblieben sind.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Zeckenstich</h1>
+                <p>Zecken lauern in Gräsern, Sträuchern und Waldrändern und können beim Blutsaugen Krankheitserreger übertragen – vor allem Borreliose-Bakterien und in bestimmten Risikogebieten auch das FSME-Virus.</p>
+
+                <h3>Warum schnelles, richtiges Entfernen zählt</h3>
+                <p>Je länger eine Zecke saugt, desto höher das Übertragungsrisiko für Borreliose. Hausmittel wie Öl, Klebstoff oder Nagellack sind ungeeignet und teils sogar riskant, weil die gereizte Zecke dabei vermehrt Speichel und Erreger abgeben kann. Eine spitze Zeckenzange oder -karte ist die zuverlässigste Methode.</p>
+
+                <h3>FSME-Risikogebiete</h3>
+                <p>In bestimmten Regionen (u. a. Süddeutschland) besteht ein erhöhtes FSME-Risiko, gegen das eine Impfung möglich ist. Wer sich häufig im Freien in solchen Gebieten aufhält, kann sich dazu ärztlich beraten lassen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: WUNDEN & WUNDVERSORGUNG (ERWACHSENE) -->
+        <section id="screen-wundversorgung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #2980b9;">🩹 NOTFALL: WUNDVERSORGUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>HÄNDE REINIGEN</strong>, wenn möglich, bevor die Wunde versorgt wird.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>BLUTUNG STOPPEN:</strong> Bei leichtem Bluten mit einer sterilen Kompresse oder einem sauberen Tuch leichten Druck ausüben.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>WUNDE REINIGEN:</strong> Mit klarem Leitungswasser ausspülen, um grobe Verunreinigungen wie Sand oder Splitter zu entfernen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>KEIMFREI ABDECKEN:</strong> Mit einem sterilen Wundpflaster oder einer Kompresse und Verband abdecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>TETANUSSCHUTZ PRÜFEN:</strong> Bei tiefen, verschmutzten Wunden (z. B. durch Rost, Erde, Tierbiss) den eigenen Impfschutz überprüfen und im Zweifel auffrischen lassen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>ARZT AUFSUCHEN</strong> bei tiefen, stark klaffenden oder verschmutzten Wunden, Wunden im Gesicht, oder wenn sich eine Wunde entzündet (Rötung, Schwellung, Wärme, Eiter).
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Wundversorgung</h1>
+                <p>Die meisten kleineren Schnitt-, Schürf- oder Platzwunden im Alltag lassen sich gut selbst versorgen. Wichtig ist vor allem, die Wunde sauber zu halten, damit sie ungestört heilen kann und sich keine Keime ansiedeln.</p>
+
+                <h3>Wann ärztliche Hilfe nötig ist</h3>
+                <p>Klaffende Wunden, die sich nicht von selbst schließen, Wunden über Gelenken, im Gesicht oder an Händen sowie stark verschmutzte oder tiefe Wunden sollten fachärztlich beurteilt und gegebenenfalls genäht oder geklammert werden.</p>
+
+                <h3>Anzeichen einer Wundinfektion</h3>
+                <p>Zunehmende Rötung, Schwellung, Überwärmung, pochender Schmerz oder Eiteraustritt in den Tagen nach der Verletzung sind Warnzeichen, bei denen zeitnah ein Arzt aufgesucht werden sollte.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: FREMDKÖRPER IM AUGE (ERWACHSENE) -->
+        <section id="screen-fremdkoerper_auge_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #2980b9;">👁️ NOTFALL: FREMDKÖRPER IM AUGE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>NICHT REIBEN:</strong> Das Auge keinesfalls reiben – das kann den Fremdkörper tiefer eindrücken oder die Hornhaut verletzen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>AUSSPÜLEN:</strong> Mit sauberem, lauwarmem Wasser oder steriler Kochsalzlösung vorsichtig von der Nasenseite nach außen spülen, dabei das Lid mit den Fingern offen halten.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>UNTER DEM LID SCHAUEN:</strong> Das Oberlid vorsichtig über das Unterlid ziehen – das löst oft kleine Partikel, die unter dem Lid stecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    Lässt sich der Fremdkörper nicht lösen: <strong>beide Augen locker abdecken</strong> (das reduziert unwillkürliche Augenbewegungen) und einen Augenarzt oder eine Notaufnahme aufsuchen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>BEI CHEMIKALIEN IM AUGE ODER SPITZEN, TIEF SITZENDEN FREMDKÖRPERN:</strong> Sofort mindestens 10–15 Minuten mit viel klarem Wasser spülen. Fremdkörper NICHT selbst entfernen und Notruf 112 bzw. eine Augenklinik kontaktieren.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Fremdkörper im Auge</h1>
+                <p>Staubkörner, Wimpern oder kleine Splitter geraten im Alltag schnell ins Auge und verursachen sofort ein starkes Fremdkörpergefühl, Tränenfluss und Rötung – die Hornhaut ist eine der empfindlichsten Stellen des Körpers.</p>
+
+                <h3>Warum vorsichtiges Spülen so wichtig ist</h3>
+                <p>Sanftes Ausspülen entfernt lose Partikel meist zuverlässig, ohne die empfindliche Augenoberfläche zu verletzen. Reiben dagegen kann kleine Kratzer auf der Hornhaut verursachen oder den Fremdkörper noch tiefer eindrücken.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: TIERBISSVERLETZUNG (ERWACHSENE) -->
+        <section id="screen-tierbiss_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #935116;">🐕 NOTFALL: TIERBISSVERLETZUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>GRÜNDLICH AUSSPÜLEN:</strong> Die Wunde sofort mehrere Minuten mit klarem Wasser und, wenn vorhanden, Seife ausspülen – Bisswunden sind stark keimbelastet.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>BLUTUNG STILLEN:</strong> Bei Bedarf mit einer sterilen Kompresse leichten Druck ausüben.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>LOCKER ABDECKEN</strong> mit einem sterilen Verband, ohne die Wunde fest zu verschließen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>TIER MERKEN:</strong> Wenn möglich Art des Tieres, Halter und Impfstatus notieren – bei Wildtieren besteht ein Tollwutrisiko, das dem Arzt mitgeteilt werden sollte.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ARZT AUFSUCHEN:</strong> Auch kleine Bisswunden sollten immer ärztlich beurteilt werden – hohes Infektionsrisiko, ggf. ist eine Auffrischung des Tetanusschutzes nötig.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Tierbissverletzung</h1>
+                <p>Ob Hunde-, Katzen- oder in seltenen Fällen Wildtierbiss: Die Zähne von Tieren tragen viele Bakterien in tiefere Gewebeschichten, weshalb Bisswunden ein deutlich höheres Infektionsrisiko haben als vergleichbare Schnittwunden.</p>
+
+                <h3>Warum Wunden nicht sofort verschlossen werden</h3>
+                <p>Ein zu früh und zu fest verschlossener Biss kann Keime im Gewebe einschließen. Ärztinnen und Ärzte entscheiden je nach Wunde, ob genäht wird oder die Wunde offen unter Beobachtung abheilen soll.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: PRELLUNG, ZERRUNG & VERSTAUCHUNG (ERWACHSENE) -->
+        <section id="screen-gelenkverletzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #d35400;">🦵 NOTFALL: PRELLUNG, ZERRUNG & VERSTAUCHUNG</h1>
+                <p style="text-align:center; color:#f1c40f; font-weight:bold; margin-bottom:15px;">Merkhilfe: die PECH-Regel</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>PAUSE:</strong> Belastung sofort stoppen, das betroffene Gelenk oder Körperteil ruhigstellen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>EIS:</strong> Für ca. 15–20 Minuten kühlen – nie direkt auf die Haut, immer in ein Tuch gewickelt.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COMPRESSION:</strong> Einen elastischen Verband anlegen, um die Schwellung einzudämmen – nicht zu fest wickeln.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>HOCHLAGERN:</strong> Das betroffene Körperteil über Herzhöhe lagern, das lindert Schwellung und Schmerz.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ARZT AUFSUCHEN</strong> bei starker Schwellung, sichtbarer Fehlstellung, wenn das Gelenk nicht belastet werden kann, oder wenn sich die Beschwerden nach 1–2 Tagen nicht bessern – ein Bruch muss ausgeschlossen werden.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Prellung, Zerrung & Verstauchung</h1>
+                <p>Sport- und Alltagsunfälle wie Umknicken, Stürze oder Stöße führen häufig zu Verletzungen an Muskeln, Bändern und Gelenken. Die PECH-Regel (Pause, Eis, Compression, Hochlagern) hat sich als einfach zu merkende Erstmaßnahme bewährt.</p>
+
+                <h3>Prellung, Zerrung, Verstauchung – der Unterschied</h3>
+                <p>Bei einer <strong>Prellung</strong> trifft eine stumpfe Gewalt direkt auf das Gewebe. Eine <strong>Zerrung</strong> entsteht, wenn ein Muskel über sein normales Maß hinaus gedehnt wird. Bei einer <strong>Verstauchung</strong> wird ein Gelenk kurzzeitig über seinen normalen Bewegungsspielraum hinausgedrückt, wodurch Bänder überdehnt oder angerissen werden.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: SONNENBRAND (ERWACHSENE) -->
+        <section id="screen-sonnenbrand_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">☀️ NOTFALL: SONNENBRAND</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>AUS DER SONNE:</strong> Betroffene Person sofort in den Schatten oder einen kühlen Raum bringen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>KÜHLEN:</strong> Die betroffenen Hautstellen mit kühlen, feuchten Umschlägen oder einer kühlen (nicht eiskalten) Dusche behandeln.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>VIEL TRINKEN:</strong> Ausreichend Wasser trinken, um den Flüssigkeitsverlust der Haut auszugleichen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>PFLEGEN:</strong> Nach dem Kühlen eine feuchtigkeitsspendende, kühlende Lotion (z. B. mit Aloe Vera) auftragen – keine fetthaltigen Cremes auf frisch verbrannter Haut.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ARZT AUFSUCHEN</strong> bei großflächiger Blasenbildung, Fieber, Schüttelfrost, Übelkeit oder starkem Krankheitsgefühl – dann zusätzlich an Sonnenstich/Hitzschlag denken.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Sonnenbrand</h1>
+                <p>Ein Sonnenbrand ist im Grunde eine Verbrennung der Haut durch UV-Strahlung. Je nach Ausmaß reicht das von leichter Rötung bis zu schmerzhafter Blasenbildung.</p>
+
+                <h3>Vorbeugen ist der beste Schutz</h3>
+                <p>Ausreichend Sonnencreme, schützende Kleidung, Kopfbedeckung und das Meiden der intensiven Mittagssonne senken das Risiko deutlich. Wiederholte, starke Sonnenbrände erhöhen langfristig das Hautkrebsrisiko.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: KOPFVERLETZUNG & GEHIRNERSCHÜTTERUNG (ERWACHSENE) -->
+        <section id="screen-kopfverletzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #34495e;">🤕 NOTFALL: KOPFVERLETZUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RUHIGSTELLEN:</strong> Betroffene Person hinsetzen oder hinlegen lassen und weitere Anstrengung vermeiden.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>KÜHLEN:</strong> Bei einer Beule oder Schwellung ein Kühlpack, in ein Tuch gewickelt, auflegen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>MINDESTENS 24 STUNDEN BEOBACHTEN:</strong> Auf zunehmende Kopfschmerzen, wiederholtes Erbrechen, Schläfrigkeit, Verwirrtheit, Sehstörungen, unterschiedlich große Pupillen oder Blut-/Flüssigkeitsaustritt aus Ohr oder Nase achten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>NOTRUF 112</strong> bei Bewusstlosigkeit (auch kurzzeitig), Krampfanfall, starkem oder zunehmendem Kopfschmerz, wiederholtem Erbrechen oder einer offenen Kopfverletzung.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Auch bei zunächst unauffälligem Verlauf: Nach einem harten Schlag auf den Kopf sicherheitshalber immer ärztlich abklären lassen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Kopfverletzung & Gehirnerschütterung</h1>
+                <p>Ein Schlag oder Sturz auf den Kopf kann das Gehirn kurzzeitig in seiner Funktion stören – eine Gehirnerschütterung. Typisch sind kurzzeitige Benommenheit, Übelkeit oder Kopfschmerzen, die sich meist innerhalb weniger Tage bessern.</p>
+
+                <h3>Warum die Beobachtungszeit wichtig ist</h3>
+                <p>Manche Blutungen im Kopf entwickeln sich erst zeitversetzt und machen sich erst Stunden nach dem Unfall bemerkbar. Deshalb sollte eine betroffene Person nach einem harten Kopftreffer für mindestens 24 Stunden beobachtet und bei Verschlechterung sofort ärztliche Hilfe gesucht werden.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: STARKE BLUTUNG (ERWACHSENE) -->
+        <section id="screen-starke_blutung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">💥 NOTFALL: STARKE BLUTUNG</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>SOFORT DRUCK AUSÜBEN:</strong> Mit der Hand (wenn möglich mit Handschuhen oder einem Tuch dazwischen) kräftig direkt auf die Wunde drücken.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>DRUCKVERBAND ANLEGEN:</strong> Sterile Wundauflage auflegen, mit einer Mullbinde und einem festen Druckpolster (z. B. zusammengerolltes Verbandpäckchen) fixieren – nicht abschnüren.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>HOCHLAGERN:</strong> Die blutende Körperstelle, wenn möglich, über Herzhöhe lagern.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>NOTRUF 112</strong> sofort bei spritzender oder nicht zu stillender Blutung.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    Lässt sich eine Blutung an Arm oder Bein trotz Druckverband nicht stillen, als allerletztes Mittel körpernah der Wunde mit der Hand oder einem Abbindesystem (Tourniquet) abbinden – nur bei lebensbedrohlicher Blutung.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Auf <strong>Schockanzeichen</strong> achten (Blässe, Kaltschweißigkeit, Unruhe) und die Person entsprechend betreuen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Starke Blutung</h1>
+                <p>Ein größerer Blutverlust kann innerhalb weniger Minuten lebensbedrohlich werden, weil der Kreislauf zusammenbricht. Direkter, kräftiger Druck auf die Wunde ist die wirksamste und schnellste Erstmaßnahme, um die Blutung zu verlangsamen oder zu stoppen.</p>
+
+                <h3>Warum Druck vor allem anderen kommt</h3>
+                <p>Ein Druckverband presst die verletzten Gefäße zusammen und unterstützt die körpereigene Blutgerinnung. Ein Tourniquet wird nur in absoluten Ausnahmefällen eingesetzt, weil es die Durchblutung des gesamten Körperteils unterbindet.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: AMPUTATIONSVERLETZUNG (ERWACHSENE) -->
+        <section id="screen-amputationsverletzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #922b21;">✂️ NOTFALL: AMPUTATIONSVERLETZUNG</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>BLUTUNG STOPPEN:</strong> Den Stumpf mit sterilen Kompressen abdecken und kräftigen Druck ausüben, bei Bedarf einen Druckverband anlegen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>NOTRUF 112</strong> sofort verständigen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>AMPUTAT SICHERN:</strong> Das abgetrennte Körperteil in eine sterile oder saubere Kompresse einwickeln, in einen wasserdichten Plastikbeutel legen und diesen Beutel dann in ein zweites Gefäß mit Eiswasser stellen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    Das Amputat <strong>niemals</strong> direkt auf Eis oder ins Wasser legen – nur indirekt kühlen (Beutel-im-Beutel-Prinzip).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>AMPUTAT MITGEBEN:</strong> Das gekühlte Amputat dem Rettungsdienst übergeben – eine Replantation ist oft noch Stunden später möglich.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Die verletzte Person betreuen, auf Schockzeichen achten, warmhalten und beruhigen, bis der Rettungsdienst eintrifft.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Amputationsverletzung</h1>
+                <p>Bei Unfällen mit Maschinen, Werkzeugen oder im Straßenverkehr können Finger, Zehen oder größere Körperteile abgetrennt werden. Die Erstversorgung entscheidet mit darüber, ob das Teil später wieder angenäht werden kann.</p>
+
+                <h3>Warum indirekte Kühlung entscheidend ist</h3>
+                <p>Direkter Kontakt mit Eis oder Wasser schädigt das Gewebe des Amputats zusätzlich (Erfrierung, Aufquellen). Wird es dagegen trocken, steril verpackt und nur indirekt über ein zweites, eisgekühltes Gefäß heruntergekühlt, bleibt das Gewebe deutlich länger für eine Replantation geeignet.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: BAUCH- & BRUSTKORBVERLETZUNG (ERWACHSENE) -->
+        <section id="screen-bauch_brustverletzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #7d3c98;">🩻 NOTFALL: BAUCH- & BRUSTKORBVERLETZUNG</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>NOTRUF 112</strong> sofort verständigen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>LAGERUNG:</strong> Bei einer Bauchverletzung mit angewinkelten Beinen lagern, das entspannt die Bauchdecke. Bei Atemnot durch eine Brustkorbverletzung den Oberkörper hoch lagern.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>OFFENE BAUCHWUNDE:</strong> Ausgetretene Organe NIEMALS zurückschieben – locker mit sterilen, feuchten Kompressen abdecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>EINGESPIESSTE GEGENSTÄNDE:</strong> Niemals herausziehen – er kann eine Blutung verhindern. Nur ringförmig mit Verbandmaterial umpolstern und fixieren.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Bei einer offenen Brustkorbverletzung mit hörbarem, saugendem Geräusch: Wunde locker mit einem an drei Seiten abgeklebten, luftdichten Material abdecken, damit Luft entweichen, aber nicht neu eindringen kann.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Atmung und Bewusstsein ständig beobachten. Bei Bewusstlosigkeit ohne normale Atmung sofort mit der Reanimation beginnen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Bauch- & Brustkorbverletzung</h1>
+                <p>Stumpfe oder offene Verletzungen von Bauch und Brustkorb – etwa durch Stürze, Verkehrsunfälle oder Stichverletzungen – können innere Organe, große Gefäße oder die Lunge betreffen und sind grundsätzlich als lebensbedrohlich einzustufen.</p>
+
+                <h3>Warum eingespießte Gegenstände nicht entfernt werden</h3>
+                <p>Ein steckender Gegenstand kann verletzte Gefäße mechanisch abdichten. Wird er entfernt, kann eine massive, nicht mehr kontrollierbare Blutung einsetzen. Deshalb wird er nur ringförmig gepolstert und für den Transport fixiert.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: KNOCHENBRUCH (ERWACHSENE) -->
+        <section id="screen-knochenbruch_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #34495e;">🦴 NOTFALL: KNOCHENBRUCH</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RUHIGSTELLEN:</strong> Das betroffene Körperteil nicht mehr bewegen, die verletzte Person zur Bewegungslosigkeit anhalten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>NICHT SELBST RICHTEN:</strong> Eine Fehlstellung niemals selbst geraderücken – nur so lagern oder stützen, wie es am wenigsten schmerzt.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>POLSTERN & KÜHLEN:</strong> Die Bruchstelle vorsichtig mit weichem Material polstern und, wenn möglich, ohne Druck kühlen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>NOTRUF 112</strong>, besonders bei Verdacht auf Becken- oder Wirbelsäulenbruch, offenen Brüchen oder starken Schmerzen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>VERDACHT AUF WIRBELSÄULENBRUCH</strong> (z. B. nach Sturz aus großer Höhe, Kopfsprung, Verkehrsunfall): Person auf keinen Fall unnötig bewegen oder aufsetzen – Kopf und Wirbelsäule in der vorgefundenen Position stabilisieren, bis professionelle Hilfe eintrifft.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>OFFENER BRUCH</strong> (Knochen sichtbar): Wunde locker und steril abdecken, ohne Druck auf den Knochen auszuüben, und keinesfalls versuchen, ihn zu reponieren.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Knochenbruch</h1>
+                <p>Typische Anzeichen für einen Bruch sind Schwellung, sichtbare Fehlstellung, ungewöhnliche Beweglichkeit an einer Stelle, an der kein Gelenk ist, sowie starker, punktgenauer Schmerz. Auch Rippen-, Becken- und Wirbelsäulenbrüche zählen dazu, sind aber besonders vorsichtig zu behandeln.</p>
+
+                <h3>Warum bei Verdacht auf Wirbelsäulenbruch besondere Vorsicht gilt</h3>
+                <p>Eine unnötige Bewegung der Wirbelsäule kann im schlimmsten Fall das Rückenmark schädigen und zu einer bleibenden Lähmung führen. Deshalb wird die betroffene Person möglichst in der vorgefundenen Lage stabilisiert und der Bewegungsspielraum minimiert, bis geschultes Rettungspersonal übernimmt.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: HITZSCHLAG & SONNENSTICH (ERWACHSENE) -->
+        <section id="screen-hitzschlag_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #e74c3c;">🥵 NOTFALL: HITZSCHLAG & SONNENSTICH</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ERKENNEN:</strong> Sonnenstich – hochroter, heißer Kopf, Nackensteifigkeit, Kopfschmerzen, Übelkeit nach Sonneneinstrahlung auf den Kopf. Hitzschlag – sehr hohe Körpertemperatur, heiße Haut, Verwirrtheit bis Bewusstlosigkeit: lebensbedrohlich!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>AUS DER HITZE:</strong> Sofort in einen kühlen, schattigen oder klimatisierten Bereich bringen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>KÜHLEN:</strong> Kleidung öffnen/lockern, mit lauwarmem Wasser besprühen oder feuchte Tücher auflegen – besonders Nacken, Achseln und Leisten kühlen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>LAGERUNG:</strong> Bei Sonnenstich Oberkörper und Kopf leicht erhöht lagern. Bei Bewusstseinseintrübung: stabile Seitenlage.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Nur bei vollem Bewusstsein in kleinen Schlucken Wasser anbieten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>NOTRUF 112</strong> bei Hitzschlag (sehr hohe Temperatur, Bewusstseinsstörung) sofort verständigen – unbehandelt lebensgefährlich!
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Hitzschlag & Sonnenstich</h1>
+                <p>Ein Sonnenstich entsteht durch direkte, längere Sonneneinstrahlung auf den unbedeckten Kopf und reizt die Hirnhäute – die Körperkerntemperatur bleibt dabei meist normal. Ein Hitzschlag dagegen ist eine Überhitzung des ganzen Körpers, bei der die körpereigene Wärmeregulation versagt, und stellt einen akuten Notfall dar.</p>
+
+                <h3>Besonders gefährdete Gruppen</h3>
+                <p>Kleinkinder, ältere Menschen und Personen, die bei großer Hitze körperlich aktiv sind, haben ein erhöhtes Risiko. Ausreichend trinken, Kopfbedeckung und das Meiden praller Mittagssonne beugen wirksam vor.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: UNTERKÜHLUNG & ERFRIERUNG (ERWACHSENE) -->
+        <section id="screen-unterkuehlung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #2980b9;">🥶 NOTFALL: UNTERKÜHLUNG & ERFRIERUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>AUS DER KÄLTE:</strong> Person aus Kälte und Nässe bringen, nasse Kleidung durch trockene ersetzen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>LANGSAM WÄRMEN:</strong> Mit Decken (auch Rettungsdecke, goldene Seite nach innen) einhüllen. Nur bei vollem Bewusstsein warme, gezuckerte Getränke anbieten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>KEIN ALKOHOL, KEINE DIREKTE HITZE:</strong> Keine heiße Dusche und kein Heizkissen bei starker Unterkühlung – das kann einen gefährlichen Kreislaufschock auslösen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>SCHONEND BEWEGEN:</strong> Bei starker Unterkühlung die Person so wenig und so vorsichtig wie möglich bewegen, um Herzrhythmusstörungen zu vermeiden.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ERFRORENE KÖRPERTEILE:</strong> Nicht reiben, langsam und schonend erwärmen (z. B. an der eigenen Körperwärme), nicht mit heißem Wasser übergießen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>NOTRUF 112</strong> bei starker Unterkühlung (Verwirrtheit, Muskelsteifheit, Bewusstseinstrübung) oder ausgedehnten Erfrierungen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Unterkühlung & Erfrierung</h1>
+                <p>Sinkt die Körperkerntemperatur unter 35 °C, spricht man von Unterkühlung. Zunächst zittert der Körper, um Wärme zu erzeugen, später lässt dieser Schutzmechanismus nach, Bewegungen werden unkoordiniert und das Bewusstsein trübt sich ein.</p>
+
+                <h3>Der "Bergungstod" – warum vorsichtiges Bewegen wichtig ist</h3>
+                <p>Bei starker Unterkühlung kann kaltes, saures Blut aus den Extremitäten bei ruckartiger Bewegung oder plötzlicher Erwärmung Richtung Herz strömen und dort gefährliche Herzrhythmusstörungen auslösen. Deshalb wird stark unterkühlten Personen so schonend wie möglich geholfen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERBRENNUNG & VERBRÜHUNG (ERWACHSENE) -->
+        <section id="screen-verbrennung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #e67e22;">🔥 NOTFALL: VERBRENNUNG & VERBRÜHUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>URSACHE STOPPEN:</strong> Flammen löschen, aus der Hitzequelle bringen, heiße oder durchnässte Kleidung vorsichtig entfernen – außer sie klebt an der Haut.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>KÜHLEN:</strong> Die betroffene Stelle sofort 10–20 Minuten mit handwarmem/kühlem (nicht eiskaltem) Wasser kühlen – keine Eiswürfel direkt auf die Haut.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>STERIL ABDECKEN:</strong> Nach dem Kühlen locker mit einem sterilen, keimfreien Verbandtuch abdecken.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>BLASEN NICHT ÖFFNEN:</strong> Brandblasen keinesfalls selbst aufstechen – Infektionsgefahr.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> bei großflächigen Verbrennungen (größer als die Handfläche der betroffenen Person), Verbrennungen im Gesicht, an Händen, Gelenken oder Genitalien – bei Kindern und älteren Menschen grundsätzlich großzügig Hilfe holen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Bei großflächiger Verbrennung nicht mehr großflächig kühlen (Unterkühlungsgefahr) – stattdessen warmhalten und auf den Rettungsdienst warten.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Verbrennung & Verbrühung</h1>
+                <p>Verbrennungen entstehen durch Hitze, Feuer oder heiße Gegenstände, Verbrühungen durch heiße Flüssigkeiten oder Dampf. Beide werden nach Tiefe eingeteilt: von der oberflächlichen Rötung (Grad 1) über schmerzhafte Blasen (Grad 2) bis zur tiefen, oft weniger schmerzhaften Zerstörung aller Hautschichten (Grad 3).</p>
+
+                <h3>Warum Kühlen zeitlich begrenzt sinnvoll ist</h3>
+                <p>Kühlung lindert Schmerzen und begrenzt das Nachbrennen in tiefere Gewebeschichten. Bei großflächigen Verbrennungen überwiegt jedoch ab einem gewissen Punkt die Gefahr der Unterkühlung des gesamten Körpers – hier zählt der schnelle Transport in eine Klinik mehr als weiteres Kühlen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERGIFTUNG (ERWACHSENE) -->
+        <section id="screen-vergiftung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #6c3483;">🧪 NOTFALL: VERGIFTUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RUHE BEWAHREN & URSACHE SICHERN:</strong> Wenn möglich Verpackung, Reste des Stoffes oder Erbrochenes für die spätere Diagnose aufbewahren.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>GIFTNOTRUF KONTAKTIEREN</strong> und um eine Handlungsempfehlung bitten. Die Nummer der zuständigen Giftnotrufzentrale lässt sich auch über den Notruf 112 erfragen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>NICHTS OHNE RÜCKSPRACHE TUN:</strong> Kein Erbrechen auslösen und keine Milch oder Kohle geben, ohne dass dies ausdrücklich empfohlen wurde – bei Verätzungen kann Erbrechen zusätzlichen Schaden anrichten.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>BEI GIFTIGEN DÄMPFEN/GASEN:</strong> Person sofort an die frische Luft bringen, eigenen Schutz beachten – nicht selbst in einen verrauchten oder vergasten Raum gehen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> bei Bewusstseinstrübung, Atemnot, Krampfanfällen oder wenn große Mengen bzw. unklare Substanzen aufgenommen wurden.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Atmung und Bewusstsein beobachten, bei Bewusstlosigkeit mit normaler Atmung in die stabile Seitenlage bringen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Vergiftung</h1>
+                <p>Bei Erwachsenen entstehen Vergiftungen häufig durch verwechselte oder überdosierte Medikamente, Alkohol, Haushaltschemikalien oder das Einatmen giftiger Gase wie Kohlenmonoxid. Die Symptome reichen von Übelkeit über Verwirrtheit bis zur Bewusstlosigkeit.</p>
+
+                <h3>Warum der Giftnotruf so wichtig ist</h3>
+                <p>Giftnotrufzentralen kennen die Wirkung tausender Substanzen und können anhand von Menge, Zeitpunkt und Art des Stoffes eine gezielte Empfehlung geben – oft lässt sich so unnötige Panik vermeiden oder gezielt die richtige Maßnahme einleiten.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERÄTZUNG (ERWACHSENE) -->
+        <section id="screen-veraetzung_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #7f8c8d;">⚗️ NOTFALL: VERÄTZUNG (HAUT & AUGE)</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>KONTAKT BEENDEN:</strong> Kontaminierte Kleidung sofort entfernen – eigenen Hautkontakt mit der Chemikalie dabei vermeiden, ggf. Handschuhe nutzen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>LANGE UND VIEL SPÜLEN:</strong> Betroffene Haut- oder Augenpartie sofort mindestens 10–15 Minuten mit viel klarem, lauwarmem Wasser spülen. Am Auge von der Nasenseite nach außen spülen, Lider dabei offen halten.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>NICHT NEUTRALISIEREN:</strong> Niemals versuchen, Säuren oder Laugen mit Gegenmitteln zu neutralisieren – die entstehende Wärme kann die Verletzung verschlimmern.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>STERIL ABDECKEN</strong> nach dem Spülen locker mit einer sauberen, keimfreien Auflage.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> bei großflächigen Verätzungen, Verätzungen im Gesicht/Auge oder wenn die Chemikalie verschluckt wurde. Verpackung oder Sicherheitsdatenblatt für die Rettung bereithalten.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Verätzung</h1>
+                <p>Säuren und Laugen – etwa in Reinigungsmitteln, Batteriesäure oder Industriechemikalien – zerstören bei Hautkontakt Gewebeschichten und können bei Augenkontakt bleibende Schäden verursachen.</p>
+
+                <h3>Warum langes Spülen so entscheidend ist</h3>
+                <p>Nur ausreichend langes Spülen verdünnt und entfernt die Chemikalie vollständig von der Haut oder aus dem Auge. Wird zu früh abgebrochen, wirkt der Stoff weiter und die Schädigung schreitet fort.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: HERZINFARKT (ERWACHSENE) -->
+        <section id="screen-herzinfarkt_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #c0392b;">❤️‍🩹 NOTFALL: HERZINFARKT</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ERKENNEN:</strong> Plötzlicher, starker, oft drückender oder brennender Schmerz hinter dem Brustbein, ausstrahlend in Arm, Schulter, Rücken, Hals oder Kiefer – oft begleitet von Angst, Atemnot, Kaltschweißigkeit oder Übelkeit. Bei Frauen können die Anzeichen untypischer ausfallen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>NOTRUF 112 SOFORT</strong> verständigen – bei jedem Verdacht, auch wenn die Symptome zwischenzeitlich nachlassen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>LAGERUNG:</strong> Betroffene Person beruhigen und mit erhöhtem Oberkörper bequem hinsetzen oder halb sitzend lagern.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ENGE KLEIDUNG ÖFFNEN</strong> (Kragen, Krawatte, Gürtel), für frische Luft sorgen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Bei bekannter Herzerkrankung: Falls vorhanden und ärztlich verordnet, bei der Einnahme von Nitro-Spray oder Medikamenten unterstützen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Zustand ständig beobachten – bei Bewusstlosigkeit und Atemstillstand sofort mit der <strong>Reanimation</strong> beginnen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Herzinfarkt</h1>
+                <p>Ein Herzinfarkt entsteht meist, wenn ein Herzkranzgefäß durch ein Blutgerinnsel plötzlich verschlossen wird und ein Teil des Herzmuskels nicht mehr durchblutet wird. Ohne Behandlung stirbt dieses Gewebe innerhalb kurzer Zeit ab.</p>
+
+                <h3>Warum jede Minute zählt</h3>
+                <p>Je schneller die verschlossene Ader in der Klinik wieder eröffnet wird, desto mehr Herzmuskelgewebe bleibt erhalten. Ein Herzinfarkt ist zudem eine der häufigsten Ursachen für einen plötzlichen Herz-Kreislauf-Stillstand, weshalb Betroffene bis zum Eintreffen der Rettung engmaschig beobachtet werden müssen.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: SCHLAGANFALL (ERWACHSENE) -->
+        <section id="screen-schlaganfall_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #8e44ad;">🧠 NOTFALL: SCHLAGANFALL</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>FAST-TEST:</strong> <em>Face</em> – lächeln lassen: hängt ein Mundwinkel? <em>Arms</em> – beide Arme gleichzeitig heben lassen: sinkt einer ab? <em>Speech</em> – einen Satz nachsprechen lassen: klingt die Sprache verwaschen? <em>Time</em> – bei Auffälligkeiten sofort handeln!
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>NOTRUF 112 SOFORT</strong> verständigen und die genaue Uhrzeit des Symptombeginns nennen – das ist für die Behandlung entscheidend.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>BERUHIGEN & BEGLEITEN:</strong> Person beruhigen, nicht alleine lassen, nichts zu essen oder trinken geben (Schluckstörung möglich).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>LAGERUNG:</strong> Bei ansprechbarer Person mit erhöhtem Oberkörper lagern. Bei Bewusstlosigkeit mit normaler Atmung: stabile Seitenlage, auf die betroffene (gelähmte) Seite legen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Bis zum Eintreffen des Rettungsdienstes ständig beobachten, Atmung kontrollieren.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Schlaganfall</h1>
+                <p>Ein Schlaganfall entsteht meist durch ein Blutgerinnsel, das ein Gefäß im Gehirn verschließt (deutlich seltener durch eine Hirnblutung). Der betroffene Hirnbereich wird nicht mehr durchblutet – abhängig von der Region fallen Sprache, Bewegung oder andere Funktionen teilweise aus.</p>
+
+                <h3>Warum der FAST-Test und die Zeit so wichtig sind</h3>
+                <p>Bei einem Gefäßverschluss kann in einem begrenzten Zeitfenster nach Symptombeginn mit Medikamenten oder einem Eingriff versucht werden, das Gefäß wieder zu öffnen. Je genauer die Uhrzeit des Symptombeginns bekannt ist, desto besser können die behandelnden Ärztinnen und Ärzte entscheiden, welche Therapie noch möglich ist.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: DIABETISCHER NOTFALL (ERWACHSENE) -->
+        <section id="screen-diabetes_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #b7950b;">🍬 NOTFALL: DIABETISCHER NOTFALL</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>UNTERZUCKER ERKENNEN</strong> (häufiger, schnell einsetzend): Zittern, Heißhunger, Blässe, Schwitzen, Verwirrtheit, ungewohnt gereizte Stimmung bis Bewusstlosigkeit.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>BEI ANSPRECHBARER PERSON:</strong> Sofort schnell wirksamen Zucker geben (Traubenzucker, gezuckerter Saft oder Cola) – NICHT bei Bewusstlosigkeit oder Schluckstörung!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    Meist bessert sich der Zustand innerhalb weniger Minuten. Danach zusätzlich langsam wirkende Kohlenhydrate (z. B. Brot) anbieten.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ÜBERZUCKER ERKENNEN</strong> (langsamer einsetzend): starker Durst, häufiges Wasserlassen, tiefe, schnelle Atmung, obstartiger (Azeton-)Geruch der Atemluft, Bewusstseinstrübung.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> bei Bewusstlosigkeit, wenn sich der Zustand nach Zuckergabe nicht innerhalb weniger Minuten bessert, oder bei Verdacht auf Überzuckerung.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Bei Bewusstlosigkeit mit normaler Atmung: stabile Seitenlage, Atmung ständig kontrollieren, bei Atemstillstand Reanimation.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Diabetischer Notfall</h1>
+                <p>Bei Menschen mit Diabetes kann der Blutzuckerspiegel entgleisen – entweder zu niedrig (Unterzuckerung, Hypoglykämie) durch zu viel Insulin, zu wenig Essen oder ungewohnte Anstrengung, oder zu hoch (Überzuckerung, Hyperglykämie) durch zu wenig Insulin oder eine akute Erkrankung.</p>
+
+                <h3>Warum nur bei Bewusstsein Zucker gegeben wird</h3>
+                <p>Eine Unterzuckerung entwickelt sich meist rasch und lässt sich durch Zuckerzufuhr gut beheben. Ist die Person jedoch bewusstlos oder kann nicht mehr sicher schlucken, besteht Erstickungsgefahr – hier ist der Notruf 112 der richtige Weg.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: SEPSIS (ERWACHSENE) -->
+        <section id="screen-sepsis_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #922b21;">🦠 NOTFALL: SEPSIS (BLUTVERGIFTUNG)</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>WARNZEICHEN ERKENNEN:</strong> Hohes Fieber oder ungewöhnlich niedrige Körpertemperatur, schneller Puls, schnelle Atmung, extreme Schwäche, Verwirrtheit, kalte oder fleckige Haut – oft nach einer vorausgegangenen Infektion oder Wunde.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>NOTRUF 112</strong> verständigen – eine Sepsis ist ein akut lebensbedrohlicher Notfall, bei dem jede Stunde zählt.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    Dem Rettungsdienst unbedingt mitteilen, wenn eine bekannte Infektion, eine frische Operation, eine Wunde oder ein Harnwegsinfekt vorausging – das beschleunigt die Diagnose.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>LAGERUNG:</strong> Betroffene Person warmhalten und beruhigen, flach oder mit leicht erhöhten Beinen lagern, wenn keine Atemnot besteht.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Bewusstsein und Atmung bis zum Eintreffen des Rettungsdienstes ständig kontrollieren.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Sepsis</h1>
+                <p>Eine Sepsis entsteht, wenn der Körper auf eine Infektion mit einer überschießenden Reaktion des gesamten Kreislaufs reagiert und dabei eigenes Gewebe und Organe schädigt. Sie kann sich aus scheinbar harmlosen Infektionen – etwa einer entzündeten Wunde oder einem Harnwegsinfekt – entwickeln.</p>
+
+                <h3>Warum schnelles Handeln entscheidend ist</h3>
+                <p>Ähnlich wie bei Herzinfarkt und Schlaganfall gilt bei einer Sepsis: Je früher die Behandlung mit Antibiotika und Kreislaufunterstützung beginnt, desto besser die Überlebenschancen. Besonders gefährdet sind Säuglinge, ältere Menschen und Personen mit geschwächtem Immunsystem.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: AKUTE BAUCHERKRANKUNG (ERWACHSENE) -->
+        <section id="screen-bauchschmerz_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #af601a;">🤢 NOTFALL: AKUTE BAUCHERKRANKUNG</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RUHIGSTELLEN:</strong> Betroffene Person hinlegen lassen, mit angewinkelten Beinen, um die Bauchdecke zu entspannen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>NICHTS ESSEN ODER TRINKEN</strong> geben, solange die Ursache unklar ist – falls eine Operation nötig wird, sollte der Magen möglichst leer sein.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>KEINE SCHMERZMITTEL</strong> ohne ärztliche Rücksprache geben – sie können Symptome verschleiern und die Diagnose erschweren.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Auf Warnzeichen achten: bretthart gespannte Bauchdecke, starke oder zunehmende Schmerzen, Fieber, Erbrechen (v. a. mit Blut), Blut im Stuhl oder Kreislaufschwäche.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>NOTRUF 112</strong> bei plötzlich einsetzenden, sehr starken Bauchschmerzen, einer harten/druckempfindlichen Bauchdecke, Kreislaufproblemen oder Fieber – ansonsten zeitnah einen Arzt aufsuchen.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Akute Baucherkrankung</h1>
+                <p>Plötzliche, starke Bauchschmerzen (der sogenannte "akute Bauch") können viele Ursachen haben – von einer Blinddarmentzündung über eine Gallenkolik bis zu einem Darmverschluss. Als Ersthelfende lässt sich die genaue Ursache nicht bestimmen, wichtig ist aber, keine Zeit zu verlieren.</p>
+
+                <h3>Warum auf Schmerzmittel verzichtet werden sollte</h3>
+                <p>Schmerzmittel können die typischen Warnzeichen überdecken, an denen Ärztinnen und Ärzte die Ursache erkennen. Deshalb sollten sie im akuten Fall nur nach ärztlicher Anweisung gegeben werden.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: ASTHMAANFALL (ERWACHSENE) -->
+        <section id="screen-asthma_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #2471a3;">😮‍💨 NOTFALL: ASTHMAANFALL</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>BERUHIGEN:</strong> Betroffene Person beruhigen – Angst und Aufregung verschlimmern die Atemnot zusätzlich.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>KUTSCHERSITZ:</strong> Aufrecht sitzen lassen, Arme auf den Oberschenkeln oder einer Tischkante abstützen – das entlastet die Atemhilfsmuskulatur.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ENGE KLEIDUNG ÖFFNEN</strong> und für frische, nicht zu kalte Luft sorgen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>NOTFALLSPRAY:</strong> Bei bekanntem Asthma nach dem mitgeführten Bedarfsspray fragen und beim Gebrauch unterstützen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>LIPPENBREMSE ANLEITEN:</strong> Langsam gegen leicht geschlossene Lippen ausatmen lassen – das hält die Bronchien länger offen.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>NOTRUF 112</strong> bei starker, sich verschlechternder Atemnot, bläulichen Lippen, Erschöpfung oder wenn das Notfallspray nicht hilft.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Asthmaanfall</h1>
+                <p>Bei einem Asthmaanfall verengen sich die Bronchien durch eine Verkrampfung der Muskulatur, eine Schwellung der Schleimhaut und vermehrte Schleimbildung. Das Ausatmen fällt dabei besonders schwer, oft hörbar pfeifend.</p>
+
+                <h3>Warum Ruhe und Körperhaltung helfen</h3>
+                <p>Der aufrechte Sitz mit abgestützten Armen erleichtert der Atemhilfsmuskulatur die Arbeit, während die Lippenbremse einen leichten Gegendruck erzeugt, der die Atemwege beim Ausatmen offenhält. Stress und Panik verstärken die Verengung der Bronchien zusätzlich, daher ist ruhiges Zusprechen ein wichtiger Teil der Erstversorgung.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: KRAMPFANFALL / EPILEPSIE (ERWACHSENE) -->
+        <section id="screen-krampfanfall_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+
+            <div class="panic-content">
+                <h1 style="color: #6c3483;">⚡ NOTFALL: KRAMPFANFALL</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RUHE BEWAHREN:</strong> Ein Krampfanfall sieht oft dramatisch aus, dauert aber meist nur 1–3 Minuten und endet von selbst.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>VERLETZUNGEN VERHINDERN:</strong> Gefährliche Gegenstände aus der Nähe entfernen, den Kopf mit etwas Weichem (Kleidung, Jacke) polstern.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>NICHTS IN DEN MUND STECKEN</strong> und die Person NICHT festhalten oder die Bewegungen unterdrücken – das kann zu Verletzungen führen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>NACH DEM ANFALL:</strong> Sobald die Krämpfe aufhören, die Person in die stabile Seitenlage bringen und die Atmung kontrollieren.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Die Dauer des Anfalls stoppen.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>NOTRUF 112</strong>, wenn der Anfall länger als 5 Minuten dauert, mehrere Anfälle direkt hintereinander auftreten, sich die Person verletzt hat, es der erste bekannte Anfall ist, oder die Person nach dem Anfall nicht wieder zu Bewusstsein kommt.
+                </div>
+            </div>
+
+            <div class="learn-content">
+                <h1>🔬 Hintergrundwissen: Krampfanfall</h1>
+                <p>Ein Krampfanfall entsteht durch eine plötzliche, überschießende elektrische Aktivität im Gehirn und kann sich in Zuckungen des ganzen Körpers, aber auch in stillen "Abwesenheitszuständen" äußern. Bekannte Ursachen sind Epilepsie, aber auch Fieber (siehe dazu den Fieberkrampf im Baby/Kind-Bereich), Unterzuckerung oder Kopfverletzungen können Krampfanfälle auslösen.</p>
+
+                <h3>Warum man die Person nicht festhalten sollte</h3>
+                <p>Die krampfenden Bewegungen mit Kraft zu unterdrücken kann zu Knochenbrüchen oder Muskelverletzungen führen. Wichtiger ist es, die Umgebung sicher zu machen und den Kopf zu schützen, während der Anfall von selbst abklingt.</p>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL FÜR ERWACHSENE) -->
+        <section id="screen-notfallcheck_erw" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="resetNotfallCheckErw(); goToStart();">⬅ Zurück</button>
+
+            <div class="learn-content" style="display: block;">
+                <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
+                <p>Nutze die <strong>3-A-Regel</strong>, um herauszufinden, ob eine erwachsene Person sofortige Hilfe (Notruf 112) braucht. Klicke auf die Antwort, die am besten zutrifft.</p>
+
+                <!-- SCHRITT 1: Ansprechbarkeit -->
+                <div id="checkerw-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. A – Ansprechbarkeit</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Wie reagiert die Person auf Ansprache oder eine Berührung/Rütteln an der Schulter?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-1', 'checkerw-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Sie reagiert klar, antwortet und ist orientiert (weiß, wo sie ist und was passiert ist).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Sie reagiert gar nicht, ist stark verwirrt oder plötzlich extrem schläfrig/apathisch.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 2: Atmung -->
+                <div id="checkerw-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. A – Atmung</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Atmet die Person normal?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-2', 'checkerw-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Ja, ruhig und regelmäßig (auch wenn sie z. B. vor Schmerz oder Aufregung etwas schneller atmet).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Nein, die Atmung ist stark angestrengt, pfeifend, röchelnd, sehr flach oder setzt zeitweise aus.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 3: Aussehen -->
+                <div id="checkerw-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. A – Aussehen</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Wie sieht die Haut der Person aus?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-3', 'checkerw-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Normale Farbe, ggf. durch Anstrengung gerötet oder vor Schmerz etwas blass.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Aschfahl, bläulich (v. a. Lippen), kaltschweißig oder plötzlich fleckig/marmoriert.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 4: Alarmsignale (FAST, Brustschmerz, starke Blutung) -->
+                <div id="checkerw-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">4. Alarmsignale</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Zeigt die Person eines dieser akuten Warnzeichen: hängender Mundwinkel, plötzliche Lähmung/Schwäche auf einer Seite, verwaschene Sprache, plötzlicher starker Brustschmerz mit Ausstrahlung in Arm/Kiefer, oder eine starke, nicht zu stillende Blutung?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-4', 'checkerw-step-5', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Nein, nichts davon trifft zu.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Ja, mindestens eines dieser Anzeichen trifft zu.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCHRITT 5: Bauchgefühl -->
+                <div id="checkerw-step-5" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">Das Bauchgefühl</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Was sagt dir dein Bauchgefühl – oder das der betroffenen Person selbst?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-5', 'checkerw-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Die Person ist zwar angeschlagen, aber im Großen und Ganzen wie sonst auch.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-5', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Irgendetwas ist plötzlich ganz anders als sonst. Der innere Alarm schlägt an.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ERGEBNIS: NOTFALL -->
+                <div id="checkerw-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 NOTFALL ERKANNT</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
+                        Eines der lebenswichtigen Vitalzeichen ist gestört, ein Alarmsignal trifft zu, oder das Bauchgefühl schlägt Alarm. Zögere nicht!
+                    </p>
+
+                    <!-- Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="checkerw-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Standort wird ermittelt...
+                    </div>
+
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Jetzt 112 anrufen
+                    </button>
+                    <button onclick="resetNotfallCheckErw()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Check neu starten
+                    </button>
+                </div>
+
+                <!-- ERGEBNIS: STABIL -->
+                <div id="checkerw-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 PERSON IST STABIL</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        Die Person ist ansprechbar, atmet normal, sieht unauffällig aus, zeigt keine Alarmsignale und das Bauchgefühl ist entspannt. Das ist ein sehr gutes Zeichen! Es handelt sich sehr wahrscheinlich um keinen akuten Notfall.
+                        <br><br>
+                        <em>Tipp: Bei Beschwerden, die trotzdem Sorgen bereiten, kannst Du in Ruhe die 116 117 (Ärztlicher Bereitschaftsdienst) kontaktieren oder eine Arztpraxis aufsuchen.</em>
+                    </p>
+                    <button onclick="resetNotfallCheckErw(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 Zurück zur Startseite
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: PRÄVENTIONS- & RISIKO-CHECK -->
 
         <!-- BILDSCHIRM: PRÄVENTIONS- & RISIKO-CHECK -->
         <section id="screen-pravention" class="app-screen screen-hidden">
@@ -305,7 +1948,7 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-                    <button id="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <button class="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                         🔊 Taktgeber starten (110 BPM)
                     </button>
                 </div>
