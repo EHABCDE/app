@@ -306,10 +306,6 @@ main.mode-learn .panic-content {
     display: none;
 }
 
-main.mode-learn .global-emergency-bar {
-    display: none;
-}
-
 /* --- FEEDBACK BUTTON & LEGAL DISCLAIMER --- */
 .btn-secondary {
     width: 100%;
