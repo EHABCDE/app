@@ -59,6 +59,8 @@ const topics = [
 const adultTopics = [
     // NEU: Der Notfall-Check für Erwachsene
     { id: 'notfallcheck_erw', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
+    // Screens sind generisch (nicht kind-spezifisch) und werden 1:1 mit Baby & Kind geteilt.
+    { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
 
     { id: 'bewusstlosigkeit_erw', title: '😵 Bewusstlosigkeit & Seitenlage', category: 'Bewusstlosigkeit', istEchterNotfall: true },
     { id: 'reanimation_erw', title: '🫀 Reanimation & Defibrillation', category: 'Notfall', istEchterNotfall: true },
@@ -95,7 +97,17 @@ const adultTopics = [
     { id: 'sepsis_erw', title: '🦠 Sepsis (Blutvergiftung)', category: 'Infektion', istEchterNotfall: true },
     { id: 'bauchschmerz_erw', title: '🤢 Akute Baucherkrankung', category: 'Bauch', istEchterNotfall: false },
     { id: 'asthma_erw', title: '😮‍💨 Asthmaanfall', category: 'Atemnot', istEchterNotfall: true },
-    { id: 'krampfanfall_erw', title: '⚡ Krampfanfall (Epilepsie)', category: 'Krampf', istEchterNotfall: true }
+    { id: 'krampfanfall_erw', title: '⚡ Krampfanfall (Epilepsie)', category: 'Krampf', istEchterNotfall: true },
+
+    {
+        id: 'notrufnummern',
+        title: '📞 Wichtige Notrufnummern',
+        category: 'Notruf',
+        isSpecial: true,
+        specialBg: '#fadbd8',
+        specialBorder: '#e74c3c',
+        specialColor: '#78281f'
+    }
 ];
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
