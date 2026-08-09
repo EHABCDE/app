@@ -3,25 +3,32 @@
 // =========================================================
 
 // --- THEMEN-DATENBANK FÜR DIE STARTSEITE ---
+// HINWEIS: "istEchterNotfall" steuert im Notfallmodus, ob unten die rote
+// 112-Notruf-Leiste erscheint (true) oder stattdessen der Link zum
+// "Notfall oder nicht?"-Check (false). Dies ist eine erste fachliche
+// Einschätzung - bitte von Johannes (Notfallsanitäter) gegenprüfen und bei
+// Bedarf anpassen, bevor es live geht! Themen ohne dieses Feld (die
+// "isSpecial"-Einträge wie Feedback, Notrufnummern etc.) zeigen gar keine
+// der beiden Leisten.
 const topics = [
     // NEU: Der Notfall-Check
     { id: 'notfallcheck', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
 
     // Bestehende Themen
 { id: 'feedback', title: '💬 Feedback & Hilfe', category: 'Support', isSpecial: true, specialBg: '#ebf5fb', specialBorder: '#2980b9', specialColor: '#2980b9' },
-    { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall' },
-    { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS' },
-    { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf' },
-    { id: 'insektenstich', title: '🐝 Stich im Mund / Schock', category: 'Allergie' },
-    { id: 'insektenstich_allgemein', title: '🐝 Insektenstich & Allergie', category: 'Allergie' },
-    { id: 'kleinteile', title: '🔋 Knopfzellen & Magnete', category: 'Verschlucken' },
-    { id: 'verbrennung', title: '🔥 Verbrennung / Verbrühung', category: 'Hitze' },
-    { id: 'pseudokrupp', title: '🗣️ Pseudokrupp-Anfall', category: 'Atemnot' },
-    { id: 'vergiftung', title: '🧪 Vergiftungen', category: 'Gift' },
-    { id: 'stuerze', title: '🤕 Sturz auf den Kopf', category: 'Trauma' },
-    { id: 'strom', title: '⚡ Stromunfälle', category: 'Unfall' },
-    { id: 'ertrinken', title: '🌊 Ertrinken', category: 'Wasser' },
-    { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot' },
+    { id: 'reanimation', title: '🫀 Reanimation', category: 'Notfall', istEchterNotfall: true },
+    { id: 'sids', title: '🛏️ Plötzlicher Kindstod', category: 'SIDS', istEchterNotfall: true },
+    { id: 'fieberkrampf', title: '🌡️ Fieberkrampf', category: 'Krampf', istEchterNotfall: true },
+    { id: 'insektenstich', title: '🐝 Stich im Mund / Schock', category: 'Allergie', istEchterNotfall: true },
+    { id: 'insektenstich_allgemein', title: '🐝 Insektenstich & Allergie', category: 'Allergie', istEchterNotfall: false },
+    { id: 'kleinteile', title: '🔋 Knopfzellen & Magnete', category: 'Verschlucken', istEchterNotfall: true },
+    { id: 'verbrennung', title: '🔥 Verbrennung / Verbrühung', category: 'Hitze', istEchterNotfall: false },
+    { id: 'pseudokrupp', title: '🗣️ Pseudokrupp-Anfall', category: 'Atemnot', istEchterNotfall: false },
+    { id: 'vergiftung', title: '🧪 Vergiftungen', category: 'Gift', istEchterNotfall: true },
+    { id: 'stuerze', title: '🤕 Sturz auf den Kopf', category: 'Trauma', istEchterNotfall: false },
+    { id: 'strom', title: '⚡ Stromunfälle', category: 'Unfall', istEchterNotfall: true },
+    { id: 'ertrinken', title: '🌊 Ertrinken', category: 'Wasser', istEchterNotfall: true },
+    { id: 'verschlucken', title: '⚠️ Akutes Verschlucken', category: 'Atemnot', istEchterNotfall: true },
 
     {
         id: 'notrufnummern',
@@ -49,42 +56,42 @@ const adultTopics = [
     // NEU: Der Notfall-Check für Erwachsene
     { id: 'notfallcheck_erw', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
 
-    { id: 'bewusstlosigkeit_erw', title: '😵 Bewusstlosigkeit & Seitenlage', category: 'Bewusstlosigkeit' },
-    { id: 'reanimation_erw', title: '🫀 Reanimation & Defibrillation', category: 'Notfall' },
-    { id: 'ersticken_erw', title: '🫁 Ersticken (Fremdkörper)', category: 'Atemnot' },
-    { id: 'insektenstich_mund_erw', title: '🐝 Insektenstich im Mund/Rachen', category: 'Allergie' },
-    { id: 'elektrounfall_erw', title: '⚡ Elektrounfälle', category: 'Unfall' },
-    { id: 'schock_erw', title: '🆘 Schock', category: 'Kreislauf' },
-    { id: 'allergie_erw', title: '🤧 Schwere allergische Reaktion', category: 'Allergie' },
+    { id: 'bewusstlosigkeit_erw', title: '😵 Bewusstlosigkeit & Seitenlage', category: 'Bewusstlosigkeit', istEchterNotfall: true },
+    { id: 'reanimation_erw', title: '🫀 Reanimation & Defibrillation', category: 'Notfall', istEchterNotfall: true },
+    { id: 'ersticken_erw', title: '🫁 Ersticken (Fremdkörper)', category: 'Atemnot', istEchterNotfall: true },
+    { id: 'insektenstich_mund_erw', title: '🐝 Insektenstich im Mund/Rachen', category: 'Allergie', istEchterNotfall: true },
+    { id: 'elektrounfall_erw', title: '⚡ Elektrounfälle', category: 'Unfall', istEchterNotfall: true },
+    { id: 'schock_erw', title: '🆘 Schock', category: 'Kreislauf', istEchterNotfall: true },
+    { id: 'allergie_erw', title: '🤧 Schwere allergische Reaktion', category: 'Allergie', istEchterNotfall: true },
 
     // Niederschwellige / alltägliche Themen
-    { id: 'zahnverletzung_erw', title: '🦷 Zahnverletzung', category: 'Zahn' },
-    { id: 'nasenbluten_erw', title: '🩸 Nasenbluten', category: 'Blutung' },
-    { id: 'zeckenstich_erw', title: '🕷️ Zeckenstich', category: 'Zecke' },
-    { id: 'wundversorgung_erw', title: '🩹 Wunden & Wundversorgung', category: 'Wunde' },
-    { id: 'fremdkoerper_auge_erw', title: '👁️ Fremdkörper im Auge', category: 'Auge' },
-    { id: 'tierbiss_erw', title: '🐕 Tierbissverletzung', category: 'Biss' },
-    { id: 'gelenkverletzung_erw', title: '🦵 Prellung, Zerrung & Verstauchung', category: 'Gelenk' },
-    { id: 'sonnenbrand_erw', title: '☀️ Sonnenbrand', category: 'Sonne' },
-    { id: 'kopfverletzung_erw', title: '🤕 Kopfverletzung & Gehirnerschütterung', category: 'Kopf' },
-    { id: 'starke_blutung_erw', title: '💥 Starke Blutung', category: 'Blutung' },
-    { id: 'amputationsverletzung_erw', title: '✂️ Amputationsverletzung', category: 'Trauma' },
-    { id: 'bauch_brustverletzung_erw', title: '🩻 Bauch- & Brustkorbverletzung', category: 'Trauma' },
-    { id: 'knochenbruch_erw', title: '🦴 Knochenbruch', category: 'Knochen' },
-    { id: 'hitzschlag_erw', title: '🥵 Hitzschlag & Sonnenstich', category: 'Hitze' },
-    { id: 'unterkuehlung_erw', title: '🥶 Unterkühlung & Erfrierung', category: 'Kälte' },
-    { id: 'verbrennung_erw', title: '🔥 Verbrennung & Verbrühung', category: 'Hitze' },
-    { id: 'vergiftung_erw', title: '🧪 Vergiftung', category: 'Gift' },
-    { id: 'veraetzung_erw', title: '⚗️ Verätzung (Haut & Auge)', category: 'Verätzung' },
+    { id: 'zahnverletzung_erw', title: '🦷 Zahnverletzung', category: 'Zahn', istEchterNotfall: false },
+    { id: 'nasenbluten_erw', title: '🩸 Nasenbluten', category: 'Blutung', istEchterNotfall: false },
+    { id: 'zeckenstich_erw', title: '🕷️ Zeckenstich', category: 'Zecke', istEchterNotfall: false },
+    { id: 'wundversorgung_erw', title: '🩹 Wunden & Wundversorgung', category: 'Wunde', istEchterNotfall: false },
+    { id: 'fremdkoerper_auge_erw', title: '👁️ Fremdkörper im Auge', category: 'Auge', istEchterNotfall: false },
+    { id: 'tierbiss_erw', title: '🐕 Tierbissverletzung', category: 'Biss', istEchterNotfall: false },
+    { id: 'gelenkverletzung_erw', title: '🦵 Prellung, Zerrung & Verstauchung', category: 'Gelenk', istEchterNotfall: false },
+    { id: 'sonnenbrand_erw', title: '☀️ Sonnenbrand', category: 'Sonne', istEchterNotfall: false },
+    { id: 'kopfverletzung_erw', title: '🤕 Kopfverletzung & Gehirnerschütterung', category: 'Kopf', istEchterNotfall: false },
+    { id: 'starke_blutung_erw', title: '💥 Starke Blutung', category: 'Blutung', istEchterNotfall: true },
+    { id: 'amputationsverletzung_erw', title: '✂️ Amputationsverletzung', category: 'Trauma', istEchterNotfall: true },
+    { id: 'bauch_brustverletzung_erw', title: '🩻 Bauch- & Brustkorbverletzung', category: 'Trauma', istEchterNotfall: true },
+    { id: 'knochenbruch_erw', title: '🦴 Knochenbruch', category: 'Knochen', istEchterNotfall: false },
+    { id: 'hitzschlag_erw', title: '🥵 Hitzschlag & Sonnenstich', category: 'Hitze', istEchterNotfall: true },
+    { id: 'unterkuehlung_erw', title: '🥶 Unterkühlung & Erfrierung', category: 'Kälte', istEchterNotfall: true },
+    { id: 'verbrennung_erw', title: '🔥 Verbrennung & Verbrühung', category: 'Hitze', istEchterNotfall: false },
+    { id: 'vergiftung_erw', title: '🧪 Vergiftung', category: 'Gift', istEchterNotfall: true },
+    { id: 'veraetzung_erw', title: '⚗️ Verätzung (Haut & Auge)', category: 'Verätzung', istEchterNotfall: true },
 
     // Akute Erkrankungen
-    { id: 'herzinfarkt_erw', title: '❤️‍🩹 Herzinfarkt', category: 'Herz' },
-    { id: 'schlaganfall_erw', title: '🧠 Schlaganfall', category: 'Hirn' },
-    { id: 'diabetes_erw', title: '🍬 Diabetischer Notfall', category: 'Zucker' },
-    { id: 'sepsis_erw', title: '🦠 Sepsis (Blutvergiftung)', category: 'Infektion' },
-    { id: 'bauchschmerz_erw', title: '🤢 Akute Baucherkrankung', category: 'Bauch' },
-    { id: 'asthma_erw', title: '😮‍💨 Asthmaanfall', category: 'Atemnot' },
-    { id: 'krampfanfall_erw', title: '⚡ Krampfanfall (Epilepsie)', category: 'Krampf' }
+    { id: 'herzinfarkt_erw', title: '❤️‍🩹 Herzinfarkt', category: 'Herz', istEchterNotfall: true },
+    { id: 'schlaganfall_erw', title: '🧠 Schlaganfall', category: 'Hirn', istEchterNotfall: true },
+    { id: 'diabetes_erw', title: '🍬 Diabetischer Notfall', category: 'Zucker', istEchterNotfall: true },
+    { id: 'sepsis_erw', title: '🦠 Sepsis (Blutvergiftung)', category: 'Infektion', istEchterNotfall: true },
+    { id: 'bauchschmerz_erw', title: '🤢 Akute Baucherkrankung', category: 'Bauch', istEchterNotfall: false },
+    { id: 'asthma_erw', title: '😮‍💨 Asthmaanfall', category: 'Atemnot', istEchterNotfall: true },
+    { id: 'krampfanfall_erw', title: '⚡ Krampfanfall (Epilepsie)', category: 'Krampf', istEchterNotfall: true }
 ];
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
@@ -92,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAdultTopics(adultTopics);
     initGeoLocation();
     injectInstallModalHtml();
+    aktualisiereGlobaleNotfallLeisten();
 });
 
 // Rendert die Themen-Buttons auf der Startseite
@@ -152,6 +160,7 @@ function filterAdultTopics() {
 // Merkt sich zusätzlich, ob zuletzt "Baby & Kind" oder "Erwachsene" aktiv war,
 // damit die "Zurück"-Buttons in den Notfall-Screens zur richtigen Startseite führen.
 let currentCategory = 'kind';
+let currentScreenId = 'screen-category';
 
 function showScreen(screenId) {
     if (screenId === 'screen-start') {
@@ -170,6 +179,45 @@ function showScreen(screenId) {
         target.classList.remove('screen-hidden');
         target.classList.add('screen-active');
         window.scrollTo(0, 0);
+    }
+
+    currentScreenId = screenId;
+    aktualisiereGlobaleNotfallLeisten();
+}
+
+// =========================================================
+// 🚨 GLOBALE NOTRUF-/NOTFALLCHECK-LEISTE (THEMENABHÄNGIG)
+// =========================================================
+// Sucht das aktuell offene Thema in topics/adultTopics und liest dessen
+// "istEchterNotfall"-Flag aus. isSpecial-Einträge (Feedback, Notrufnummern,
+// die Check-Screens selbst, usw.) und unbekannte Screens liefern "undefined"
+// und zeigen dadurch bewusst gar keine der beiden Leisten.
+function holeNotfallStufe(screenId) {
+    const alleThemen = topics.concat(adultTopics);
+    const treffer = alleThemen.find(t => `screen-${t.id}` === screenId && !t.isSpecial);
+    return treffer ? treffer.istEchterNotfall : undefined;
+}
+
+function aktualisiereGlobaleNotfallLeisten() {
+    const main = document.getElementById('app-content');
+    const notrufBar = document.getElementById('global-emergency-bar');
+    const checkBar = document.getElementById('global-notfallcheck-bar');
+    if (!main || !notrufBar || !checkBar) return;
+
+    const istPanikModus = main.classList.contains('mode-panic');
+    const stufe = holeNotfallStufe(currentScreenId);
+
+    if (istPanikModus && stufe === true) {
+        notrufBar.style.display = 'block';
+        checkBar.style.display = 'none';
+    } else if (istPanikModus && stufe === false) {
+        notrufBar.style.display = 'none';
+        checkBar.style.display = 'block';
+        const checkZielId = currentCategory === 'erwachsene' ? 'screen-notfallcheck_erw' : 'screen-notfallcheck';
+        checkBar.onclick = () => showScreen(checkZielId);
+    } else {
+        notrufBar.style.display = 'none';
+        checkBar.style.display = 'none';
     }
 }
 
@@ -205,6 +253,8 @@ function toggleEmergencyMode() {
         btn.classList.add('is-panic');
         btn.innerHTML = '📚 Zurück zum Lernmodus';
     }
+
+    aktualisiereGlobaleNotfallLeisten();
 }
 
 // Metronom für Reanimation (Lautstärke maximiert & schrillerer Ton für Kurse)
@@ -237,6 +287,81 @@ function toggleMetronome() {
             osc.stop(audioCtx.currentTime + 0.08);
         }, (60 / 110) * 1000);
         btns.forEach(btn => btn.innerHTML = '⏹️ Taktgeber stoppen');
+    }
+}
+
+// =========================================================
+// 🤕 INTERAKTIVER WARNZEICHEN-CHECK: KOPFVERLETZUNG (ERWACHSENE)
+// =========================================================
+// Kopfverletzungen sind kein pauschaler Ja/Nein-Fall - deshalb hier ein
+// eigener Warnzeichen-Check statt eines festen "istEchterNotfall"-Flags.
+// Quelle der Kriterien: ärztliche Einschätzung von Johannes (Notfallsanitäter).
+function kopfverletzungAuswerten() {
+    const checks = document.querySelectorAll('#screen-kopfverletzung_erw .kopf-warnzeichen-check');
+    const anzahlWarnzeichen = Array.from(checks).filter(cb => cb.checked).length;
+
+    const ergebnisDiv = document.getElementById('kopf-warnzeichen-ergebnis');
+    const notrufBar = document.getElementById('global-emergency-bar');
+    const checkBar = document.getElementById('global-notfallcheck-bar');
+
+    if (anzahlWarnzeichen > 0) {
+        if (ergebnisDiv) {
+            ergebnisDiv.innerHTML = `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 Mindestens ein Warnzeichen erkannt. Jetzt sofort <strong>112</strong> wählen!
+                </div>
+            `;
+        }
+        // Überschreibt für diesen Screen die themenbasierte Voreinstellung:
+        // die Warnzeichen sagen "echter Notfall", also Notruf-Leiste zeigen.
+        if (notrufBar) notrufBar.style.display = 'block';
+        if (checkBar) checkBar.style.display = 'none';
+    } else {
+        if (ergebnisDiv) {
+            ergebnisDiv.innerHTML = `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem mindestens 24 Stunden weiter beobachten und bei Verschlechterung sofort 112 wählen.
+                </div>
+            `;
+        }
+        if (notrufBar) notrufBar.style.display = 'none';
+        if (checkBar) checkBar.style.display = 'block';
+    }
+}
+
+// =========================================================
+// 🤕 INTERAKTIVER WARNZEICHEN-CHECK: STURZ AUF DEN KOPF (BABY & KIND)
+// =========================================================
+// Gleiches Prinzip wie bei Erwachsenen, mit kindgerechten Kriterien
+// (u. a. Beruhigbarkeit und tageszeitkonformes Verhalten).
+function kindSturzAuswerten() {
+    const checks = document.querySelectorAll('#screen-stuerze .kind-sturz-warnzeichen-check');
+    const anzahlWarnzeichen = Array.from(checks).filter(cb => cb.checked).length;
+
+    const ergebnisDiv = document.getElementById('kind-sturz-warnzeichen-ergebnis');
+    const notrufBar = document.getElementById('global-emergency-bar');
+    const checkBar = document.getElementById('global-notfallcheck-bar');
+
+    if (anzahlWarnzeichen > 0) {
+        if (ergebnisDiv) {
+            ergebnisDiv.innerHTML = `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 Mindestens ein Warnzeichen erkannt. Jetzt sofort <strong>112</strong> wählen oder in die Klinik fahren!
+                </div>
+            `;
+        }
+        if (notrufBar) notrufBar.style.display = 'block';
+        if (checkBar) checkBar.style.display = 'none';
+    } else {
+        if (ergebnisDiv) {
+            ergebnisDiv.innerHTML = `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem für 48 Stunden genau beobachten (siehe Schritt 4) und bei Verschlechterung sofort 112 wählen.
+                </div>
+            `;
+        }
+        if (notrufBar) notrufBar.style.display = 'none';
+        if (checkBar) checkBar.style.display = 'block';
     }
 }
 
