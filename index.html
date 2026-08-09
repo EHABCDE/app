@@ -51,6 +51,29 @@
                     <strong>Erwachsene</strong>
                 </button>
             </div>
+
+            <!-- Saisonale Hinweise: Status-Kachel (Pollen/UV/Grippewelle) -->
+            <button id="lage-status-tile" class="lage-tile lage-tile-neutral" onclick="showScreen('screen-aktuelle-lage')" style="display: none;">
+                <span class="lage-tile-icon" id="lage-tile-icon">📍</span>
+                <span class="lage-tile-text">
+                    <span id="lage-tile-title" style="display:block;">Aktuelle Lage wird geprüft…</span>
+                    <span id="lage-tile-subtitle" style="display:block; font-weight:400; font-size:13px;"></span>
+                </span>
+            </button>
+        </section>
+
+        <!-- DETAIL-SCREEN: AKTUELLE LAGE (Saisonale Hinweise) -->
+        <section id="screen-aktuelle-lage" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+
+            <h1 id="main-title-lage">🌍 Aktuelle Lage</h1>
+            <p id="main-subtitle-lage" style="text-align: center; font-size: 15px; color: #64748b; margin: 0 0 20px 0;">Saisonale Hinweise für deinen Standort</p>
+
+            <div id="lage-liste"></div>
+
+            <div class="app-disclaimer" style="margin-top: 20px;">
+                Die Angaben stammen von den jeweils genannten Quellen (Deutscher Wetterdienst, Robert Koch-Institut) und werden automatisch alle paar Stunden aktualisiert. Sie ersetzen keine individuelle ärztliche oder amtliche Warnung.
+            </div>
         </section>
 
         <!-- STARTSEITE: BABY & KIND -->
