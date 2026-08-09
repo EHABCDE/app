@@ -845,17 +845,50 @@
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
                     <span class="step-num">3</span>
-                    <strong>MINDESTENS 24 STUNDEN BEOBACHTEN:</strong> Auf zunehmende Kopfschmerzen, wiederholtes Erbrechen, Schläfrigkeit, Verwirrtheit, Sehstörungen, unterschiedlich große Pupillen oder Blut-/Flüssigkeitsaustritt aus Ohr oder Nase achten.
-                </div>
-
-                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
-                    <span class="step-num">4</span>
-                    <strong>NOTRUF 112</strong> bei Bewusstlosigkeit (auch kurzzeitig), Krampfanfall, starkem oder zunehmendem Kopfschmerz, wiederholtem Erbrechen oder einer offenen Kopfverletzung.
+                    <strong>WARNZEICHEN PRÜFEN:</strong> Kreuze an, was auf die betroffene Person zutrifft:
+                    <div style="margin-top: 12px; text-align: left; font-weight: normal;">
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Bewusstlosigkeit (auch wenn sie nur kurz war)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Verwirrtheit, Orientierungslosigkeit oder plötzliche Wesensänderung</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Krampfanfall</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Lähmungserscheinungen oder Probleme beim Sprechen oder Sehen</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Wiederholtes Erbrechen oder starke, zunehmende Kopfschmerzen</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Flüssigkeits- oder Blutaustritt aus Nase oder Ohren</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Offene Kopfverletzung</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:0;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Betroffene Person ist ein Kind/Säugling und Du bist unsicher</span>
+                        </label>
+                    </div>
+                    <button onclick="kopfverletzungAuswerten()" style="margin-top:14px; background-color:#f1c40f; color:#2c0e0e; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                        Einschätzen
+                    </button>
+                    <div id="kopf-warnzeichen-ergebnis" style="margin-top:12px;"></div>
                 </div>
 
                 <div class="emergency-step">
-                    <span class="step-num">5</span>
-                    Auch bei zunächst unauffälligem Verlauf: Nach einem harten Schlag auf den Kopf sicherheitshalber immer ärztlich abklären lassen.
+                    <span class="step-num">4</span>
+                    Auch bei zunächst unauffälligem Verlauf: Betroffene Person nach einem harten Schlag auf den Kopf mindestens 24 Stunden beobachten und bei neu auftretenden Warnzeichen sofort 112 wählen. Bei Kindern/Säuglingen im Zweifel immer eine (Kinder-)Notaufnahme oder den Notarzt aufsuchen, da sie Beschwerden oft nicht klar beschreiben können.
                 </div>
             </div>
 
@@ -2418,13 +2451,41 @@
                 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">2</span>
-                    <strong>BLITZ-CHECK AUF GEHIRNERSCHÜTTERUNG:</strong> 
-                    <br>Wähle sofort den <strong>Notruf 112</strong> oder fahre in die Klinik bei folgenden Warnzeichen:
-                    <br>• Das Kind hat sich direkt nach dem Sturz kurz <strong>bewusstlos</strong> angeühlt.
-                    <br>• Das Kind <strong>erbricht</strong> sich (auch Stunden später noch).
-                    <br>• Das Kind ist extrem schläfrig, apathisch oder lässt sich schwer wecken.
-                    <br>• Die <strong>Pupillen</strong> in den Augen sind ungleich groß oder das Kind schielt plötzlich.
-                    <br>• Blut oder klare Flüssigkeit läuft aus Ohr oder Nase.
+                    <strong>BLITZ-CHECK AUF GEHIRNERSCHÜTTERUNG:</strong> Kreuze an, was zutrifft:
+                    <div style="margin-top: 12px; text-align: left; font-weight: normal;">
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Das Kind war direkt nach dem Sturz kurz bewusstlos</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Das Kind erbricht sich (auch Stunden später noch)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Das Kind ist extrem schläfrig, apathisch oder lässt sich schwer wecken</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Die Pupillen sind ungleich groß oder das Kind schielt plötzlich</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Blut oder klare Flüssigkeit läuft aus Ohr oder Nase</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Das Kind lässt sich nicht in angemessener Zeit beruhigen (bleibt untröstlich)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:0;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Das Kind verhält sich nicht tageszeitkonform (z. B. tagsüber ungewöhnlich schläfrig oder nachts auffällig wach/unruhig)</span>
+                        </label>
+                    </div>
+                    <button onclick="kindSturzAuswerten()" style="margin-top:14px; background-color:#f1c40f; color:#2c0e0e; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                        Einschätzen
+                    </button>
+                    <div id="kind-sturz-warnzeichen-ergebnis" style="margin-top:12px;"></div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
@@ -2801,15 +2862,27 @@
         </section>
 
         <!-- GLOBALER NOTRUF- & STANDORT-BUTTON FÜR PANIK-MODUS -->
-        <div class="global-emergency-bar" style="max-width: 600px; margin: 20px auto; padding: 15px; background: #2c0e0e; border: 2px solid #e74c3c; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+        <!-- Wird jetzt per JS (aktualisiereGlobaleNotfallLeisten) themenabhängig ein-/ausgeblendet, -->
+        <!-- statt bei JEDEM Thema im Notfallmodus zu erscheinen. Default: versteckt. -->
+        <div id="global-emergency-bar" style="display: none; max-width: 600px; margin: 20px auto; padding: 15px; background: #2c0e0e; border: 2px solid #e74c3c; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
             <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 10px;">🚨 Schneller Notruf 112</h3>
-            
+
             <div id="geo-location-display" style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; font-size: 14px;">
                 📍 Standort wird ermittelt...
             </div>
-            
+
             <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: background 0.2s;">
                 📞 Jetzt 112 anrufen
+            </button>
+        </div>
+
+        <!-- GLOBALE LEISTE FÜR LAPIDARE THEMEN: Statt Notruf lieber zum "Notfall oder -->
+        <!-- nicht?"-Check verweisen. Default: versteckt, per JS gesteuert. -->
+        <div id="global-notfallcheck-bar" style="display: none; max-width: 600px; margin: 20px auto; padding: 15px; background: #fef9e7; border: 2px solid #f39c12; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); cursor: pointer;">
+            <h3 style="color: #d35400; margin-top: 0; margin-bottom: 8px;">❓ Kein klarer Notfall?</h3>
+            <p style="color: #7a4a04; margin: 0 0 12px 0; font-size: 14px; line-height: 1.4;">Unsicher, ob das ein Fall für den Notruf ist? Der kurze Check hilft dir bei der Einschätzung.</p>
+            <button style="background-color: #f39c12; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
+                🚦 Notfall-Check starten
             </button>
         </div>
     </main>
