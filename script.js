@@ -2,6 +2,10 @@
 // ERSTE HILFE ABC - HAUPTSKRIPT
 // =========================================================
 
+// Basis-URL des separaten "Aktuelle Lage"-Backends (Pollen/UV/Grippewelle-Proxy),
+// läuft auf demselben VPS wie das Dozentenbuchungstool, eigener nginx-Pfad.
+const LAGE_API_BASIS = "https://buchung.erste-hilfe-abc.de/lage-api";
+
 // --- THEMEN-DATENBANK FÜR DIE STARTSEITE ---
 // HINWEIS: "istEchterNotfall" steuert im Notfallmodus, ob unten die rote
 // 112-Notruf-Leiste erscheint (true) oder stattdessen der Link zum
@@ -183,6 +187,10 @@ function showScreen(screenId) {
 
     currentScreenId = screenId;
     aktualisiereGlobaleNotfallLeisten();
+
+    if (screenId === 'screen-aktuelle-lage') {
+        rendereAktuelleLage();
+    }
 }
 
 // =========================================================
@@ -385,6 +393,7 @@ function initGeoLocation() {
                 const lonFormatted = lon.toFixed(4);
 
                 let addressText = "Adresse konnte nicht geladen werden";
+                let bundesland = '';
 
                 try {
                     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
@@ -398,6 +407,7 @@ function initGeoLocation() {
                         const houseNumber = data.address.house_number || '';
                         const postcode = data.address.postcode || '';
                         const city = data.address.city || data.address.town || data.address.village || '';
+                        bundesland = data.address.state || '';
 
                         if (road || city) {
                             addressText = `${road} ${houseNumber}, ${postcode} ${city}`.trim();
@@ -408,6 +418,10 @@ function initGeoLocation() {
                 } catch (e) {
                     addressText = "Offline / Adresse nur über GPS";
                 }
+
+                // Aktuelle Lage (Pollen/UV/Grippewelle) unabhängig vom Adresstext laden -
+                // Koordinaten reichen, Bundesland ist nur für schärferes Matching (optional).
+                holeAktuelleLage(lat, lon, bundesland);
 
                 const locationHtml = `
                     📍 <strong>Adresse:</strong> ${addressText}<br>
@@ -441,6 +455,8 @@ function initGeoLocation() {
                 if (checkGeoDisplayErw) {
                     checkGeoDisplayErw.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
                 }
+
+                aktualisiereLageKachelFehler();
             },
             {
                 enableHighAccuracy: true,
@@ -452,7 +468,95 @@ function initGeoLocation() {
         if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
         if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Geolocation nicht unterstützt.';
         if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Geolocation nicht unterstützt.';
+        aktualisiereLageKachelFehler();
     }
+}
+
+// =========================================================
+// 🌍 AKTUELLE LAGE (Saisonale Hinweise: Pollen, UV, Grippewelle)
+// =========================================================
+// Ruft das separate lage-api-Backend auf (CORS-Proxy vor DWD/RKI), zeigt
+// eine Status-Kachel auf der Startseite (rot bei aktiver Warnung, grün wenn
+// nichts vorliegt) und rendert die Detailliste inkl. Quellenangabe.
+let aktuelleLageDaten = null;
+
+async function holeAktuelleLage(lat, lon, bundesland) {
+    try {
+        const url = `${LAGE_API_BASIS}/api/lage?lat=${lat}&lon=${lon}&bundesland=${encodeURIComponent(bundesland || '')}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Antwort nicht ok');
+        const daten = await response.json();
+        aktuelleLageDaten = daten;
+        aktualisiereLageKachel(daten);
+    } catch (e) {
+        aktualisiereLageKachelFehler();
+    }
+}
+
+function aktualisiereLageKachel(daten) {
+    const tile = document.getElementById('lage-status-tile');
+    const icon = document.getElementById('lage-tile-icon');
+    const title = document.getElementById('lage-tile-title');
+    const subtitle = document.getElementById('lage-tile-subtitle');
+    if (!tile) return;
+
+    tile.classList.remove('lage-tile-calm', 'lage-tile-warning', 'lage-tile-neutral');
+
+    if (daten.hat_warnung) {
+        tile.classList.add('lage-tile-warning');
+        if (icon) icon.textContent = '⚠️';
+        if (title) title.textContent = 'Aktuelle Warnung für deine Region';
+        if (subtitle) subtitle.textContent = 'Tippen für Details';
+    } else {
+        tile.classList.add('lage-tile-calm');
+        if (icon) icon.textContent = '✅';
+        if (title) title.textContent = 'Keine aktive Warnung für heute';
+        if (subtitle) subtitle.textContent = 'Tippen für Pollen, UV-Index & mehr';
+    }
+    tile.style.display = 'flex';
+}
+
+function aktualisiereLageKachelFehler() {
+    const tile = document.getElementById('lage-status-tile');
+    const icon = document.getElementById('lage-tile-icon');
+    const title = document.getElementById('lage-tile-title');
+    const subtitle = document.getElementById('lage-tile-subtitle');
+    if (!tile) return;
+
+    tile.classList.remove('lage-tile-calm', 'lage-tile-warning');
+    tile.classList.add('lage-tile-neutral');
+    if (icon) icon.textContent = '📍';
+    if (title) title.textContent = 'Aktuelle Lage nicht verfügbar';
+    if (subtitle) subtitle.textContent = 'Standortfreigabe erforderlich';
+    tile.style.display = 'flex';
+}
+
+function rendereAktuelleLage() {
+    const container = document.getElementById('lage-liste');
+    if (!container) return;
+
+    if (!aktuelleLageDaten) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b;">Aktuell keine Daten verfügbar. Bitte Standortfreigabe im Browser prüfen.</p>';
+        return;
+    }
+
+    const alleEintraege = [
+        ...(aktuelleLageDaten.warnungen || []).map(e => ({ ...e, istWarnung: true })),
+        ...(aktuelleLageDaten.hinweise || []).map(e => ({ ...e, istWarnung: false }))
+    ];
+
+    if (alleEintraege.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b;">Für deine Region liegen aktuell keine Hinweise vor.</p>';
+        return;
+    }
+
+    container.innerHTML = alleEintraege.map(e => `
+        <div class="lage-card ${e.istWarnung ? 'lage-card-warnung' : 'lage-card-hinweis'}">
+            <div class="lage-card-title">${e.istWarnung ? '⚠️' : 'ℹ️'} ${e.titel || ''}</div>
+            <div class="lage-card-wert">${e.wert || ''}</div>
+            <div class="lage-card-quelle">Quelle: <a href="${e.quelle_url}" target="_blank" rel="noopener">${e.quelle || 'Quelle'}</a></div>
+        </div>
+    `).join('');
 }
 
 function triggerEmergencyCall() {
