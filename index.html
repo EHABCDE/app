@@ -20,10 +20,15 @@
     <div id="mode-switcher-container">
         <div class="switch-inner">
             <button id="emergency-toggle-btn" class="emergency-toggle-btn" onclick="toggleEmergencyMode()">
-                🚨 NOTFALL
+                🚨 <span data-i18n="emergencyBtn">NOTFALL</span>
             </button>
         </div>
-        
+
+        <!-- Sprachumschalter -->
+        <button id="lang-toggle-btn" onclick="toggleLanguage()" title="Language / Sprache" style="background:#fff; border:1px solid #cbd5e1; border-radius:20px; padding:6px 12px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-left:8px;">
+            🌐 <span id="lang-toggle-label">EN</span>
+        </button>
+
         <!-- Kleines Logo im Header -->
         <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToCategoryChooser()" style="cursor: pointer;">
     </div>
@@ -38,28 +43,28 @@
                 <img src="logo.jpg" alt="Erste Hilfe ABC" class="main-logo">
             </div>
 
-            <h1 id="main-title">Erste Hilfe ABC</h1>
-            <p id="main-subtitle">Für wen brauchst du Hilfe?</p>
+            <h1 id="main-title" data-i18n="appTitle">Erste Hilfe ABC</h1>
+            <p id="main-subtitle" data-i18n="categorySubtitle">Für wen brauchst du Hilfe?</p>
 
             <div class="category-grid">
                 <button class="category-card" onclick="showScreen('screen-start')">
                     <span class="category-icon">👶</span>
-                    <strong>Baby &amp; Kind</strong>
+                    <strong data-i18n="categoryChild">Baby &amp; Kind</strong>
                 </button>
                 <button class="category-card" onclick="showScreen('screen-erwachsene')">
                     <span class="category-icon">🧑</span>
-                    <strong>Erwachsene</strong>
+                    <strong data-i18n="categoryAdult">Erwachsene</strong>
                 </button>
             </div>
 
             <!-- Schnellzugriff: Verbandkasten-Check & Notfall-Steckbrief -->
             <button class="lage-tile" style="background-color:#fff7ed; border-color:#f97316; color:#c2410c; margin-bottom:12px;" onclick="showScreen('screen-verbandkasten')">
                 <span class="lage-tile-icon">🩹</span>
-                <span class="lage-tile-text">Verbandkasten-Check</span>
+                <span class="lage-tile-text" data-i18n="vkTileTitle">Verbandkasten-Check</span>
             </button>
             <button class="lage-tile" style="background-color:#eef2ff; border-color:#6366f1; color:#4338ca; margin-bottom:12px;" onclick="showScreen('screen-notfallsteckbrief')">
                 <span class="lage-tile-icon">🆔</span>
-                <span class="lage-tile-text">Notfall-Steckbrief</span>
+                <span class="lage-tile-text" data-i18n="nsTileTitle">Notfall-Steckbrief</span>
             </button>
 
             <!-- Saisonale Hinweise: Status-Kachel (Pollen/UV/Grippewelle) -->
@@ -74,7 +79,7 @@
 
         <!-- DETAIL-SCREEN: AKTUELLE LAGE (Saisonale Hinweise) -->
         <section id="screen-aktuelle-lage" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+            <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
             <h1 id="main-title-lage">🌍 Aktuelle Lage</h1>
             <p id="main-subtitle-lage" style="text-align: center; font-size: 15px; color: #64748b; margin: 0 0 20px 0;">Saisonale Hinweise für deinen Standort</p>
@@ -88,7 +93,7 @@
 
         <!-- STARTSEITE: BABY & KIND -->
         <section id="screen-start" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+            <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
             <h1 id="main-title-kind">👶 Baby &amp; Kind</h1>
             <p id="main-subtitle-kind">Wähle eine Situation aus:</p>
@@ -100,7 +105,7 @@
 
             <!-- Suche -->
             <div style="margin-bottom: 20px;">
-                <input type="text" id="search-input" onkeyup="filterTopics()" placeholder="🔍 Situation suchen... (z.B. Strom, Biene, Husten)">
+                <input type="text" id="search-input" onkeyup="filterTopics()" data-i18n-placeholder="searchPlaceholderChild" placeholder="🔍 Situation suchen... (z.B. Strom, Biene, Husten)">
             </div>
             
             <!-- Hier werden die Kacheln via script.js eingefügt (Feedback, Reanimation, SIDS, etc.) -->
@@ -108,12 +113,12 @@
 
             <!-- Installations-Button für das Handy -->
             <button onclick="showInstallGuide()" class="btn-secondary" style="background-color: #27ae60; color: white !important; border: none;">
-                📲 App zum Handy-Startbildschirm hinzufügen
+                📲 <span data-i18n="installBtn">App zum Handy-Startbildschirm hinzufügen</span>
             </button>
 
             <!-- Feedback Button -->
             <button onclick="showScreen('screen-feedback')" class="btn-secondary">
-                💬 Feedback &amp; Verbesserungsvorschläge
+                💬 <span data-i18n="feedbackBtn">Feedback &amp; Verbesserungsvorschläge</span>
             </button>
 
             <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
@@ -125,23 +130,23 @@
                 <br><br>
                 <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
                 <div style="text-align:center; margin-top:12px; font-size:12px;">
-                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;">Datenschutz</a>
+                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;" data-i18n="privacyLink">Datenschutz</a>
                     &nbsp;·&nbsp;
-                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;">Impressum</a>
+                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;" data-i18n="imprintLink">Impressum</a>
                 </div>
             </div>
         </section>
 
         <!-- STARTSEITE: ERWACHSENE -->
         <section id="screen-erwachsene" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+            <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
             <h1 id="main-title-erwachsene">🧑 Erwachsene</h1>
             <p id="main-subtitle-erwachsene">Wähle eine Situation aus:</p>
 
             <!-- Suche -->
             <div style="margin-bottom: 20px;">
-                <input type="text" id="search-input-erwachsene" onkeyup="filterAdultTopics()" placeholder="🔍 Situation suchen...">
+                <input type="text" id="search-input-erwachsene" onkeyup="filterAdultTopics()" data-i18n-placeholder="searchPlaceholderAdult" placeholder="🔍 Situation suchen...">
             </div>
 
             <!-- Hier werden die Kacheln via script.js eingefügt -->
@@ -149,7 +154,7 @@
 
             <!-- Feedback Button -->
             <button onclick="showScreen('screen-feedback')" class="btn-secondary">
-                💬 Feedback &amp; Verbesserungsvorschläge
+                💬 <span data-i18n="feedbackBtn">Feedback &amp; Verbesserungsvorschläge</span>
             </button>
 
             <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
@@ -161,9 +166,9 @@
                 <br><br>
                 <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
                 <div style="text-align:center; margin-top:12px; font-size:12px;">
-                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;">Datenschutz</a>
+                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;" data-i18n="privacyLink">Datenschutz</a>
                     &nbsp;·&nbsp;
-                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;">Impressum</a>
+                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;" data-i18n="imprintLink">Impressum</a>
                 </div>
             </div>
         </section>
@@ -172,7 +177,7 @@
 
         <!-- BILDSCHIRM: BEWUSSTLOSIGKEIT & SEITENLAGE (ERWACHSENE) -->
         <section id="screen-bewusstlosigkeit_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #34495e;">😵 NOTFALL: BEWUSSTLOSIGKEIT</h1>
@@ -223,7 +228,7 @@
 
         <!-- BILDSCHIRM: REANIMATION & DEFIBRILLATION (ERWACHSENE) -->
         <section id="screen-reanimation_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🫀 NOTFALL: REANIMATION</h1>
@@ -281,7 +286,7 @@
 
         <!-- BILDSCHIRM: ERSTICKEN / FREMDKÖRPER (ERWACHSENE) -->
         <section id="screen-ersticken_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #e67e22;">🫁 NOTFALL: VERSCHLUCKT / ERSTICKUNGSGEFAHR</h1>
@@ -328,7 +333,7 @@
 
         <!-- BILDSCHIRM: INSEKTENSTICH IM MUND-RACHENRAUM (ERWACHSENE) -->
         <section id="screen-insektenstich_mund_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🐝 NOTFALL: INSEKTENSTICH IM MUND/RACHEN</h1>
@@ -373,7 +378,7 @@
 
         <!-- BILDSCHIRM: ELEKTROUNFÄLLE (ERWACHSENE) -->
         <section id="screen-elektrounfall_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #3498db;">⚡ NOTFALL: ELEKTROUNFALL</h1>
@@ -424,7 +429,7 @@
 
         <!-- BILDSCHIRM: SCHOCK (ERWACHSENE) -->
         <section id="screen-schock_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #34495e;">🆘 NOTFALL: SCHOCK</h1>
@@ -470,7 +475,7 @@
 
         <!-- BILDSCHIRM: SCHWERE ALLERGISCHE REAKTION (ERWACHSENE) -->
         <section id="screen-allergie_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🤧 NOTFALL: SCHWERE ALLERGISCHE REAKTION</h1>
@@ -520,7 +525,7 @@
 
         <!-- BILDSCHIRM: ZAHNVERLETZUNG (ERWACHSENE) -->
         <section id="screen-zahnverletzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #8e44ad;">🦷 NOTFALL: ZAHNVERLETZUNG</h1>
@@ -565,7 +570,7 @@
 
         <!-- BILDSCHIRM: NASENBLUTEN (ERWACHSENE) -->
         <section id="screen-nasenbluten_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🩸 NOTFALL: NASENBLUTEN</h1>
@@ -607,7 +612,7 @@
 
         <!-- BILDSCHIRM: ZECKENSTICH (ERWACHSENE) -->
         <section id="screen-zeckenstich_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #16a085;">🕷️ NOTFALL: ZECKENSTICH</h1>
@@ -652,7 +657,7 @@
 
         <!-- BILDSCHIRM: WUNDEN & WUNDVERSORGUNG (ERWACHSENE) -->
         <section id="screen-wundversorgung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #2980b9;">🩹 NOTFALL: WUNDVERSORGUNG</h1>
@@ -702,7 +707,7 @@
 
         <!-- BILDSCHIRM: FREMDKÖRPER IM AUGE (ERWACHSENE) -->
         <section id="screen-fremdkoerper_auge_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #2980b9;">👁️ NOTFALL: FREMDKÖRPER IM AUGE</h1>
@@ -744,7 +749,7 @@
 
         <!-- BILDSCHIRM: TIERBISSVERLETZUNG (ERWACHSENE) -->
         <section id="screen-tierbiss_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #935116;">🐕 NOTFALL: TIERBISSVERLETZUNG</h1>
@@ -786,7 +791,7 @@
 
         <!-- BILDSCHIRM: PRELLUNG, ZERRUNG & VERSTAUCHUNG (ERWACHSENE) -->
         <section id="screen-gelenkverletzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #d35400;">🦵 NOTFALL: PRELLUNG, ZERRUNG & VERSTAUCHUNG</h1>
@@ -829,7 +834,7 @@
 
         <!-- BILDSCHIRM: SONNENBRAND (ERWACHSENE) -->
         <section id="screen-sonnenbrand_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #e67e22;">☀️ NOTFALL: SONNENBRAND</h1>
@@ -871,7 +876,7 @@
 
         <!-- BILDSCHIRM: KOPFVERLETZUNG & GEHIRNERSCHÜTTERUNG (ERWACHSENE) -->
         <section id="screen-kopfverletzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #34495e;">🤕 NOTFALL: KOPFVERLETZUNG</h1>
@@ -946,7 +951,7 @@
 
         <!-- BILDSCHIRM: STARKE BLUTUNG (ERWACHSENE) -->
         <section id="screen-starke_blutung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">💥 NOTFALL: STARKE BLUTUNG</h1>
@@ -993,7 +998,7 @@
 
         <!-- BILDSCHIRM: AMPUTATIONSVERLETZUNG (ERWACHSENE) -->
         <section id="screen-amputationsverletzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #922b21;">✂️ NOTFALL: AMPUTATIONSVERLETZUNG</h1>
@@ -1040,7 +1045,7 @@
 
         <!-- BILDSCHIRM: BAUCH- & BRUSTKORBVERLETZUNG (ERWACHSENE) -->
         <section id="screen-bauch_brustverletzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #7d3c98;">🩻 NOTFALL: BAUCH- & BRUSTKORBVERLETZUNG</h1>
@@ -1087,7 +1092,7 @@
 
         <!-- BILDSCHIRM: KNOCHENBRUCH (ERWACHSENE) -->
         <section id="screen-knochenbruch_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #34495e;">🦴 NOTFALL: KNOCHENBRUCH</h1>
@@ -1134,7 +1139,7 @@
 
         <!-- BILDSCHIRM: HITZSCHLAG & SONNENSTICH (ERWACHSENE) -->
         <section id="screen-hitzschlag_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #e74c3c;">🥵 NOTFALL: HITZSCHLAG & SONNENSTICH</h1>
@@ -1181,7 +1186,7 @@
 
         <!-- BILDSCHIRM: UNTERKÜHLUNG & ERFRIERUNG (ERWACHSENE) -->
         <section id="screen-unterkuehlung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #2980b9;">🥶 NOTFALL: UNTERKÜHLUNG & ERFRIERUNG</h1>
@@ -1228,7 +1233,7 @@
 
         <!-- BILDSCHIRM: VERBRENNUNG & VERBRÜHUNG (ERWACHSENE) -->
         <section id="screen-verbrennung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #e67e22;">🔥 NOTFALL: VERBRENNUNG & VERBRÜHUNG</h1>
@@ -1275,7 +1280,7 @@
 
         <!-- BILDSCHIRM: VERGIFTUNG (ERWACHSENE) -->
         <section id="screen-vergiftung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #6c3483;">🧪 NOTFALL: VERGIFTUNG</h1>
@@ -1322,7 +1327,7 @@
 
         <!-- BILDSCHIRM: VERÄTZUNG (ERWACHSENE) -->
         <section id="screen-veraetzung_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #7f8c8d;">⚗️ NOTFALL: VERÄTZUNG (HAUT & AUGE)</h1>
@@ -1364,7 +1369,7 @@
 
         <!-- BILDSCHIRM: HERZINFARKT (ERWACHSENE) -->
         <section id="screen-herzinfarkt_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #c0392b;">❤️‍🩹 NOTFALL: HERZINFARKT</h1>
@@ -1411,7 +1416,7 @@
 
         <!-- BILDSCHIRM: SCHLAGANFALL (ERWACHSENE) -->
         <section id="screen-schlaganfall_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #8e44ad;">🧠 NOTFALL: SCHLAGANFALL</h1>
@@ -1453,7 +1458,7 @@
 
         <!-- BILDSCHIRM: DIABETISCHER NOTFALL (ERWACHSENE) -->
         <section id="screen-diabetes_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #b7950b;">🍬 NOTFALL: DIABETISCHER NOTFALL</h1>
@@ -1500,7 +1505,7 @@
 
         <!-- BILDSCHIRM: SEPSIS (ERWACHSENE) -->
         <section id="screen-sepsis_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #922b21;">🦠 NOTFALL: SEPSIS (BLUTVERGIFTUNG)</h1>
@@ -1542,7 +1547,7 @@
 
         <!-- BILDSCHIRM: AKUTE BAUCHERKRANKUNG (ERWACHSENE) -->
         <section id="screen-bauchschmerz_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #af601a;">🤢 NOTFALL: AKUTE BAUCHERKRANKUNG</h1>
@@ -1584,7 +1589,7 @@
 
         <!-- BILDSCHIRM: ASTHMAANFALL (ERWACHSENE) -->
         <section id="screen-asthma_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #2471a3;">😮‍💨 NOTFALL: ASTHMAANFALL</h1>
@@ -1631,7 +1636,7 @@
 
         <!-- BILDSCHIRM: KRAMPFANFALL / EPILEPSIE (ERWACHSENE) -->
         <section id="screen-krampfanfall_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="panic-content">
                 <h1 style="color: #6c3483;">⚡ NOTFALL: KRAMPFANFALL</h1>
@@ -1678,7 +1683,7 @@
 
         <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL FÜR ERWACHSENE) -->
         <section id="screen-notfallcheck_erw" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="resetNotfallCheckErw(); goToStart();">⬅ Zurück</button>
+            <button class="back-btn" onclick="resetNotfallCheckErw(); goToStart();"><span data-i18n="back">⬅ Zurück</span></button>
 
             <div class="learn-content" style="display: block;">
                 <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
@@ -1799,7 +1804,7 @@
 
         <!-- BILDSCHIRM: PRÄVENTIONS- & RISIKO-CHECK -->
         <section id="screen-pravention" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="learn-content" style="display: block;">
                 <h1 style="color: #27ae60;">🛡️ Interaktiver Zuhause-Check</h1>
@@ -1863,7 +1868,7 @@
 
         <!-- BILDSCHIRM: FEEDBACK & HINWEISE -->
         <section id="screen-feedback" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="learn-content" style="display: block;">
                 <h1 style="color: #2980b9;">💬 Feedback &amp; Unterstützung</h1>
@@ -1891,101 +1896,115 @@
 
         <!-- BILDSCHIRM: VERBANDKASTEN-CHECK (Ablaufdaten + Push-Erinnerung) -->
         <section id="screen-verbandkasten" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+            <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
-            <h1 style="color:#c2410c;">🩹 Verbandkasten-Check</h1>
-            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;">
+            <h1 style="color:#c2410c;">🩹 <span data-i18n="vkTitle">Verbandkasten-Check</span></h1>
+            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;" data-i18n="vkSubtitle">
                 Nie wieder ein abgelaufener Verbandkasten
             </p>
 
-            <div class="app-disclaimer" style="margin-bottom:20px;">
+            <div class="app-disclaimer" style="margin-bottom:20px;" data-i18n="vkLegalNote">
                 Ein Verbandkasten im Auto ist in Deutschland Pflicht (DIN 13164). Das aufgedruckte Verfalldatum ist eine Herstellerempfehlung für die volle Funktionsfähigkeit (z.&nbsp;B. Sterilität) – ein deutlich überschrittenes Datum kann bei der Hauptuntersuchung dennoch beanstandet werden.
             </div>
 
             <form id="vk-form" onsubmit="vkHinzufuegen(event)" style="margin-bottom:24px;">
-                <input type="text" id="vk-name-input" placeholder="Bezeichnung (z. B. Auto - VW Golf)" required
+                <input type="text" id="vk-name-input" data-i18n-placeholder="vkNamePlaceholder" placeholder="Bezeichnung (z. B. Auto - VW Golf)" required
                     style="width:100%; box-sizing:border-box; margin-bottom:10px; padding:12px; border-radius:10px; border:1px solid #cbd5e1; font-size:15px;">
                 <input type="date" id="vk-datum-input" required
                     style="width:100%; box-sizing:border-box; margin-bottom:10px; padding:12px; border-radius:10px; border:1px solid #cbd5e1; font-size:15px;">
                 <button type="submit" class="btn-secondary" style="background-color:#2980b9; color:white !important; border:none; width:100%;">
-                    ➕ Verbandkasten hinzufügen
+                    ➕ <span data-i18n="vkAddBtn">Verbandkasten hinzufügen</span>
                 </button>
             </form>
 
             <div id="vk-liste" style="margin-bottom:24px;"></div>
 
             <div style="background-color:#fff7ed; border:1px solid #f97316; border-radius:12px; padding:14px 16px; margin-bottom:20px;">
-                <p style="margin:0 0 8px 0; font-weight:600; color:#c2410c;">🔔 Erinnerung per Push-Benachrichtigung</p>
-                <p style="margin:0 0 10px 0; font-size:13px; color:#7c2d12;">Wir erinnern dich automatisch 30 Tage vor Ablauf – direkt auf deinem Handy.</p>
+                <p style="margin:0 0 8px 0; font-weight:600; color:#c2410c;">🔔 <span data-i18n="vkReminderTitle">Erinnerung per Push-Benachrichtigung</span></p>
+                <p style="margin:0 0 10px 0; font-size:13px; color:#7c2d12;" data-i18n="vkReminderText">Wir erinnern dich automatisch 30 Tage vor Ablauf – direkt auf deinem Handy.</p>
                 <button onclick="vkErinnerungAktivieren()" class="btn-secondary" style="background-color:#f97316; color:white !important; border:none; width:100%;">
-                    Erinnerungen aktivieren
+                    <span data-i18n="vkActivateBtn">Erinnerungen aktivieren</span>
                 </button>
                 <p id="vk-push-status" style="margin:10px 0 0 0; font-size:13px; color:#7c2d12;"></p>
             </div>
 
             <a href="https://www.amazon.de/s?k=kfz+verbandkasten+din+13164+lange+haltbarkeit&tag=ehabc-21" target="_blank"
                 style="display:block; background-color:#ebf5fb; border:1px solid #2980b9; border-radius:12px; padding:14px 16px; text-decoration:none; margin-bottom:20px;">
-                <strong style="color:#2980b9;">👉 Verbandkasten mit langer Haltbarkeit ansehen</strong>
-                <div style="font-size:13px; color:#1b4f72; margin-top:4px;">Spart dir den nächsten Austausch für mehrere Jahre</div>
+                <strong style="color:#2980b9;">👉 <span data-i18n="vkAffiliateTitle">Verbandkasten mit langer Haltbarkeit ansehen</span></strong>
+                <div style="font-size:13px; color:#1b4f72; margin-top:4px;" data-i18n="vkAffiliateSubtitle">Spart dir den nächsten Austausch für mehrere Jahre</div>
             </a>
 
             <div class="app-disclaimer">
-                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+                <small><em data-i18n="affiliateDisclaimer">Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
             </div>
         </section>
 
         <!-- BILDSCHIRM: NOTFALL-STECKBRIEF (rein lokal, keine Server-Übertragung) -->
         <section id="screen-notfallsteckbrief" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+            <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
-            <h1 style="color:#4338ca;">🆔 Notfall-Steckbrief</h1>
-            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;">
+            <h1 style="color:#4338ca;">🆔 <span data-i18n="nsTitle">Notfall-Steckbrief</span></h1>
+            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;" data-i18n="nsSubtitle">
                 Wichtige Infos für Rettungskräfte, Kita &amp; Schule – immer griffbereit
             </p>
 
-            <div class="app-disclaimer" style="margin-bottom:20px;">
+            <div class="app-disclaimer" style="margin-bottom:20px;" data-i18n="nsPrivacyNote">
                 Diese Daten werden ausschließlich auf deinem Gerät gespeichert und niemals an einen Server übertragen.
             </div>
 
             <div id="ns-liste" style="margin-bottom:20px;"></div>
 
             <button onclick="nsFormOeffnen()" id="ns-neu-btn" class="btn-secondary" style="background-color:#4338ca; color:white !important; border:none; width:100%; margin-bottom:24px;">
-                ➕ Person hinzufügen
+                ➕ <span data-i18n="nsAddPerson">Person hinzufügen</span>
             </button>
 
             <form id="ns-form" onsubmit="nsSpeichern(event)" style="display:none; margin-bottom:24px;">
-                <h3 id="ns-form-titel" style="margin:0 0 12px 0; color:#4338ca;">➕ Person hinzufügen</h3>
+                <h3 id="ns-form-titel" style="margin:0 0 12px 0; color:#4338ca;">➕ <span data-i18n="nsAddPerson">Person hinzufügen</span></h3>
                 <input type="hidden" id="ns-edit-id">
 
-                <input type="text" id="ns-name-input" class="ns-input" placeholder="Name *" required>
+                <input type="text" id="ns-name-input" class="ns-input" data-i18n-placeholder="nsNamePlaceholder" placeholder="Name *" required>
                 <input type="date" id="ns-geburtsdatum-input" class="ns-input" placeholder="Geburtsdatum (optional)">
                 <select id="ns-blutgruppe-input" class="ns-input">
-                    <option value="">Blutgruppe (optional)</option>
+                    <option value="" data-i18n="nsBloodTypeOption">Blutgruppe (optional)</option>
                     <option>A+</option><option>A-</option>
                     <option>B+</option><option>B-</option>
                     <option>AB+</option><option>AB-</option>
                     <option>0+</option><option>0-</option>
                 </select>
-                <textarea id="ns-allergien-input" class="ns-input" placeholder="Allergien (optional)"></textarea>
-                <textarea id="ns-medikation-input" class="ns-input" placeholder="Dauermedikation (optional)"></textarea>
-                <textarea id="ns-vorerkrankungen-input" class="ns-input" placeholder="Vorerkrankungen (optional)"></textarea>
-                <input type="text" id="ns-arzt-name-input" class="ns-input" placeholder="Hausarzt (optional)">
-                <input type="tel" id="ns-arzt-telefon-input" class="ns-input" placeholder="Telefon Hausarzt (optional)">
-                <input type="text" id="ns-kontakt-name-input" class="ns-input" placeholder="Notfallkontakt Name (optional)">
-                <input type="tel" id="ns-kontakt-telefon-input" class="ns-input" placeholder="Notfallkontakt Telefon (optional)">
+                <textarea id="ns-allergien-input" class="ns-input" data-i18n-placeholder="nsAllergiesPlaceholder" placeholder="Allergien (optional)"></textarea>
+                <textarea id="ns-medikation-input" class="ns-input" data-i18n-placeholder="nsMedicationPlaceholder" placeholder="Dauermedikation (optional)"></textarea>
+                <textarea id="ns-vorerkrankungen-input" class="ns-input" data-i18n-placeholder="nsConditionsPlaceholder" placeholder="Vorerkrankungen (optional)"></textarea>
+                <input type="text" id="ns-arzt-name-input" class="ns-input" data-i18n-placeholder="nsDoctorNamePlaceholder" placeholder="Hausarzt (optional)">
+                <input type="tel" id="ns-arzt-telefon-input" class="ns-input" data-i18n-placeholder="nsDoctorPhonePlaceholder" placeholder="Telefon Hausarzt (optional)">
+                <input type="text" id="ns-kontakt-name-input" class="ns-input" data-i18n-placeholder="nsContactNamePlaceholder" placeholder="Notfallkontakt Name (optional)">
+                <input type="tel" id="ns-kontakt-telefon-input" class="ns-input" data-i18n-placeholder="nsContactPhonePlaceholder" placeholder="Notfallkontakt Telefon (optional)">
 
                 <div style="display:flex; gap:10px; margin-top:6px;">
-                    <button type="submit" class="btn-secondary" style="flex:1; background-color:#4338ca; color:white !important; border:none;">💾 Speichern</button>
-                    <button type="button" onclick="nsFormSchliessen()" class="btn-secondary" style="flex:1;">Abbrechen</button>
+                    <button type="submit" class="btn-secondary" style="flex:1; background-color:#4338ca; color:white !important; border:none;">💾 <span data-i18n="save">Speichern</span></button>
+                    <button type="button" onclick="nsFormSchliessen()" class="btn-secondary" style="flex:1;"><span data-i18n="cancel">Abbrechen</span></button>
                 </div>
             </form>
 
             <div id="ns-kartenansicht" style="display:none;"></div>
+
+            <div style="background-color:#eef2ff; border:1px solid #6366f1; border-radius:12px; padding:14px 16px; margin-bottom:20px;">
+                <p style="margin:0 0 8px 0; font-weight:600; color:#4338ca;">💡 <span data-i18n="nsLockTipTitle">Tipp: Auch für den gesperrten Bildschirm</span></p>
+                <p style="margin:0 0 10px 0; font-size:13px; color:#3730a3;" data-i18n="nsLockTipText">Dieser Steckbrief ist nur sichtbar, wenn das Handy entsperrt ist und die App geöffnet wird. Trag die wichtigsten Angaben zusätzlich in die Notfallfunktion deines Handys ein – die ist auch bei gesperrtem Display direkt über den Notruf-Bildschirm abrufbar:</p>
+                <p style="margin:0 0 6px 0; font-size:13px; color:#3730a3;" data-i18n-html="nsLockTipIos"><strong>iPhone:</strong> Health-App öffnen → Profil (oben rechts) → "Medizinische ID" → "Bearbeiten"</p>
+                <p style="margin:0; font-size:13px; color:#3730a3;" data-i18n-html="nsLockTipAndroid"><strong>Android:</strong> Einstellungen → "Sicherheit &amp; Notfall" → "Medizinische Infos" (Name je nach Hersteller leicht abweichend)</p>
+            </div>
+
+            <div class="app-disclaimer" data-i18n-html="nsLegalDisclaimer">
+                <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
+                Die hier hinterlegten Angaben werden von dir selbst eingegeben und nicht von uns geprüft. Für Richtigkeit und Aktualität dieser Daten bist du als Nutzer:in selbst verantwortlich.
+                <br><br>
+                Dieser Steckbrief ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Er dient ausschließlich als unterstützende Gedächtnisstütze für Ersthelfer, Kita oder Schule.
+            </div>
         </section>
 
         <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL) -->
         <section id="screen-notfallcheck" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="resetNotfallCheck(); goToStart();">⬅ Zurück</button>
+            <button class="back-btn" onclick="resetNotfallCheck(); goToStart();"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="learn-content" style="display: block;">
                 <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
@@ -2089,7 +2108,7 @@
 
         <!-- BILDSCHIRM: KINDER-REANIMATION -->
         <section id="screen-reanimation" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🫀 NOTFALL: REANIMATION</h1>
@@ -2143,7 +2162,7 @@
 
         <!-- BILDSCHIRM: PLÖTZLICHER KINDSTOD (SIDS) -->
         <section id="screen-sids" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #c0392b;">🛏️ NOTFALL: KEINE ATMUNG</h1>
@@ -2207,7 +2226,7 @@
 
         <!-- BILDSCHIRM: FIEBERKRAMPF -->
         <section id="screen-fieberkrampf" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #3498db;">🌡️ NOTFALL: FIEBERKRAMPF</h1>
@@ -2274,7 +2293,7 @@
 
         <!-- BILDSCHIRM: INSEKTENSTICH / SCHOCK -->
         <section id="screen-insektenstich" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #3498db;">🐝 NOTFALL: STICH IM MUND / SCHOCK</h1>
@@ -2337,7 +2356,7 @@
 
         <!-- BILDSCHIRM: KNOPFZELLEN & MAGNETE -->
         <section id="screen-kleinteile" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #e67e22;">🔋 NOTFALL: KNOPFZELLEN / MAGNETE</h1>
@@ -2394,7 +2413,7 @@
 
         <!-- BILDSCHIRM: VERBRENNUNGEN -->
         <section id="screen-verbrennung" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #e67e22;">🔥 NOTFALL: VERBRENNUNG / VERBRÜHUNG</h1>
@@ -2449,7 +2468,7 @@
 
         <!-- BILDSCHIRM: PSEUDOKRUPP -->
         <section id="screen-pseudokrupp" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #3498db;">🗣️ NOTFALL: PSEUDOKRUPP-ANFALL</h1>
@@ -2504,7 +2523,7 @@
 
         <!-- BILDSCHIRM: VERGIFTUNGEN -->
         <section id="screen-vergiftung" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #27ae60;">🧪 NOTFALL: VERGIFTUNG</h1>
@@ -2573,7 +2592,7 @@
 
         <!-- BILDSCHIRM: STÜRZE & KOPF -->
         <section id="screen-stuerze" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #3498db;">🤕 NOTFALL: STURZ AUF DEN KOPF</h1>
@@ -2670,7 +2689,7 @@
 
         <!-- BILDSCHIRM: STROMUNFÄLLE -->
         <section id="screen-strom" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #f39c12;">⚡ NOTFALL: STROMUNFALL</h1>
@@ -2726,7 +2745,7 @@
 
         <!-- BILDSCHIRM: ERTRINKEN -->
         <section id="screen-ertrinken" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #1abc9c;">🌊 NOTFALL: ERTRINKEN</h1>
@@ -2781,7 +2800,7 @@
 
         <!-- BILDSCHIRM: AKUTES VERSCHLUCKEN -->
         <section id="screen-verschlucken" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="panic-content">
                 <h1 style="color: #e67e22;">⚠️ NOTFALL: VERSCHLUCKEN</h1>
@@ -2864,7 +2883,7 @@
 
         <!-- BILDSCHIRM: WICHTIGE NOTRUFNUMMERN -->
 <section id="screen-notrufnummern" class="app-screen screen-hidden">
-    <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+    <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
     
     <div class="learn-content" style="display: block;">
         <h1 style="color: #c0392b;">📞 Wichtige Notrufnummern</h1>
@@ -2917,7 +2936,7 @@
 
 <!-- BILDSCHIRM: KINDER-NOTFALLPASS / SOS-ARMBÄNDER -->
         <section id="screen-notfallpass" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="learn-content" style="display: block;">
                 <h1 style="color: #27ae60;">📋 Kinder-Notfallpass &amp; SOS-Systeme</h1>
@@ -2948,7 +2967,7 @@
 
         <!-- BILDSCHIRM: INSEKTENSTICH & ALLERGIE (ALLGEMEIN) -->
         <section id="screen-insektenstich_allgemein" class="app-screen screen-hidden">
-            <button class="back-btn" onclick="goToStart()">⬅ Zurück</button>
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
 
             <!-- 🔴 NOTFALL-MODUS (Panik-Schritte bei Atemnot/Mundstich) -->
             <div class="panic-content">
@@ -3050,6 +3069,7 @@
         </div>
     </div>
 
+    <script src="./lang.js"></script>
     <script src="./script.js"></script>
     <script>
       if ('serviceWorker' in navigator) {

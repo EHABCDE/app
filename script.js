@@ -111,6 +111,7 @@ const adultTopics = [
 ];
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
+    if (typeof initI18n === 'function') initI18n();
     renderTopics(topics);
     renderAdultTopics(adultTopics);
     initGeoLocation();
@@ -132,7 +133,7 @@ function renderTopics(topicList) {
             btn.style.borderColor = topic.specialBorder;
             btn.style.color = topic.specialColor;
         }
-        btn.innerHTML = `<strong>${topic.title}</strong>`;
+        btn.innerHTML = `<strong>${topicTitle(topic)}</strong>`;
         btn.onclick = () => showScreen(`screen-${topic.id}`);
         grid.appendChild(btn);
     });
@@ -141,7 +142,7 @@ function renderTopics(topicList) {
 // Suche / Filterfunktion
 function filterTopics() {
     const query = document.getElementById('search-input').value.toLowerCase();
-    const filtered = topics.filter(t => t.title.toLowerCase().includes(query) || t.category.toLowerCase().includes(query));
+    const filtered = topics.filter(top => topicTitle(top).toLowerCase().includes(query) || top.category.toLowerCase().includes(query));
     renderTopics(filtered);
 }
 
@@ -159,7 +160,7 @@ function renderAdultTopics(topicList) {
             btn.style.borderColor = topic.specialBorder;
             btn.style.color = topic.specialColor;
         }
-        btn.innerHTML = `<strong>${topic.title}</strong>`;
+        btn.innerHTML = `<strong>${topicTitle(topic)}</strong>`;
         btn.onclick = () => showScreen(`screen-${topic.id}`);
         grid.appendChild(btn);
     });
@@ -168,7 +169,7 @@ function renderAdultTopics(topicList) {
 // Suche / Filterfunktion für die Erwachsenen-Themen
 function filterAdultTopics() {
     const query = document.getElementById('search-input-erwachsene').value.toLowerCase();
-    const filtered = adultTopics.filter(t => t.title.toLowerCase().includes(query) || t.category.toLowerCase().includes(query));
+    const filtered = adultTopics.filter(top => topicTitle(top).toLowerCase().includes(query) || top.category.toLowerCase().includes(query));
     renderAdultTopics(filtered);
 }
 
@@ -246,30 +247,30 @@ function vkRendereListe() {
     const liste = vkLadeAlle();
 
     if (liste.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px;">Noch kein Verbandkasten hinterlegt.</p>';
+        container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:14px;">${t('vkEmpty')}</p>`;
         return;
     }
 
     container.innerHTML = liste.map((vk, index) => {
         const tage = vkTageBisAblauf(vk.ablaufdatum);
         let statusFarbe = '#27ae60';
-        let statusText = `Noch ${tage} Tage gültig`;
+        let statusText = t('vkStatusValid').replace('{days}', tage);
         if (tage < 0) {
             statusFarbe = '#c0392b';
-            statusText = 'Abgelaufen!';
+            statusText = t('vkStatusExpired');
         } else if (tage <= 60) {
             statusFarbe = '#e67e22';
-            statusText = `Läuft in ${tage} Tagen ab`;
+            statusText = t('vkStatusExpiring').replace('{days}', tage);
         }
 
-        const datumFormatiert = new Date(vk.ablaufdatum + 'T00:00:00').toLocaleDateString('de-DE');
+        const datumFormatiert = new Date(vk.ablaufdatum + 'T00:00:00').toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'de-DE');
 
         return `
             <div class="vk-eintrag" style="border-left: 5px solid ${statusFarbe};">
                 <div class="vk-eintrag-info">
                     <strong>${vk.name}</strong>
                     <span style="color:${statusFarbe}; font-weight:600; font-size:13px;">${statusText}</span>
-                    <span style="color:#94a3b8; font-size:12px;">Ablaufdatum: ${datumFormatiert}</span>
+                    <span style="color:#94a3b8; font-size:12px;">${t('vkExpiryLabel')} ${datumFormatiert}</span>
                 </div>
                 <button class="vk-loeschen-btn" onclick="vkLoeschen('${vk.id}')" aria-label="Löschen">🗑️</button>
             </div>
@@ -316,6 +317,11 @@ function vkInitScreen() {
     if (statusEl && localStorage.getItem(VK_PUSH_AKTIV_KEY) === '1') {
         statusEl.textContent = '✅ Erinnerungen sind aktiv.';
     }
+    // Sicherheitsnetz: bei jedem Öffnen des Screens den aktuellen Stand erneut
+    // an den Server melden, falls ein früherer Sync (z. B. direkt nach dem
+    // Aktivieren) mal nicht sauber durchgelaufen ist. vkSyncMitServer() tut
+    // ohnehin nichts, wenn Push noch nicht aktiviert wurde.
+    vkSyncMitServer();
 }
 
 // --- Push-Benachrichtigungen ---
@@ -434,20 +440,20 @@ function nsRendereListe() {
     const liste = nsLadeAlle();
 
     if (liste.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px;">Noch keine Person hinterlegt.</p>';
+        container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:14px;">${t('nsEmpty')}</p>`;
         return;
     }
 
     container.innerHTML = liste.map(p => {
         const alter = nsAlter(p.geburtsdatum);
-        const alterText = alter !== null ? `, ${alter} Jahre` : '';
+        const alterText = alter !== null ? `, ${alter} ${t('nsYears')}` : '';
         return `
             <div class="ns-eintrag">
                 <div class="ns-eintrag-info" onclick="nsKarteAnzeigen('${p.id}')">
                     <strong>${nsEscape(p.name)}${alterText}</strong>
                     <span>
-                        ${p.allergien ? '<span class="ns-badge ns-badge-warn">⚠️ Allergien</span>' : ''}
-                        ${p.medikation ? '<span class="ns-badge">💊 Medikation</span>' : ''}
+                        ${p.allergien ? `<span class="ns-badge ns-badge-warn">⚠️ ${t('nsBadgeAllergies')}</span>` : ''}
+                        ${p.medikation ? `<span class="ns-badge">💊 ${t('nsBadgeMedication')}</span>` : ''}
                     </span>
                 </div>
                 <div class="ns-eintrag-aktionen">
@@ -462,7 +468,7 @@ function nsRendereListe() {
 function nsFormOeffnen() {
     document.getElementById('ns-edit-id').value = '';
     document.getElementById('ns-form').reset();
-    document.getElementById('ns-form-titel').textContent = '➕ Person hinzufügen';
+    document.getElementById('ns-form-titel').innerHTML = `➕ ${t('nsAddPerson')}`;
     document.getElementById('ns-form').style.display = 'block';
     document.getElementById('ns-neu-btn').style.display = 'none';
 }
@@ -490,7 +496,7 @@ function nsBearbeiten(id) {
     document.getElementById('ns-kontakt-name-input').value = person.kontakt_name || '';
     document.getElementById('ns-kontakt-telefon-input').value = person.kontakt_telefon || '';
 
-    document.getElementById('ns-form-titel').textContent = '✏️ Person bearbeiten';
+    document.getElementById('ns-form-titel').innerHTML = `✏️ ${t('nsEditPerson')}`;
     document.getElementById('ns-form').style.display = 'block';
     document.getElementById('ns-neu-btn').style.display = 'none';
     document.getElementById('ns-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -539,7 +545,7 @@ function nsKarteAnzeigen(id) {
     if (!person) return;
 
     const alter = nsAlter(person.geburtsdatum);
-    const alterZeile = alter !== null ? `${alter} Jahre` : '';
+    const alterZeile = alter !== null ? `${alter} ${t('nsYears')}` : '';
 
     const zeile = (label, wert) => wert ? `
         <div class="ns-karte-zeile">
@@ -554,16 +560,16 @@ function nsKarteAnzeigen(id) {
         </div>` : '';
 
     document.getElementById('ns-kartenansicht').innerHTML = `
-        <button class="back-btn" onclick="nsKarteSchliessen()">⬅ Zurück zur Liste</button>
+        <button class="back-btn" onclick="nsKarteSchliessen()">⬅ ${t('nsBackToList')}</button>
         <div class="ns-grosskarte">
             <h2>${nsEscape(person.name)}</h2>
             ${alterZeile ? `<p class="ns-karte-alter">${alterZeile}</p>` : ''}
-            ${zeile('🩸 Blutgruppe', person.blutgruppe)}
-            ${zeile('⚠️ Allergien', person.allergien)}
-            ${zeile('💊 Medikation', person.medikation)}
-            ${zeile('🏥 Vorerkrankungen', person.vorerkrankungen)}
-            ${telZeile('👨‍⚕️ Hausarzt', person.arzt_name, person.arzt_telefon)}
-            ${telZeile('📞 Notfallkontakt', person.kontakt_name, person.kontakt_telefon)}
+            ${zeile('🩸 ' + t('nsBloodType'), person.blutgruppe)}
+            ${zeile('⚠️ ' + t('nsBadgeAllergies'), person.allergien)}
+            ${zeile('💊 ' + t('nsBadgeMedication'), person.medikation)}
+            ${zeile('🏥 ' + t('nsConditions'), person.vorerkrankungen)}
+            ${telZeile('👨‍⚕️ ' + t('nsDoctor'), person.arzt_name, person.arzt_telefon)}
+            ${telZeile('📞 ' + t('nsEmergencyContact'), person.kontakt_name, person.kontakt_telefon)}
         </div>
     `;
 

@@ -1,12 +1,18 @@
 {
+  "id": "/",
   "name": "Erste Hilfe ABC Notfallapp",
   "short_name": "Erste Hilfe",
+  "description": "Erste-Hilfe-Ratgeber für Baby, Kind und Erwachsene: Schritt-für-Schritt-Anleitungen im Notfall, Verbandkasten-Check mit Erinnerung und digitaler Notfall-Steckbrief für die ganze Familie.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
+  "lang": "de",
+  "dir": "ltr",
+  "categories": ["health", "medical", "lifestyle"],
+  "prefer_related_applications": false,
   "background_color": "#2c3e50",
   "theme_color": "#c0392b",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "./icons/icon-192.png",
