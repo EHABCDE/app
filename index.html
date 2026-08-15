@@ -52,6 +52,16 @@
                 </button>
             </div>
 
+            <!-- Schnellzugriff: Verbandkasten-Check & Notfall-Steckbrief -->
+            <button class="lage-tile" style="background-color:#fff7ed; border-color:#f97316; color:#c2410c; margin-bottom:12px;" onclick="showScreen('screen-verbandkasten')">
+                <span class="lage-tile-icon">🩹</span>
+                <span class="lage-tile-text">Verbandkasten-Check</span>
+            </button>
+            <button class="lage-tile" style="background-color:#eef2ff; border-color:#6366f1; color:#4338ca; margin-bottom:12px;" onclick="showScreen('screen-notfallsteckbrief')">
+                <span class="lage-tile-icon">🆔</span>
+                <span class="lage-tile-text">Notfall-Steckbrief</span>
+            </button>
+
             <!-- Saisonale Hinweise: Status-Kachel (Pollen/UV/Grippewelle) -->
             <button id="lage-status-tile" class="lage-tile lage-tile-neutral" onclick="showScreen('screen-aktuelle-lage')" style="display: none;">
                 <span class="lage-tile-icon" id="lage-tile-icon">📍</span>

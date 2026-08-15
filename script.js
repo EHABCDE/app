@@ -51,24 +51,6 @@ const topics = [
         specialBg: '#e8f8f5',
         specialBorder: '#27ae60',
         specialColor: '#1e8449'
-    },
-    {
-        id: 'verbandkasten',
-        title: '🩹 Verbandkasten-Check',
-        category: 'Info',
-        isSpecial: true,
-        specialBg: '#fff7ed',
-        specialBorder: '#f97316',
-        specialColor: '#c2410c'
-    },
-    {
-        id: 'notfallsteckbrief',
-        title: '🆔 Notfall-Steckbrief',
-        category: 'Info',
-        isSpecial: true,
-        specialBg: '#eef2ff',
-        specialBorder: '#6366f1',
-        specialColor: '#4338ca'
     }
 ];
 
@@ -125,24 +107,6 @@ const adultTopics = [
         specialBg: '#fadbd8',
         specialBorder: '#e74c3c',
         specialColor: '#78281f'
-    },
-    {
-        id: 'verbandkasten',
-        title: '🩹 Verbandkasten-Check',
-        category: 'Info',
-        isSpecial: true,
-        specialBg: '#fff7ed',
-        specialBorder: '#f97316',
-        specialColor: '#c2410c'
-    },
-    {
-        id: 'notfallsteckbrief',
-        title: '🆔 Notfall-Steckbrief',
-        category: 'Info',
-        isSpecial: true,
-        specialBg: '#eef2ff',
-        specialBorder: '#6366f1',
-        specialColor: '#4338ca'
     }
 ];
 // Start-Funktion beim Laden
