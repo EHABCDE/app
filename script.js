@@ -51,6 +51,24 @@ const topics = [
         specialBg: '#e8f8f5',
         specialBorder: '#27ae60',
         specialColor: '#1e8449'
+    },
+    {
+        id: 'verbandkasten',
+        title: '🩹 Verbandkasten-Check',
+        category: 'Info',
+        isSpecial: true,
+        specialBg: '#fff7ed',
+        specialBorder: '#f97316',
+        specialColor: '#c2410c'
+    },
+    {
+        id: 'notfallsteckbrief',
+        title: '🆔 Notfall-Steckbrief',
+        category: 'Info',
+        isSpecial: true,
+        specialBg: '#eef2ff',
+        specialBorder: '#6366f1',
+        specialColor: '#4338ca'
     }
 ];
 
@@ -107,6 +125,24 @@ const adultTopics = [
         specialBg: '#fadbd8',
         specialBorder: '#e74c3c',
         specialColor: '#78281f'
+    },
+    {
+        id: 'verbandkasten',
+        title: '🩹 Verbandkasten-Check',
+        category: 'Info',
+        isSpecial: true,
+        specialBg: '#fff7ed',
+        specialBorder: '#f97316',
+        specialColor: '#c2410c'
+    },
+    {
+        id: 'notfallsteckbrief',
+        title: '🆔 Notfall-Steckbrief',
+        category: 'Info',
+        isSpecial: true,
+        specialBg: '#eef2ff',
+        specialBorder: '#6366f1',
+        specialColor: '#4338ca'
     }
 ];
 // Start-Funktion beim Laden
@@ -203,6 +239,384 @@ function showScreen(screenId) {
     if (screenId === 'screen-aktuelle-lage') {
         rendereAktuelleLage();
     }
+
+    if (screenId === 'screen-verbandkasten') {
+        vkInitScreen();
+    }
+
+    if (screenId === 'screen-notfallsteckbrief') {
+        nsInitScreen();
+    }
+}
+
+// =========================================================
+// 🩹 VERBANDKASTEN-CHECK (lokale Speicherung + Push-Erinnerung)
+// =========================================================
+const VK_STORAGE_KEY = 'eh_abc_verbandkaesten';
+const VK_PUSH_AKTIV_KEY = 'eh_abc_push_aktiv';
+const VK_PUSH_API_BASIS = "https://buchung.erste-hilfe-abc.de/api/push";
+const VK_STANDARD_VORLAUF_TAGE = 30;
+
+function vkLadeAlle() {
+    try {
+        return JSON.parse(localStorage.getItem(VK_STORAGE_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function vkSpeichereAlle(liste) {
+    localStorage.setItem(VK_STORAGE_KEY, JSON.stringify(liste));
+}
+
+function vkTageBisAblauf(datumStr) {
+    const heute = new Date();
+    heute.setHours(0, 0, 0, 0);
+    const ablauf = new Date(datumStr + 'T00:00:00');
+    return Math.round((ablauf - heute) / (1000 * 60 * 60 * 24));
+}
+
+function vkRendereListe() {
+    const container = document.getElementById('vk-liste');
+    if (!container) return;
+    const liste = vkLadeAlle();
+
+    if (liste.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px;">Noch kein Verbandkasten hinterlegt.</p>';
+        return;
+    }
+
+    container.innerHTML = liste.map((vk, index) => {
+        const tage = vkTageBisAblauf(vk.ablaufdatum);
+        let statusFarbe = '#27ae60';
+        let statusText = `Noch ${tage} Tage gültig`;
+        if (tage < 0) {
+            statusFarbe = '#c0392b';
+            statusText = 'Abgelaufen!';
+        } else if (tage <= 60) {
+            statusFarbe = '#e67e22';
+            statusText = `Läuft in ${tage} Tagen ab`;
+        }
+
+        const datumFormatiert = new Date(vk.ablaufdatum + 'T00:00:00').toLocaleDateString('de-DE');
+
+        return `
+            <div class="vk-eintrag" style="border-left: 5px solid ${statusFarbe};">
+                <div class="vk-eintrag-info">
+                    <strong>${vk.name}</strong>
+                    <span style="color:${statusFarbe}; font-weight:600; font-size:13px;">${statusText}</span>
+                    <span style="color:#94a3b8; font-size:12px;">Ablaufdatum: ${datumFormatiert}</span>
+                </div>
+                <button class="vk-loeschen-btn" onclick="vkLoeschen('${vk.id}')" aria-label="Löschen">🗑️</button>
+            </div>
+        `;
+    }).join('');
+}
+
+function vkHinzufuegen(event) {
+    event.preventDefault();
+    const nameInput = document.getElementById('vk-name-input');
+    const datumInput = document.getElementById('vk-datum-input');
+
+    const name = nameInput.value.trim();
+    const datum = datumInput.value;
+    if (!name || !datum) return;
+
+    const liste = vkLadeAlle();
+    liste.push({
+        id: 'vk_' + Date.now(),
+        name: name,
+        ablaufdatum: datum,
+        vorlauf_tage: VK_STANDARD_VORLAUF_TAGE,
+        erinnert_am: null
+    });
+    vkSpeichereAlle(liste);
+
+    nameInput.value = '';
+    datumInput.value = '';
+
+    vkRendereListe();
+    vkSyncMitServer();
+}
+
+function vkLoeschen(id) {
+    const liste = vkLadeAlle().filter(vk => vk.id !== id);
+    vkSpeichereAlle(liste);
+    vkRendereListe();
+    vkSyncMitServer();
+}
+
+function vkInitScreen() {
+    vkRendereListe();
+    const statusEl = document.getElementById('vk-push-status');
+    if (statusEl && localStorage.getItem(VK_PUSH_AKTIV_KEY) === '1') {
+        statusEl.textContent = '✅ Erinnerungen sind aktiv.';
+    }
+}
+
+// --- Push-Benachrichtigungen ---
+
+function vkUrlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = atob(base64);
+    return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
+
+async function vkErinnerungAktivieren() {
+    const statusEl = document.getElementById('vk-push-status');
+
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        if (statusEl) statusEl.textContent = 'Push-Erinnerungen werden von diesem Browser leider nicht unterstützt.';
+        return;
+    }
+
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+            if (statusEl) statusEl.textContent = 'Ohne erlaubte Benachrichtigungen kann ich dich leider nicht erinnern.';
+            return;
+        }
+
+        const reg = await navigator.serviceWorker.ready;
+        let subscription = await reg.pushManager.getSubscription();
+
+        if (!subscription) {
+            const keyResponse = await fetch(`${VK_PUSH_API_BASIS}/vapid-public-key`);
+            const { publicKey } = await keyResponse.json();
+            subscription = await reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: vkUrlBase64ToUint8Array(publicKey)
+            });
+        }
+
+        localStorage.setItem(VK_PUSH_AKTIV_KEY, '1');
+        await vkSyncMitServer(subscription);
+
+        if (statusEl) statusEl.textContent = '✅ Erinnerungen sind aktiv.';
+    } catch (e) {
+        console.error('Push-Aktivierung fehlgeschlagen:', e);
+        if (statusEl) statusEl.textContent = 'Erinnerungen konnten nicht aktiviert werden.';
+    }
+}
+
+async function vkSyncMitServer(subscriptionUebergabe) {
+    if (localStorage.getItem(VK_PUSH_AKTIV_KEY) !== '1') return;
+
+    try {
+        let subscription = subscriptionUebergabe;
+        if (!subscription && 'serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.ready;
+            subscription = await reg.pushManager.getSubscription();
+        }
+        if (!subscription) return;
+
+        await fetch(`${VK_PUSH_API_BASIS}/subscribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subscription: subscription.toJSON ? subscription.toJSON() : subscription,
+                erinnerungen: vkLadeAlle()
+            })
+        });
+    } catch (e) {
+        console.error('Push-Sync fehlgeschlagen:', e);
+    }
+}
+
+// =========================================================
+// 🆔 NOTFALL-STECKBRIEF (rein lokal - wird NIEMALS an einen Server geschickt)
+// =========================================================
+const NS_STORAGE_KEY = 'eh_abc_notfallsteckbriefe';
+
+function nsLadeAlle() {
+    try {
+        return JSON.parse(localStorage.getItem(NS_STORAGE_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function nsSpeichereAlle(liste) {
+    localStorage.setItem(NS_STORAGE_KEY, JSON.stringify(liste));
+}
+
+function nsInitScreen() {
+    nsKarteSchliessen();
+    nsFormSchliessen();
+    nsRendereListe();
+}
+
+function nsAlter(geburtsdatum) {
+    if (!geburtsdatum) return null;
+    const heute = new Date();
+    const geb = new Date(geburtsdatum + 'T00:00:00');
+    let alter = heute.getFullYear() - geb.getFullYear();
+    const vorGeburtstag = (heute.getMonth() < geb.getMonth()) ||
+        (heute.getMonth() === geb.getMonth() && heute.getDate() < geb.getDate());
+    if (vorGeburtstag) alter--;
+    return alter;
+}
+
+function nsEscape(text) {
+    const div = document.createElement('div');
+    div.textContent = text || '';
+    return div.innerHTML;
+}
+
+function nsRendereListe() {
+    const container = document.getElementById('ns-liste');
+    if (!container) return;
+    const liste = nsLadeAlle();
+
+    if (liste.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px;">Noch keine Person hinterlegt.</p>';
+        return;
+    }
+
+    container.innerHTML = liste.map(p => {
+        const alter = nsAlter(p.geburtsdatum);
+        const alterText = alter !== null ? `, ${alter} Jahre` : '';
+        return `
+            <div class="ns-eintrag">
+                <div class="ns-eintrag-info" onclick="nsKarteAnzeigen('${p.id}')">
+                    <strong>${nsEscape(p.name)}${alterText}</strong>
+                    <span>
+                        ${p.allergien ? '<span class="ns-badge ns-badge-warn">⚠️ Allergien</span>' : ''}
+                        ${p.medikation ? '<span class="ns-badge">💊 Medikation</span>' : ''}
+                    </span>
+                </div>
+                <div class="ns-eintrag-aktionen">
+                    <button onclick="nsBearbeiten('${p.id}')" aria-label="Bearbeiten">✏️</button>
+                    <button onclick="nsLoeschen('${p.id}')" aria-label="Löschen">🗑️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function nsFormOeffnen() {
+    document.getElementById('ns-edit-id').value = '';
+    document.getElementById('ns-form').reset();
+    document.getElementById('ns-form-titel').textContent = '➕ Person hinzufügen';
+    document.getElementById('ns-form').style.display = 'block';
+    document.getElementById('ns-neu-btn').style.display = 'none';
+}
+
+function nsFormSchliessen() {
+    const form = document.getElementById('ns-form');
+    const btn = document.getElementById('ns-neu-btn');
+    if (form) { form.style.display = 'none'; form.reset(); }
+    if (btn) btn.style.display = 'block';
+}
+
+function nsBearbeiten(id) {
+    const person = nsLadeAlle().find(p => p.id === id);
+    if (!person) return;
+
+    document.getElementById('ns-edit-id').value = person.id;
+    document.getElementById('ns-name-input').value = person.name || '';
+    document.getElementById('ns-geburtsdatum-input').value = person.geburtsdatum || '';
+    document.getElementById('ns-blutgruppe-input').value = person.blutgruppe || '';
+    document.getElementById('ns-allergien-input').value = person.allergien || '';
+    document.getElementById('ns-medikation-input').value = person.medikation || '';
+    document.getElementById('ns-vorerkrankungen-input').value = person.vorerkrankungen || '';
+    document.getElementById('ns-arzt-name-input').value = person.arzt_name || '';
+    document.getElementById('ns-arzt-telefon-input').value = person.arzt_telefon || '';
+    document.getElementById('ns-kontakt-name-input').value = person.kontakt_name || '';
+    document.getElementById('ns-kontakt-telefon-input').value = person.kontakt_telefon || '';
+
+    document.getElementById('ns-form-titel').textContent = '✏️ Person bearbeiten';
+    document.getElementById('ns-form').style.display = 'block';
+    document.getElementById('ns-neu-btn').style.display = 'none';
+    document.getElementById('ns-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function nsSpeichern(event) {
+    event.preventDefault();
+
+    const editId = document.getElementById('ns-edit-id').value;
+    const name = document.getElementById('ns-name-input').value.trim();
+    if (!name) return;
+
+    const daten = {
+        name: name,
+        geburtsdatum: document.getElementById('ns-geburtsdatum-input').value,
+        blutgruppe: document.getElementById('ns-blutgruppe-input').value,
+        allergien: document.getElementById('ns-allergien-input').value.trim(),
+        medikation: document.getElementById('ns-medikation-input').value.trim(),
+        vorerkrankungen: document.getElementById('ns-vorerkrankungen-input').value.trim(),
+        arzt_name: document.getElementById('ns-arzt-name-input').value.trim(),
+        arzt_telefon: document.getElementById('ns-arzt-telefon-input').value.trim(),
+        kontakt_name: document.getElementById('ns-kontakt-name-input').value.trim(),
+        kontakt_telefon: document.getElementById('ns-kontakt-telefon-input').value.trim()
+    };
+
+    let liste = nsLadeAlle();
+    if (editId) {
+        liste = liste.map(p => p.id === editId ? Object.assign({}, p, daten) : p);
+    } else {
+        liste.push(Object.assign({ id: 'ns_' + Date.now() }, daten));
+    }
+    nsSpeichereAlle(liste);
+
+    nsFormSchliessen();
+    nsRendereListe();
+}
+
+function nsLoeschen(id) {
+    const liste = nsLadeAlle().filter(p => p.id !== id);
+    nsSpeichereAlle(liste);
+    nsRendereListe();
+}
+
+function nsKarteAnzeigen(id) {
+    const person = nsLadeAlle().find(p => p.id === id);
+    if (!person) return;
+
+    const alter = nsAlter(person.geburtsdatum);
+    const alterZeile = alter !== null ? `${alter} Jahre` : '';
+
+    const zeile = (label, wert) => wert ? `
+        <div class="ns-karte-zeile">
+            <span class="ns-karte-label">${label}</span>
+            <span class="ns-karte-wert">${nsEscape(wert)}</span>
+        </div>` : '';
+
+    const telZeile = (label, name, telefon) => telefon ? `
+        <div class="ns-karte-zeile">
+            <span class="ns-karte-label">${label}</span>
+            <a href="tel:${telefon.replace(/\s/g, '')}" class="ns-karte-tel">${name ? nsEscape(name) + ' – ' : ''}${nsEscape(telefon)}</a>
+        </div>` : '';
+
+    document.getElementById('ns-kartenansicht').innerHTML = `
+        <button class="back-btn" onclick="nsKarteSchliessen()">⬅ Zurück zur Liste</button>
+        <div class="ns-grosskarte">
+            <h2>${nsEscape(person.name)}</h2>
+            ${alterZeile ? `<p class="ns-karte-alter">${alterZeile}</p>` : ''}
+            ${zeile('🩸 Blutgruppe', person.blutgruppe)}
+            ${zeile('⚠️ Allergien', person.allergien)}
+            ${zeile('💊 Medikation', person.medikation)}
+            ${zeile('🏥 Vorerkrankungen', person.vorerkrankungen)}
+            ${telZeile('👨‍⚕️ Hausarzt', person.arzt_name, person.arzt_telefon)}
+            ${telZeile('📞 Notfallkontakt', person.kontakt_name, person.kontakt_telefon)}
+        </div>
+    `;
+
+    document.getElementById('ns-liste').style.display = 'none';
+    document.getElementById('ns-neu-btn').style.display = 'none';
+    document.getElementById('ns-form').style.display = 'none';
+    document.getElementById('ns-kartenansicht').style.display = 'block';
+    window.scrollTo(0, 0);
+}
+
+function nsKarteSchliessen() {
+    const karte = document.getElementById('ns-kartenansicht');
+    if (karte) { karte.style.display = 'none'; karte.innerHTML = ''; }
+    const liste = document.getElementById('ns-liste');
+    if (liste) liste.style.display = 'block';
+    const neuBtn = document.getElementById('ns-neu-btn');
+    if (neuBtn) neuBtn.style.display = 'block';
 }
 
 // =========================================================

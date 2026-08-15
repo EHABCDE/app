@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Erste Hilfe">
-    <link rel="apple-touch-icon" href="./logo.jpg">
+    <link rel="apple-touch-icon" href="./icons/icon-180.png">
     
     <link rel="stylesheet" href="./style.css">
     <link rel="manifest" href="./manifest.json">
@@ -114,6 +114,11 @@
                 <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
                 <br><br>
                 <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+                <div style="text-align:center; margin-top:12px; font-size:12px;">
+                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;">Datenschutz</a>
+                    &nbsp;·&nbsp;
+                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;">Impressum</a>
+                </div>
             </div>
         </section>
 
@@ -145,6 +150,11 @@
                 <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
                 <br><br>
                 <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+                <div style="text-align:center; margin-top:12px; font-size:12px;">
+                    <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;">Datenschutz</a>
+                    &nbsp;·&nbsp;
+                    <a href="./impressum.html" style="color:#2980b9; text-decoration:none;">Impressum</a>
+                </div>
             </div>
         </section>
 
@@ -1867,6 +1877,100 @@
                     </a>
                 </div>
             </div>
+        </section>
+
+        <!-- BILDSCHIRM: VERBANDKASTEN-CHECK (Ablaufdaten + Push-Erinnerung) -->
+        <section id="screen-verbandkasten" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+
+            <h1 style="color:#c2410c;">🩹 Verbandkasten-Check</h1>
+            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;">
+                Nie wieder ein abgelaufener Verbandkasten
+            </p>
+
+            <div class="app-disclaimer" style="margin-bottom:20px;">
+                Ein Verbandkasten im Auto ist in Deutschland Pflicht (DIN 13164). Das aufgedruckte Verfalldatum ist eine Herstellerempfehlung für die volle Funktionsfähigkeit (z.&nbsp;B. Sterilität) – ein deutlich überschrittenes Datum kann bei der Hauptuntersuchung dennoch beanstandet werden.
+            </div>
+
+            <form id="vk-form" onsubmit="vkHinzufuegen(event)" style="margin-bottom:24px;">
+                <input type="text" id="vk-name-input" placeholder="Bezeichnung (z. B. Auto - VW Golf)" required
+                    style="width:100%; box-sizing:border-box; margin-bottom:10px; padding:12px; border-radius:10px; border:1px solid #cbd5e1; font-size:15px;">
+                <input type="date" id="vk-datum-input" required
+                    style="width:100%; box-sizing:border-box; margin-bottom:10px; padding:12px; border-radius:10px; border:1px solid #cbd5e1; font-size:15px;">
+                <button type="submit" class="btn-secondary" style="background-color:#2980b9; color:white !important; border:none; width:100%;">
+                    ➕ Verbandkasten hinzufügen
+                </button>
+            </form>
+
+            <div id="vk-liste" style="margin-bottom:24px;"></div>
+
+            <div style="background-color:#fff7ed; border:1px solid #f97316; border-radius:12px; padding:14px 16px; margin-bottom:20px;">
+                <p style="margin:0 0 8px 0; font-weight:600; color:#c2410c;">🔔 Erinnerung per Push-Benachrichtigung</p>
+                <p style="margin:0 0 10px 0; font-size:13px; color:#7c2d12;">Wir erinnern dich automatisch 30 Tage vor Ablauf – direkt auf deinem Handy.</p>
+                <button onclick="vkErinnerungAktivieren()" class="btn-secondary" style="background-color:#f97316; color:white !important; border:none; width:100%;">
+                    Erinnerungen aktivieren
+                </button>
+                <p id="vk-push-status" style="margin:10px 0 0 0; font-size:13px; color:#7c2d12;"></p>
+            </div>
+
+            <a href="https://www.amazon.de/s?k=kfz+verbandkasten+din+13164+lange+haltbarkeit&tag=ehabc-21" target="_blank"
+                style="display:block; background-color:#ebf5fb; border:1px solid #2980b9; border-radius:12px; padding:14px 16px; text-decoration:none; margin-bottom:20px;">
+                <strong style="color:#2980b9;">👉 Verbandkasten mit langer Haltbarkeit ansehen</strong>
+                <div style="font-size:13px; color:#1b4f72; margin-top:4px;">Spart dir den nächsten Austausch für mehrere Jahre</div>
+            </a>
+
+            <div class="app-disclaimer">
+                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+            </div>
+        </section>
+
+        <!-- BILDSCHIRM: NOTFALL-STECKBRIEF (rein lokal, keine Server-Übertragung) -->
+        <section id="screen-notfallsteckbrief" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToCategoryChooser()">⬅ Zurück zur Auswahl</button>
+
+            <h1 style="color:#4338ca;">🆔 Notfall-Steckbrief</h1>
+            <p style="text-align:center; font-size:15px; color:#64748b; margin:0 0 20px 0;">
+                Wichtige Infos für Rettungskräfte, Kita &amp; Schule – immer griffbereit
+            </p>
+
+            <div class="app-disclaimer" style="margin-bottom:20px;">
+                Diese Daten werden ausschließlich auf deinem Gerät gespeichert und niemals an einen Server übertragen.
+            </div>
+
+            <div id="ns-liste" style="margin-bottom:20px;"></div>
+
+            <button onclick="nsFormOeffnen()" id="ns-neu-btn" class="btn-secondary" style="background-color:#4338ca; color:white !important; border:none; width:100%; margin-bottom:24px;">
+                ➕ Person hinzufügen
+            </button>
+
+            <form id="ns-form" onsubmit="nsSpeichern(event)" style="display:none; margin-bottom:24px;">
+                <h3 id="ns-form-titel" style="margin:0 0 12px 0; color:#4338ca;">➕ Person hinzufügen</h3>
+                <input type="hidden" id="ns-edit-id">
+
+                <input type="text" id="ns-name-input" class="ns-input" placeholder="Name *" required>
+                <input type="date" id="ns-geburtsdatum-input" class="ns-input" placeholder="Geburtsdatum (optional)">
+                <select id="ns-blutgruppe-input" class="ns-input">
+                    <option value="">Blutgruppe (optional)</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>0+</option><option>0-</option>
+                </select>
+                <textarea id="ns-allergien-input" class="ns-input" placeholder="Allergien (optional)"></textarea>
+                <textarea id="ns-medikation-input" class="ns-input" placeholder="Dauermedikation (optional)"></textarea>
+                <textarea id="ns-vorerkrankungen-input" class="ns-input" placeholder="Vorerkrankungen (optional)"></textarea>
+                <input type="text" id="ns-arzt-name-input" class="ns-input" placeholder="Hausarzt (optional)">
+                <input type="tel" id="ns-arzt-telefon-input" class="ns-input" placeholder="Telefon Hausarzt (optional)">
+                <input type="text" id="ns-kontakt-name-input" class="ns-input" placeholder="Notfallkontakt Name (optional)">
+                <input type="tel" id="ns-kontakt-telefon-input" class="ns-input" placeholder="Notfallkontakt Telefon (optional)">
+
+                <div style="display:flex; gap:10px; margin-top:6px;">
+                    <button type="submit" class="btn-secondary" style="flex:1; background-color:#4338ca; color:white !important; border:none;">💾 Speichern</button>
+                    <button type="button" onclick="nsFormSchliessen()" class="btn-secondary" style="flex:1;">Abbrechen</button>
+                </div>
+            </form>
+
+            <div id="ns-kartenansicht" style="display:none;"></div>
         </section>
 
         <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL) -->

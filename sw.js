@@ -1,12 +1,17 @@
-// WICHTIG: Version auf v20 erhöht, um das Update bei allen Nutzern zu erzwingen!
-const CACHE_NAME = 'eh-abc-v20';
+// WICHTIG: Version auf v21 erhöht, um das Update bei allen Nutzern zu erzwingen!
+const CACHE_NAME = 'eh-abc-v21';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './script.js',
   './manifest.json',
-  './logo.jpg'
+  './logo.jpg',
+  './datenschutz.html',
+  './impressum.html',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png'
 ];
 
 // Dateien beim ersten Laden in den Speicher des Handys laden
@@ -48,6 +53,40 @@ self.addEventListener('fetch', (e) => {
       
       // Liefere sofort die Offline-Version, wenn vorhanden. Sonst warte aufs Netz.
       return cachedResponse || fetchPromise;
+    })
+  );
+});
+
+// =========================================================
+// PUSH-BENACHRICHTIGUNGEN (Verbandkasten-Erinnerungen etc.)
+// =========================================================
+
+self.addEventListener('push', (e) => {
+  let payload = { title: '🩹 Erste Hilfe ABC', body: 'Du hast eine neue Erinnerung.' };
+  try {
+    if (e.data) payload = e.data.json();
+  } catch (err) {
+    if (e.data) payload.body = e.data.text();
+  }
+
+  e.waitUntil(
+    self.registration.showNotification(payload.title || '🩹 Erste Hilfe ABC', {
+      body: payload.body || '',
+      icon: './icons/icon-192.png',
+      badge: './icons/icon-192.png',
+      tag: 'eh-abc-erinnerung'
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if ('focus' in client) return client.focus();
+      }
+      if (clients.openWindow) return clients.openWindow('./index.html');
     })
   );
 });
