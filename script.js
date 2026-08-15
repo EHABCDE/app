@@ -6,6 +6,84 @@
 // läuft auf demselben VPS wie das Dozentenbuchungstool, eigener nginx-Pfad.
 const LAGE_API_BASIS = "https://buchung.erste-hilfe-abc.de/lage-api";
 
+// --- GIFTNOTRUFZENTRALEN NACH BUNDESLAND ---
+// Quelle: BfR-Verzeichnis der Giftinformationszentren (bfr.bund.de) sowie
+// kindergesundheit-info.de, Stand 08/2026. Berlin ist per Verwaltungs-
+// vereinbarung (2025) auch für Brandenburg zuständig. Bitte von Johannes
+// gegenprüfen, falls sich Zuständigkeiten ändern sollten.
+// "tel" = Zielnummer fürs tel:-Attribut (ohne Leerzeichen), "anzeige" = les-
+// bare Darstellung.
+const GIFTNOTRUF_ZENTRALEN = {
+    "Baden-Württemberg": { ort: "Freiburg", anzeige: "0761 19240", tel: "076119240" },
+    "Bayern":            { ort: "München",  anzeige: "089 19240",  tel: "08919240" },
+    "Berlin":            { ort: "Berlin",   anzeige: "030 19240",  tel: "03019240" },
+    "Brandenburg":       { ort: "Berlin",   anzeige: "030 19240",  tel: "03019240" },
+    "Bremen":            { ort: "Göttingen", anzeige: "0551 19240", tel: "055119240" },
+    "Hamburg":           { ort: "Göttingen", anzeige: "0551 19240", tel: "055119240" },
+    "Hessen":            { ort: "Mainz",    anzeige: "06131 19240", tel: "0613119240" },
+    "Mecklenburg-Vorpommern": { ort: "Erfurt", anzeige: "0361 730730", tel: "0361730730" },
+    "Niedersachsen":     { ort: "Göttingen", anzeige: "0551 19240", tel: "055119240" },
+    "Nordrhein-Westfalen": { ort: "Bonn",   anzeige: "0228 19240", tel: "022819240" },
+    "Rheinland-Pfalz":   { ort: "Mainz",    anzeige: "06131 19240", tel: "0613119240" },
+    "Saarland":          { ort: "Mainz",    anzeige: "06131 19240", tel: "0613119240" },
+    "Sachsen":           { ort: "Erfurt",   anzeige: "0361 730730", tel: "0361730730" },
+    "Sachsen-Anhalt":    { ort: "Erfurt",   anzeige: "0361 730730", tel: "0361730730" },
+    "Schleswig-Holstein": { ort: "Göttingen", anzeige: "0551 19240", tel: "055119240" },
+    "Thüringen":         { ort: "Erfurt",   anzeige: "0361 730730", tel: "0361730730" }
+};
+
+// Fallback, falls Standort/Bundesland nicht ermittelt werden kann: Berlin
+// (Charité) nimmt Anrufe bundesweit an und vermittelt bei Bedarf weiter.
+const GIFTNOTRUF_FALLBACK = { ort: "Berlin", anzeige: "030 19240", tel: "03019240" };
+
+// Findet die zuständige Giftnotrufzentrale zu einem von Nominatim gelieferten
+// Bundesland-Namen. Nominatim liefert i.d.R. exakt die amtlichen Bundes-
+// landnamen, daher zunächst exakter Treffer, sonst tolerantes Teilstring-
+// Matching (z. B. falls mal "Freistaat Bayern" o.ä. zurückkommt).
+function findeGiftnotruf(bundesland) {
+    if (!bundesland) return null;
+    if (GIFTNOTRUF_ZENTRALEN[bundesland]) return GIFTNOTRUF_ZENTRALEN[bundesland];
+
+    const normalisiert = bundesland.trim().toLowerCase();
+    for (const [land, zentrale] of Object.entries(GIFTNOTRUF_ZENTRALEN)) {
+        if (normalisiert.includes(land.toLowerCase()) || land.toLowerCase().includes(normalisiert)) {
+            return zentrale;
+        }
+    }
+    return null;
+}
+
+// Aktualisiert alle Stellen in der App, an denen die zum Standort passende
+// Giftnotrufzentrale angezeigt wird (Vergiftungs-Notfallscreen + Notruf-
+// nummern-Übersicht). Fällt bei unbekanntem Standort auf die bundesweit
+// erreichbare Berliner Zentrale zurück, statt eine falsche/stehen-
+// gebliebene Nummer anzuzeigen.
+function aktualisierePoisonCenterUI(bundesland) {
+    const zentrale = findeGiftnotruf(bundesland) || GIFTNOTRUF_FALLBACK;
+    const istExakt = !!findeGiftnotruf(bundesland);
+
+    const poisonDisplay = document.getElementById('poison-center-display');
+    if (poisonDisplay) {
+        poisonDisplay.innerHTML = `
+            📞 Zuständige Zentrale${istExakt ? '' : ' (bundesweit)'}: <strong>${zentrale.ort}</strong><br>
+            <a href="tel:${zentrale.tel}" style="color:#eafaf1; font-weight:bold; font-size:18px; text-decoration:underline;">${zentrale.anzeige} anrufen</a>
+        `;
+    }
+
+    const poisonLocationInfo = document.getElementById('poison-location-info');
+    if (poisonLocationInfo) {
+        poisonLocationInfo.innerHTML = istExakt
+            ? `📍 <em>Für ${bundesland} zuständig: Giftnotruf ${zentrale.ort}</em>`
+            : `📍 <em>Standort unbekannt – bundesweit erreichbare Zentrale ${zentrale.ort}</em>`;
+    }
+
+    const poisonCallBtn = document.getElementById('poison-call-btn');
+    if (poisonCallBtn) {
+        poisonCallBtn.setAttribute('href', `tel:${zentrale.tel}`);
+        poisonCallBtn.innerHTML = `📞 Giftnotruf ${zentrale.ort} anrufen (${zentrale.anzeige})`;
+    }
+}
+
 // --- THEMEN-DATENBANK FÜR DIE STARTSEITE ---
 // HINWEIS: "istEchterNotfall" steuert im Notfallmodus, ob unten die rote
 // 112-Notruf-Leiste erscheint (true) oder stattdessen der Link zum
@@ -826,9 +904,10 @@ function initGeoLocation() {
 
                 display.innerHTML = locationHtml;
 
-                if (poisonDisplay) {
-                    poisonDisplay.innerHTML = `📍 Dein Standort: ${addressText} (${latFormatted}, ${lonFormatted})`;
-                }
+                // Zuständige Giftnotrufzentrale anhand des ermittelten Bundeslands anzeigen
+                // (poisonDisplay wird dabei bewusst mit der Zentrale statt nur der Adresse
+                // befüllt, siehe aktualisierePoisonCenterUI).
+                aktualisierePoisonCenterUI(bundesland);
 
                 if (checkGeoDisplay) {
                     checkGeoDisplay.innerHTML = locationHtml;
@@ -852,6 +931,10 @@ function initGeoLocation() {
                     checkGeoDisplayErw.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
                 }
 
+                // Ohne Standort auf bundesweit erreichbare Zentrale zurückfallen,
+                // statt die "wird ermittelt..."-Platzhalter stehen zu lassen.
+                aktualisierePoisonCenterUI(null);
+
                 aktualisiereLageKachelFehler();
             },
             {
@@ -864,6 +947,7 @@ function initGeoLocation() {
         if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
         if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Geolocation nicht unterstützt.';
         if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Geolocation nicht unterstützt.';
+        aktualisierePoisonCenterUI(null);
         aktualisiereLageKachelFehler();
     }
 }
