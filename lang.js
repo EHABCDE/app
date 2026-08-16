@@ -53,7 +53,39 @@ const TRANSLATIONS = {
         kopfKeineWarnzeichen: `
                 <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
                     ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem mindestens 24 Stunden weiter beobachten und bei Verschlechterung sofort 112 wählen.
-                </div>`
+                </div>`,
+
+        // Standort-Anzeige (initGeoLocation/renderGeoAnzeigen) wird per JS gesetzt,
+        // nicht aus dem HTML übernommen - deshalb hier explizit gepflegt.
+        geoWirdErmitteltVoll: '📍 Standort wird ermittelt (GPS & Adresse)...',
+        geoWirdErmittelt: '📍 Standort wird ermittelt...',
+        geoAdresseNichtGeladen: 'Adresse konnte nicht geladen werden',
+        geoAdresseOfflineNurGps: 'Offline / Adresse nur über GPS',
+        geoLocationHtml: '📍 <strong>Adresse:</strong> {adresse}<br>🌍 <strong>GPS:</strong> {lat}, {lon}',
+        geoNichtErmittelt: '📍 Standort konnte nicht automatisch ermittelt werden. Bitte im Notfall Straßenschilder beachten!',
+        geoNichtErmitteltKurz: '📍 Standort konnte nicht ermittelt werden.',
+        geoNichtUnterstuetzt: '📍 Geolocation wird von diesem Browser nicht unterstützt.',
+        geoNichtUnterstuetztKurz: '📍 Geolocation nicht unterstützt.',
+
+        // Zuhause-Check (generateRiskCheck/evaluateRiskCheck) - Ergebnis- und
+        // Bedienelemente werden per JS gesetzt, nicht aus dem HTML übernommen.
+        riskWhyImportant: '📖 Warum ist das wichtig? ▾',
+        riskYesLabel: 'Ja / Erfüllt',
+        riskNoLabel: 'Nein / Handlungsbedarf',
+        riskScoreLabel: '{score}% Kindersicher',
+        riskIntroResultHtml: `
+        <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
+            <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Dein persönliches Präventions-Ergebnis</strong>
+            Wusstest du, dass sich rund <strong>60 % der Unfälle im Kindesalter präventiv verhindern lassen</strong>? Die richtigen Sicherheitsmaßnahmen zur rechten Zeit sorgen dafür, dass dein Zuhause ein geschützter Raum ist.
+            <br><br>
+            <strong>Erziehung vs. Sicherung:</strong> Deine Wohnung muss nicht zu einem unüberwindbaren <em>Fort Knox</em> werden! Kinder müssen eigene Erfahrungen sammeln. Während lebensbedrohliche Gefahren (wie offene Steckdosen, Klippen an Treppen oder Gifte) konsequent gesichert werden müssen, spielt in vielen Bereichen die aktive Erziehung von Beginn an eine wichtige Rolle.
+            <br><br>
+            ⚠️ <strong>Wichtig:</strong> Kinder entwickeln sich rasend schnell! Führe diesen Check bei jedem großen Entwicklungsschritt (z. B. wenn dein Kind anfängt zu krabbeln oder zu klettern) einfach noch einmal durch.
+        </div>`,
+        riskNoIssues: '🎉 Hervorragend! Dein Zuhause ist perfekt auf diese Entwicklungsstufe abgestimmt.',
+        riskHandlungsbedarf: '⚠️ Hier besteht Handlungsbedarf in deinem Zuhause:',
+        riskWhyImportantLabel: 'Warum wichtig:',
+        riskPrintBtn: '🖨️ Auswertung als PDF speichern / ausdrucken'
     }, // alle weiteren Keys werden beim Start automatisch aus dem HTML befüllt
     en: {
         back: '⬅ Back',
@@ -65,6 +97,12 @@ const TRANSLATIONS = {
         categoryAdult: 'Adult',
         vkTileTitle: 'First Aid Kit Check',
         nsTileTitle: 'Emergency ID Card',
+
+        quickCallTitle: '🚨 Quick 112 Call',
+        quickCallButton: '📞 Call 112 now',
+        notfallCheckBarTitle: '❓ Not sure if it\'s an emergency?',
+        notfallCheckBarText: 'Not sure if this needs an emergency call? The quick check helps you assess it.',
+        notfallCheckBarButton: '🚦 Start the emergency check',
 
         vkTitle: 'First Aid Kit Check',
         vkSubtitle: 'Never miss an expired first aid kit again',
@@ -206,6 +244,56 @@ const TRANSLATIONS = {
                 <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
                     ✅ No acute warning signs right now. Still keep watching for at least 24 hours, and call 112 straight away if things get worse.
                 </div>`,
+
+        // Location display (initGeoLocation/renderGeoAnzeigen), set via JS
+        geoWirdErmitteltVoll: '📍 Finding your location (GPS & address)...',
+        geoWirdErmittelt: '📍 Finding your location...',
+        geoAdresseNichtGeladen: 'Address could not be loaded',
+        geoAdresseOfflineNurGps: 'Offline / address via GPS only',
+        geoLocationHtml: '📍 <strong>Address:</strong> {adresse}<br>🌍 <strong>GPS:</strong> {lat}, {lon}',
+        geoNichtErmittelt: '📍 Could not determine your location automatically. In an emergency, please check nearby street signs!',
+        geoNichtErmitteltKurz: '📍 Could not determine your location.',
+        geoNichtUnterstuetzt: '📍 This browser does not support geolocation.',
+        geoNichtUnterstuetztKurz: '📍 Geolocation not supported.',
+
+        // Home safety check - static screen text
+        riskTitle: '🛡️ Interactive Home Safety Check',
+        riskIntroStrong: '💡 Did you know that around 60% of childhood accidents can be prevented?',
+        riskIntroText: 'The right safety measures at the right time make sure your home is childproof, while you can still move around freely in it. Make your home safe step by step - tailored to your child\'s age and your living situation!',
+        riskStep1Title: '👶 1. Choose the developmental stage:',
+        riskStageBaby: '<strong>Infant (0-5 months):</strong> Not yet mobile, lies on back/tummy.',
+        riskStageCrawler: '<strong>Crawler (6-12 months):</strong> Scooting, crawling, grabbing (oral phase).',
+        riskStageToddler: '<strong>Toddler (1-3+ years):</strong> Walking, climbing, opening cupboards.',
+        riskStep2Title: '🏡 2. What applies to your living situation?',
+        riskSituGrandparents: 'Visits to grandparents / relatives',
+        riskSituStairs: 'Stairs in the house/flat',
+        riskSituFireplace: 'Fireplace present',
+        riskSituPets: 'Pets (dog / cat / rodents)',
+        riskSituWater: 'Garden pond, pool, well, or rain barrel',
+        riskSituGarage: 'Garage / shed / storage room',
+        riskStartBtn: '🚀 Start personal check',
+        riskShowResultBtn: '📊 Show result',
+        riskResultTitle: '🎯 Your Safety Result',
+        riskRedoBtn: '🔄 Redo the check',
+
+        // Home safety check - result & interaction text set via JS
+        riskWhyImportant: '📖 Why does this matter? ▾',
+        riskYesLabel: 'Yes / Covered',
+        riskNoLabel: 'No / Action needed',
+        riskScoreLabel: '{score}% Child-safe',
+        riskIntroResultHtml: `
+        <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
+            <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Your personal prevention result</strong>
+            Did you know that around <strong>60% of accidents in childhood can be prevented</strong>? The right safety measures at the right time make sure your home stays a protected space.
+            <br><br>
+            <strong>Upbringing vs. childproofing:</strong> Your home doesn't need to become an unbeatable <em>Fort Knox</em>! Children need to gather their own experience. While life-threatening hazards (like exposed sockets, unguarded stairs, or poisons) need to be consistently secured, active parenting plays an important role in many areas from the start.
+            <br><br>
+            ⚠️ <strong>Important:</strong> Children develop incredibly fast! Simply redo this check at every major developmental step (e.g. when your child starts crawling or climbing).
+        </div>`,
+        riskNoIssues: '🎉 Excellent! Your home is perfectly set up for this developmental stage.',
+        riskHandlungsbedarf: '⚠️ Here\'s where your home needs some attention:',
+        riskWhyImportantLabel: 'Why it matters:',
+        riskPrintBtn: '🖨️ Save result as PDF / print',
 
         // =====================================================
         // AUSFÜHRLICHE THEMEN-INHALTE (Baby & Kind) - Übersetzungs-Batch 1:
@@ -2263,7 +2351,315 @@ const TRANSLATIONS = {
                 <p>A seizure is caused by sudden, excessive electrical activity in the brain and can show up as jerking of the whole body, but also as quiet "absence" episodes. Known causes include epilepsy, but fever (see febrile seizure in the Baby & Child section), low blood sugar, or head injuries can also trigger seizures.</p>
 
                 <h3>Why you shouldn't hold the person down</h3>
-                <p>Forcibly restraining the jerking movements can cause fractures or muscle injuries. It's more important to make the surroundings safe and protect the head while the seizure passes on its own.</p>`
+                <p>Forcibly restraining the jerking movements can cause fractures or muscle injuries. It's more important to make the surroundings safe and protect the head while the seizure passes on its own.</p>`,
+
+        // =====================================================
+        // UTILITY-SCREENS (Notfall-Check, Notrufnummern, Feedback,
+        // Notfallpass): waren fälschlich als "bereits übersetzt" markiert,
+        // tatsächlich aber noch nicht data-i18n-html-verpackt. Nachtrag.
+        // =====================================================
+        content_notfallcheck_erw: `
+                <h1 style="color: #d35400;">❓ Emergency or not?</h1>
+                <p>Use the <strong>3-A rule</strong> to work out whether an adult needs immediate help (call 112). Click the answer that fits best.</p>
+
+                <!-- STEP 1: Responsiveness -->
+                <div id="checkerw-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. A – Alertness</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">How does the person react to being spoken to or touched/shaken at the shoulder?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-1', 'checkerw-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ They respond clearly, answer, and are oriented (know where they are and what happened).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 They don't respond at all, are very confused, or suddenly extremely drowsy/unresponsive.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Breathing -->
+                <div id="checkerw-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. A – Airway/Breathing</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Is the person breathing normally?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-2', 'checkerw-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Yes, calm and regular (even if it's a bit faster from pain or excitement).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 No, breathing is very laboured, wheezing, gurgling, very shallow, or pauses at times.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Appearance -->
+                <div id="checkerw-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. A – Appearance</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">What does the person's skin look like?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-3', 'checkerw-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Normal colour, maybe flushed from exertion or a bit pale from pain.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Ashen, bluish (especially the lips), cold and clammy, or suddenly blotchy/mottled.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Alarm signs (FAST, chest pain, severe bleeding) -->
+                <div id="checkerw-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">4. Alarm signs</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Does the person show any of these acute warning signs: a drooping side of the mouth, sudden paralysis/weakness on one side, slurred speech, sudden severe chest pain spreading to the arm/jaw, or severe bleeding that won't stop?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-4', 'checkerw-step-5', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ No, none of these apply.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Yes, at least one of these signs applies.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Gut feeling -->
+                <div id="checkerw-step-5" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">Your gut feeling</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">What does your gut feeling tell you - or the affected person's own?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-5', 'checkerw-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ The person is under the weather, but broadly themselves.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-5', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Something is suddenly completely different than usual. Your inner alarm is going off.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT: EMERGENCY -->
+                <div id="checkerw-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 EMERGENCY DETECTED</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
+                        A vital sign is disrupted, an alarm sign applies, or your gut feeling is sounding the alarm. Don't hesitate!
+                    </p>
+
+                    <!-- Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="checkerw-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Finding your location...
+                    </div>
+
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Call 112 now
+                    </button>
+                    <button onclick="resetNotfallCheckErw()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Restart the check
+                    </button>
+                </div>
+
+                <!-- RESULT: STABLE -->
+                <div id="checkerw-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 PERSON IS STABLE</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        The person is responsive, breathing normally, looks otherwise fine, shows none of the alarm signs, and your gut feeling is calm. That's a very good sign! This is very unlikely to be an acute emergency.
+                        <br><br>
+                        <em>Tip: For symptoms that still worry you, you can calmly contact 116 117 (out-of-hours doctor service) or see a GP.</em>
+                    </p>
+                    <button onclick="resetNotfallCheckErw(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 Back to the home screen
+                    </button>
+                </div>`,
+
+        content_notfallcheck: `
+                <h1 style="color: #d35400;">❓ Emergency or not?</h1>
+                <p>Use the <strong>3-A rule</strong> to work out whether your child needs immediate medical help. Click the answer that fits best.</p>
+
+                <!-- STEP 1: Responsiveness -->
+                <div id="check-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. A – Alertness</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">How does your child react to being spoken to or touched?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-1', 'check-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ They cry loudly, resist, protest, or look at me.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 They're extremely limp, floppy like a rag doll, or won't wake up at all.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Breathing -->
+                <div id="check-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. A – Airway/Breathing</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Is your child breathing normally?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-2', 'check-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Yes, breathing is calm and regular (even if the child sniffs a bit with a fever, for example).
+                        </button>
+                        <button onclick="nextCheckStep('check-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 No, breathing is pumping, wheezing, gurgling, or the nostrils are flaring heavily.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Appearance -->
+                <div id="check-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. A – Appearance</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">What does your child's skin colour look like?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-3', 'check-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Rosy, normal colour, or the typical hot, red cheeks with a fever.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Ashen, extremely pale, bluish (especially around the lips), or blotchy/mottled.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Parent gut check -->
+                <div id="check-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">The parent gut check</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Nobody knows your child as well as you do. What does your gut feeling tell you?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-4', 'check-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ My child is unwell or unsettled, but is basically behaving as I know them to.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Something is suddenly completely different than usual. My inner alarm is going off.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT: EMERGENCY -->
+                <div id="check-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 EMERGENCY DETECTED</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
+                        A vital sign is disrupted or your gut feeling is sounding the alarm. Don't hesitate!
+                    </p>
+
+                    <!-- NEU: Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="check-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Finding your location...
+                    </div>
+
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Call 112 now
+                    </button>
+                    <button onclick="resetNotfallCheck()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Restart the check
+                    </button>
+                </div>
+
+                <!-- RESULT: MINOR / STABLE -->
+                <div id="check-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 CHILD IS STABLE</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        Your child is responsive, breathing normally, looks rosy, and your gut feeling is calm. That's a very good sign! This is very unlikely to be an acute emergency.
+                        <br><br>
+                        <em>Tip: For a fever, pain, or feeling unwell, you can calmly contact 116 117 (out-of-hours doctor service) or see a paediatrician.</em>
+                    </p>
+                    <button onclick="resetNotfallCheck(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 Back to the home screen
+                    </button>
+                </div>`,
+
+        content_feedback: `
+                <h1 style="color: #2980b9;">💬 Feedback &amp; Support</h1>
+                <p>Your feedback helps us make this app even better and safer for everyone!</p>
+
+                <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">🐛 Something not working?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">A button not responding, an image not loading, or a screen looking off? Let me know briefly so I can fix it right away.</p>
+
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Fehlermeldung" target="_blank" style="display: block; background-color: #e74c3c; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        🚨 Report a bug by email
+                    </a>
+                </div>
+
+                <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">💡 Idea or suggestion?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">Missing an emergency topic, a tip for the home safety check, or have ideas to improve the app? I'd love to hear from you!</p>
+
+                    <a href="mailto:info@erstehilfeabc.de?subject=%5BErste%20Hilfe%20ABC%20App%5D%20Feedback%20%26%20Idee" target="_blank" style="display: block; background-color: #2980b9; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        ✉️ Send a suggestion by email
+                    </a>
+                </div>`,
+
+        content_notrufnummern: `
+        <h1 style="color: #c0392b;">📞 Important Emergency Numbers</h1>
+        <p>Tap a number directly to start the call:</p>
+
+        <!-- 112 EMERGENCY -->
+        <div style="background: #2c0e0e; padding: 18px; border-radius: 12px; border-left: 5px solid #e74c3c; color: white; margin-bottom: 15px;">
+            <strong style="font-size: 18px; color: #e74c3c;">🚨 Emergency Doctor & Fire Service</strong>
+            <p style="margin: 5px 0 12px 0; font-size: 13px; color: #cbd5e1;">For life-threatening conditions, unconsciousness, or acute breathing difficulty.</p>
+            <a href="tel:112" style="display: block; background: #e74c3c; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 18px;">
+                📞 Call 112
+            </a>
+        </div>
+
+        <!-- 116 117 OUT-OF-HOURS DOCTOR SERVICE -->
+        <div style="background: #ffffff; padding: 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; border-left: 5px solid #2980b9; margin-bottom: 15px;">
+            <strong style="font-size: 18px; color: #2980b9;">🩺 Out-of-hours Doctor Service</strong>
+            <p style="margin: 5px 0 12px 0; font-size: 13px; color: #475569;">Nights & weekends, when the doctor's practice is closed (not an emergency).</p>
+            <a href="tel:116117" style="display: block; background: #2980b9; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 18px;">
+                📞 Call 116 117
+            </a>
+        </div>
+
+       <!-- GIFTNOTRUF (DYNAMISCH JE NACH BUNDESLAND) -->
+        <div style="background: #ffffff; padding: 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; border-left: 5px solid #27ae60; margin-bottom: 15px;">
+            <strong style="font-size: 18px; color: #1e8449;">🧪 Poison Control Centre</strong>
+            <p style="margin: 5px 0 8px 0; font-size: 13px; color: #475569;">For suspected poisoning from plants, cleaning products, or medication.</p>
+
+            <!-- Dynamischer Standort-Hinweis -->
+            <div id="poison-location-info" style="font-size: 12px; color: #64748b; margin-bottom: 10px;">
+                📍 <em>Finding the poison centre for your location...</em>
+            </div>
+
+            <!-- Dynamischer Anruf-Button -->
+            <a id="poison-call-btn" href="tel:055119240" style="display: block; background: #27ae60; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 16px;">
+                📞 Call Poison Control
+            </a>
+        </div>
+
+        <!-- POLIZEI -->
+        <div style="background: #ffffff; padding: 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; border-left: 5px solid #34495e; margin-bottom: 15px;">
+            <strong style="font-size: 18px; color: #34495e;">👮 Police</strong>
+            <p style="margin: 5px 0 12px 0; font-size: 13px; color: #475569;">For accidents, break-ins, or acute danger.</p>
+            <a href="tel:110" style="display: block; background: #34495e; color: white !important; text-decoration: none; padding: 12px; border-radius: 25px; font-weight: bold; text-align: center; font-size: 16px;">
+                📞 Call 110
+            </a>
+        </div>`,
+
+        content_notfallpass: `
+                <h1 style="color: #27ae60;">📋 Child Emergency ID &amp; SOS Systems</h1>
+                <p style="font-size: 14px; color: #475569; line-height: 1.5;">In an emergency, every second counts. First responders or bystanders need to see pre-existing conditions, allergies, or your contact details straight away.</p>
+
+                <div style="background: #ffffff; padding: 18px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
+                    <strong style="font-size: 16px; color: #1e8449;">💡 What information belongs on an SOS bracelet?</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.6;">
+                        <li><strong>Parents' phone number:</strong> (Always with country code, e.g. +49...)</li>
+                        <li><strong>Important pre-existing conditions:</strong> (e.g. asthma, diabetes, epilepsy)</li>
+                        <li><strong>Severe allergies:</strong> (e.g. penicillin, bee/wasp stings, peanuts)</li>
+                        <li><strong>Blood type:</strong> (Optional, if known)</li>
+                    </ul>
+                </div>
+
+                <!-- AFFILIATE BOX: SOS ARMBAND -->
+                <div class="product-box">
+                    <strong>🛡️ Recommendation: NFC &amp; QR code SOS emergency bracelet</strong><br>
+                    Waterproof, extremely tough, and perfect for the playground, nursery, holidays, or day trips. First responders or paramedics simply hold their smartphone to the bracelet and instantly see the contact details and emergency info you've shared.
+                    <br><br>
+                    💡 <strong>ABC tip:</strong> No engraving to wear off - the contact details can be updated online by the parents at any time!
+                    <a href="https://www.amazon.de/s?k=sos+notfallarmband+kinder+nfc+qr&amp;tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 View waterproof children's SOS bracelets on Amazon →
+                    </a>
+                </div>`
     }
 };
 
@@ -2319,6 +2715,14 @@ function applyTranslations() {
     // zurücksetzen, ohne dass die Geolocation erneut abgefragt wird.
     if (typeof aktualisierePoisonCenterUI === 'function' && typeof poisonUiWurdeInitialisiert !== 'undefined' && poisonUiWurdeInitialisiert) {
         aktualisierePoisonCenterUI(letztesErmitteltesBundesland);
+    }
+
+    // Standort-Anzeige (Notruf-Leiste + Notfall-Check-Ergebnisse) ebenfalls neu
+    // rendern, falls sie schon einmal befüllt wurde - sonst würde ein Sprach-
+    // wechsel sie auf den Lade-Platzhalter zurücksetzen oder in der alten
+    // Sprache stehen lassen (siehe initGeoLocation in script.js).
+    if (typeof renderGeoAnzeigen === 'function' && typeof geoUiWurdeInitialisiert !== 'undefined' && geoUiWurdeInitialisiert) {
+        renderGeoAnzeigen();
     }
 }
 

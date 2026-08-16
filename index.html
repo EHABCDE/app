@@ -1695,7 +1695,7 @@
         <section id="screen-notfallcheck_erw" class="app-screen screen-hidden">
             <button class="back-btn" onclick="resetNotfallCheckErw(); goToStart();"><span data-i18n="back">⬅ Zurück</span></button>
 
-            <div class="learn-content" style="display: block;">
+            <div class="learn-content" style="display: block;" data-i18n-html="content_notfallcheck_erw">
                 <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
                 <p>Nutze die <strong>3-A-Regel</strong>, um herauszufinden, ob eine erwachsene Person sofortige Hilfe (Notruf 112) braucht. Klicke auf die Antwort, die am besten zutrifft.</p>
 
@@ -1817,59 +1817,59 @@
             <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
             <div class="learn-content" style="display: block;">
-                <h1 style="color: #27ae60;">🛡️ Interaktiver Zuhause-Check</h1>
-                
+                <h1 style="color: #27ae60;" data-i18n="riskTitle">🛡️ Interaktiver Zuhause-Check</h1>
+
                 <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 16px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 8px;">💡 Wusstest Du, dass sich rund 60% der Kindernotfälle präventiv verhindern lassen?</strong>
-                    <p style="margin: 0; color: #2c3e50; font-size: 14px; line-height: 1.6;">
+                    <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 8px;" data-i18n="riskIntroStrong">💡 Wusstest Du, dass sich rund 60% der Kindernotfälle präventiv verhindern lassen?</strong>
+                    <p style="margin: 0; color: #2c3e50; font-size: 14px; line-height: 1.6;" data-i18n="riskIntroText">
                         Die richtigen Sicherheitsmaßnahmen zum richtigen Zeitpunkt sorgen dafür, dass Deine Wohnung kindersicher ist, Du Dich aber darin auch noch frei bewegen kannst. Mache Dein Zuhause jetzt Schritt für Schritt sicher – maßgeschneidert auf das Alter Deines Kindes und Eure Wohnsituation!
                     </p>
                 </div>
 
                 <div id="quiz-step-1" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
-                    <h3 style="margin-top:0; color: #2c3e50;">👶 1. Wähle die Entwicklungsstufe:</h3>
+                    <h3 style="margin-top:0; color: #2c3e50;" data-i18n="riskStep1Title">👶 1. Wähle die Entwicklungsstufe:</h3>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
                         <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
-                            <input type="radio" name="dev_stage" value="baby" checked> <strong>Säugling (0–5 Monate):</strong> Noch immobil, liegt auf Rücken/Bauch.
+                            <input type="radio" name="dev_stage" value="baby" checked> <span data-i18n-html="riskStageBaby"><strong>Säugling (0–5 Monate):</strong> Noch immobil, liegt auf Rücken/Bauch.</span>
                         </label>
                         <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
-                            <input type="radio" name="dev_stage" value="crawler"> <strong>Krabbelkind (6–12 Monate):</strong> Robben, Krabbeln, Greifen (orale Phase).
+                            <input type="radio" name="dev_stage" value="crawler"> <span data-i18n-html="riskStageCrawler"><strong>Krabbelkind (6–12 Monate):</strong> Robben, Krabbeln, Greifen (orale Phase).</span>
                         </label>
                         <label style="padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #2c3e50;">
-                            <input type="radio" name="dev_stage" value="toddler"> <strong>Kleinkind (1–3+ Jahre):</strong> Laufen, Klettern, Schränke öffnen.
+                            <input type="radio" name="dev_stage" value="toddler"> <span data-i18n-html="riskStageToddler"><strong>Kleinkind (1–3+ Jahre):</strong> Laufen, Klettern, Schränke öffnen.</span>
                         </label>
                     </div>
                 </div>
 
                 <div id="quiz-step-2" class="quiz-card" style="background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1;">
-                    <h3 style="margin-top:0; color: #2c3e50;">🏡 2. Was trifft auf eure Wohnsituation zu?</h3>
+                    <h3 style="margin-top:0; color: #2c3e50;" data-i18n="riskStep2Title">🏡 2. Was trifft auf eure Wohnsituation zu?</h3>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; color: #2c3e50;">
-                        <label><input type="checkbox" id="has-grandparents" checked> Besuche bei Oma &amp; Opa / Verwandten</label>
-                        <label><input type="checkbox" id="has-stairs"> Treppen im Haus/Wohnung</label>
-                        <label><input type="checkbox" id="has-fireplace"> Kaminofen vorhanden</label>
-                        <label><input type="checkbox" id="has-pets"> Haustiere (Hund / Katze / Nagetiere)</label>
-                        <label><input type="checkbox" id="has-water"> Gartenteich, Pool, Brunnen oder Regentonne</label>
-                        <label><input type="checkbox" id="has-garage"> Garage / Gartenschuppen / Abstellraum</label>
+                        <label><input type="checkbox" id="has-grandparents" checked> <span data-i18n="riskSituGrandparents">Besuche bei Oma &amp; Opa / Verwandten</span></label>
+                        <label><input type="checkbox" id="has-stairs"> <span data-i18n="riskSituStairs">Treppen im Haus/Wohnung</span></label>
+                        <label><input type="checkbox" id="has-fireplace"> <span data-i18n="riskSituFireplace">Kaminofen vorhanden</span></label>
+                        <label><input type="checkbox" id="has-pets"> <span data-i18n="riskSituPets">Haustiere (Hund / Katze / Nagetiere)</span></label>
+                        <label><input type="checkbox" id="has-water"> <span data-i18n="riskSituWater">Gartenteich, Pool, Brunnen oder Regentonne</span></label>
+                        <label><input type="checkbox" id="has-garage"> <span data-i18n="riskSituGarage">Garage / Gartenschuppen / Abstellraum</span></label>
                     </div>
 
-                    <button onclick="generateRiskCheck()" style="margin-top: 20px; background: #27ae60; color: white; border: none; padding: 14px 25px; border-radius: 25px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <button onclick="generateRiskCheck()" style="margin-top: 20px; background: #27ae60; color: white; border: none; padding: 14px 25px; border-radius: 25px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" data-i18n="riskStartBtn">
                         🚀 Persönlichen Check starten
                     </button>
                 </div>
 
                 <div id="quiz-step-3" class="screen-hidden">
                     <div id="questions-container"></div>
-                    <button onclick="evaluateRiskCheck()" style="margin-top: 20px; background: #c0392b; color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                    <button onclick="evaluateRiskCheck()" style="margin-top: 20px; background: #c0392b; color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);" data-i18n="riskShowResultBtn">
                         📊 Ergebnis anzeigen
                     </button>
                 </div>
 
                 <div id="quiz-results" class="screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; text-align: center;">🎯 Dein Sicherheits-Ergebnis</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; text-align: center;" data-i18n="riskResultTitle">🎯 Dein Sicherheits-Ergebnis</h2>
                     <div id="score-display" style="font-size: 32px; font-weight: bold; text-align: center; margin: 15px 0;"></div>
                     <div id="recommendations-container"></div>
-                    
-                    <button onclick="resetRiskCheck()" style="margin-top: 20px; background: #34495e; color: white; border: none; padding: 12px 20px; border-radius: 20px; width: 100%; font-size: 15px; font-weight: bold; cursor: pointer;">
+
+                    <button onclick="resetRiskCheck()" style="margin-top: 20px; background: #34495e; color: white; border: none; padding: 12px 20px; border-radius: 20px; width: 100%; font-size: 15px; font-weight: bold; cursor: pointer;" data-i18n="riskRedoBtn">
                         🔄 Check erneut durchführen
                     </button>
                 </div>
@@ -1880,7 +1880,7 @@
         <section id="screen-feedback" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
-            <div class="learn-content" style="display: block;">
+            <div class="learn-content" style="display: block;" data-i18n-html="content_feedback">
                 <h1 style="color: #2980b9;">💬 Feedback &amp; Unterstützung</h1>
                 <p>Deine Rückmeldung hilft uns, diese App für alle Nutzer:innen noch besser und sicherer zu machen!</p>
 
@@ -2067,7 +2067,7 @@
         <section id="screen-notfallcheck" class="app-screen screen-hidden">
             <button class="back-btn" onclick="resetNotfallCheck(); goToStart();"><span data-i18n="back">⬅ Zurück</span></button>
             
-            <div class="learn-content" style="display: block;">
+            <div class="learn-content" style="display: block;" data-i18n-html="content_notfallcheck">
                 <h1 style="color: #d35400;">❓ Notfall oder nicht?</h1>
                 <p>Nutze die <strong>3-A-Regel</strong>, um herauszufinden, ob Dein Kind sofortige ärztliche Hilfe braucht. Klicke auf die Antwort, die am besten zutrifft.</p>
 
@@ -2946,7 +2946,7 @@
 <section id="screen-notrufnummern" class="app-screen screen-hidden">
     <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
     
-    <div class="learn-content" style="display: block;">
+    <div class="learn-content" style="display: block;" data-i18n-html="content_notrufnummern">
         <h1 style="color: #c0392b;">📞 Wichtige Notrufnummern</h1>
         <p>Tippe direkt auf eine Nummer, um den Anruf zu starten:</p>
 
@@ -2999,7 +2999,7 @@
         <section id="screen-notfallpass" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
             
-            <div class="learn-content" style="display: block;">
+            <div class="learn-content" style="display: block;" data-i18n-html="content_notfallpass">
                 <h1 style="color: #27ae60;">📋 Kinder-Notfallpass &amp; SOS-Systeme</h1>
                 <p style="font-size: 14px; color: #475569; line-height: 1.5;">Im Notfall zählt jede Sekunde. Rettungskräfte oder Ersthelfer müssen Vorerkrankungen, Allergien oder deine Kontaktdaten sofort erkennen können.</p>
 
@@ -3082,13 +3082,13 @@
         <!-- Wird jetzt per JS (aktualisiereGlobaleNotfallLeisten) themenabhängig ein-/ausgeblendet, -->
         <!-- statt bei JEDEM Thema im Notfallmodus zu erscheinen. Default: versteckt. -->
         <div id="global-emergency-bar" style="display: none; max-width: 600px; margin: 20px auto; padding: 15px; background: #2c0e0e; border: 2px solid #e74c3c; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-            <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 10px;">🚨 Schneller Notruf 112</h3>
+            <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 10px;" data-i18n="quickCallTitle">🚨 Schneller Notruf 112</h3>
 
             <div id="geo-location-display" style="color: #f1c40f; font-weight: bold; margin-bottom: 15px; font-size: 14px;">
                 📍 Standort wird ermittelt...
             </div>
 
-            <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: background 0.2s;">
+            <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: background 0.2s;" data-i18n="quickCallButton">
                 📞 Jetzt 112 anrufen
             </button>
         </div>
@@ -3096,9 +3096,9 @@
         <!-- GLOBALE LEISTE FÜR LAPIDARE THEMEN: Statt Notruf lieber zum "Notfall oder -->
         <!-- nicht?"-Check verweisen. Default: versteckt, per JS gesteuert. -->
         <div id="global-notfallcheck-bar" style="display: none; max-width: 600px; margin: 20px auto; padding: 15px; background: #fef9e7; border: 2px solid #f39c12; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); cursor: pointer;">
-            <h3 style="color: #d35400; margin-top: 0; margin-bottom: 8px;">❓ Kein klarer Notfall?</h3>
-            <p style="color: #7a4a04; margin: 0 0 12px 0; font-size: 14px; line-height: 1.4;">Unsicher, ob das ein Fall für den Notruf ist? Der kurze Check hilft dir bei der Einschätzung.</p>
-            <button style="background-color: #f39c12; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
+            <h3 style="color: #d35400; margin-top: 0; margin-bottom: 8px;" data-i18n="notfallCheckBarTitle">❓ Kein klarer Notfall?</h3>
+            <p style="color: #7a4a04; margin: 0 0 12px 0; font-size: 14px; line-height: 1.4;" data-i18n="notfallCheckBarText">Unsicher, ob das ein Fall für den Notruf ist? Der kurze Check hilft dir bei der Einschätzung.</p>
+            <button style="background-color: #f39c12; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.15);" data-i18n="notfallCheckBarButton">
                 🚦 Notfall-Check starten
             </button>
         </div>

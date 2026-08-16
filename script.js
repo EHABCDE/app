@@ -855,17 +855,67 @@ function kindSturzAuswerten() {
     }
 }
 
-// Standortbestimmung mit Adresse, Koordinaten und Notruf-Hilfe
-function initGeoLocation() {
+// Merkt sich den zuletzt ermittelten Standort-Zustand, damit renderGeoAnzeigen()
+// nach einem Sprachwechsel (siehe applyTranslations in lang.js) erneut mit den
+// gleichen Daten aufgerufen werden kann, statt auf den Lade-Platzhalter
+// zurückzuspringen oder in der alten Sprache stehen zu bleiben.
+let geoUiWurdeInitialisiert = false;
+let letzterGeoZustand = null; // { status: 'loading'|'success'|'error'|'unsupported', addressStatus, adresse, lat, lon }
+
+// Rendert die Standort-Anzeige (Notruf-Leiste + beide Notfall-Check-Ergebnisse)
+// anhand von letzterGeoZustand in der aktuell gewählten Sprache.
+function renderGeoAnzeigen() {
+    if (!letzterGeoZustand) return;
+
     const display = document.getElementById('geo-location-display');
-    const poisonDisplay = document.getElementById('poison-center-display');
     const checkGeoDisplay = document.getElementById('check-geo-display');
     const checkGeoDisplayErw = document.getElementById('checkerw-geo-display');
 
+    let html;
+    if (letzterGeoZustand.status === 'success') {
+        let addressText;
+        if (letzterGeoZustand.addressStatus === 'ok') {
+            addressText = letzterGeoZustand.adresse;
+        } else if (letzterGeoZustand.addressStatus === 'offline') {
+            addressText = t('geoAdresseOfflineNurGps');
+        } else {
+            addressText = t('geoAdresseNichtGeladen');
+        }
+        html = t('geoLocationHtml')
+            .replace('{adresse}', addressText)
+            .replace('{lat}', letzterGeoZustand.lat)
+            .replace('{lon}', letzterGeoZustand.lon);
+    } else if (letzterGeoZustand.status === 'error') {
+        html = t('geoNichtErmittelt');
+    } else if (letzterGeoZustand.status === 'unsupported') {
+        html = t('geoNichtUnterstuetzt');
+    } else {
+        html = t('geoWirdErmitteltVoll');
+    }
+    if (display) display.innerHTML = html;
+
+    let htmlKurz;
+    if (letzterGeoZustand.status === 'success') {
+        htmlKurz = html;
+    } else if (letzterGeoZustand.status === 'error') {
+        htmlKurz = t('geoNichtErmitteltKurz');
+    } else if (letzterGeoZustand.status === 'unsupported') {
+        htmlKurz = t('geoNichtUnterstuetztKurz');
+    } else {
+        htmlKurz = t('geoWirdErmittelt');
+    }
+    if (checkGeoDisplay) checkGeoDisplay.innerHTML = htmlKurz;
+    if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = htmlKurz;
+}
+
+// Standortbestimmung mit Adresse, Koordinaten und Notruf-Hilfe
+function initGeoLocation() {
+    const display = document.getElementById('geo-location-display');
+
     if (navigator.geolocation && display) {
-        display.innerHTML = '📍 Standort wird ermittelt (GPS & Adresse)...';
-        if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Standort wird ermittelt...';
-        if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Standort wird ermittelt...';
+        geoUiWurdeInitialisiert = true;
+        letzterGeoZustand = { status: 'loading' };
+        renderGeoAnzeigen();
 
         navigator.geolocation.getCurrentPosition(
             async pos => {
@@ -874,7 +924,8 @@ function initGeoLocation() {
                 const latFormatted = lat.toFixed(4);
                 const lonFormatted = lon.toFixed(4);
 
-                let addressText = "Adresse konnte nicht geladen werden";
+                let addressStatus = 'notfound';
+                let adresse = '';
                 let bundesland = '';
 
                 try {
@@ -892,52 +943,31 @@ function initGeoLocation() {
                         bundesland = data.address.state || '';
 
                         if (road || city) {
-                            addressText = `${road} ${houseNumber}, ${postcode} ${city}`.trim();
+                            adresse = `${road} ${houseNumber}, ${postcode} ${city}`.trim();
                         } else {
-                            addressText = data.display_name;
+                            adresse = data.display_name;
                         }
+                        addressStatus = 'ok';
                     }
                 } catch (e) {
-                    addressText = "Offline / Adresse nur über GPS";
+                    addressStatus = 'offline';
                 }
 
                 // Aktuelle Lage (Pollen/UV/Grippewelle) unabhängig vom Adresstext laden -
                 // Koordinaten reichen, Bundesland ist nur für schärferes Matching (optional).
                 holeAktuelleLage(lat, lon, bundesland);
 
-                const locationHtml = `
-                    📍 <strong>Adresse:</strong> ${addressText}<br>
-                    🌍 <strong>GPS:</strong> ${latFormatted}, ${lonFormatted}
-                `;
-
-                display.innerHTML = locationHtml;
+                letzterGeoZustand = { status: 'success', addressStatus, adresse, lat: latFormatted, lon: lonFormatted };
+                renderGeoAnzeigen();
 
                 // Zuständige Giftnotrufzentrale anhand des ermittelten Bundeslands anzeigen
                 // (poisonDisplay wird dabei bewusst mit der Zentrale statt nur der Adresse
                 // befüllt, siehe aktualisierePoisonCenterUI).
                 aktualisierePoisonCenterUI(bundesland);
-
-                if (checkGeoDisplay) {
-                    checkGeoDisplay.innerHTML = locationHtml;
-                }
-
-                if (checkGeoDisplayErw) {
-                    checkGeoDisplayErw.innerHTML = locationHtml;
-                }
             },
             () => {
-                const errText = '📍 Standort konnte nicht automatisch ermittelt werden. Bitte im Notfall Straßenschilder beachten!';
-                display.innerHTML = errText;
-                if (poisonDisplay) {
-                    poisonDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
-                }
-                if (checkGeoDisplay) {
-                    checkGeoDisplay.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
-                }
-
-                if (checkGeoDisplayErw) {
-                    checkGeoDisplayErw.innerHTML = '📍 Standort konnte nicht ermittelt werden.';
-                }
+                letzterGeoZustand = { status: 'error' };
+                renderGeoAnzeigen();
 
                 // Ohne Standort auf bundesweit erreichbare Zentrale zurückfallen,
                 // statt die "wird ermittelt..."-Platzhalter stehen zu lassen.
@@ -952,9 +982,9 @@ function initGeoLocation() {
             }
         );
     } else {
-        if (display) display.innerHTML = '📍 Geolocation wird von diesem Browser nicht unterstützt.';
-        if (checkGeoDisplay) checkGeoDisplay.innerHTML = '📍 Geolocation nicht unterstützt.';
-        if (checkGeoDisplayErw) checkGeoDisplayErw.innerHTML = '📍 Geolocation nicht unterstützt.';
+        geoUiWurdeInitialisiert = true;
+        letzterGeoZustand = { status: 'unsupported' };
+        renderGeoAnzeigen();
         aktualisierePoisonCenterUI(null);
         aktualisiereLageKachelFehler();
     }
@@ -1404,11 +1434,167 @@ const riskQuestions = [
     }
 ];
 
+// Englische Übersetzungen der riskQuestions-Texte, überlagern per rq()-Helfer
+// das deutsche Original bei aktiver englischer Sprache (siehe generateRiskCheck/
+// evaluateRiskCheck) - condition()/id/amazonLink bleiben unverändert.
+const RISK_QUESTIONS_EN = {
+    hallway_doors: {
+        title: "🚪 Front door & access to the street secured",
+        text: "Is the front door always locked or secured with a chain/latch, and the garden gate out of reach?",
+        tip: "Stops your child from wandering onto the street unnoticed, or strangers walking in unnoticed.",
+        explanation: "As soon as children learn to walk, they pull on door handles. A safety latch or carabiner on the garden gate makes sure little ones can't run onto the street unnoticed.",
+        amazonText: "👉 Take a look at these simple door knob locks - worked great for us →"
+    },
+    tripping_hazards: {
+        title: "👟 Trip hazards in the hallway & walkways",
+        text: "Are loose door mats, rugs, or decorative items cleared from the paths you walk every day?",
+        tip: "As long as you're carrying your baby, any slip is a direct danger to you both.",
+        explanation: "While the child is still regularly carried, small trip hazards can quickly lead to serious falls. Store loose rugs away or secure them with anti-slip pads.",
+        amazonText: "👉 I use these non-slip rug pads at home - holds rock solid →"
+    },
+    cooktop_guard: {
+        title: "🍳 Stove guard & oven lock",
+        text: "Is a stove guard fitted and is the oven door lock secured?",
+        tip: "Stoves and pots are a leading cause of severe scalds in toddlers.",
+        explanation: "When pulling themselves up, children reach for pot handles or turn on the stove. A stove guard reliably blocks access.",
+        amazonText: "👉 We used a stove guard like this that needs no drilling - a real lifesaver →"
+    },
+    high_chair: {
+        title: "🪑 High chair safety & harness",
+        text: "Is your child always buckled into the high chair, and does the chair stand tip-proof?",
+        tip: "Children push off with their feet against the table and tip over backwards, chair and all.",
+        explanation: "Falls from a high chair are among the most common causes of head injuries at age 1-2. Always fasten the crotch strap in the high chair!",
+        amazonText: "👉 Take a look at this universal 5-point harness for high chairs →"
+    },
+    fridge_alcohol: {
+        title: "🍾 Alcohol & fridge secured",
+        text: "Are alcoholic drinks stored up high, and is the fridge protected against being opened by accident?",
+        tip: "Even a few sips of strong alcohol can cause severe poisoning and low blood sugar in toddlers.",
+        explanation: "Children mistake colourful bottles or mixed drinks for juice. Alcohol needs to be locked away out of reach.",
+        amazonText: "👉 These discreet fridge locks work great and prevent frustration →"
+    },
+    bath_mats: {
+        title: "🧼 Anti-slip mat in the bath & shower",
+        text: "Are there non-slip rubber mats in the bathtub and shower?",
+        tip: "Prevents nasty cuts to the back of the head during bath time fun.",
+        explanation: "Wet tiles and acrylic tubs get slippery as glass. A simple anti-slip mat immediately gives little feet grip while standing.",
+        amazonText: "👉 My kids loved these cute anti-slip stickers for the tub →"
+    },
+    toilet_chem: {
+        title: "🚽 Toilet rim blocks & cleaning products",
+        text: "Have toilet rim blocks/limescale removers been removed, or the toilet lid secured?",
+        tip: "Toilet rim blocks contain toxic chemicals that toddlers immediately test with their mouths.",
+        explanation: "The colourful blocks in the toilet fascinate children. Skip these hanging blocks entirely during the toddler phase.",
+        amazonText: "👉 If you want to secure the toilet lid: these click locks are brilliant →"
+    },
+    sockets: {
+        title: "🔌 Low-level power sockets",
+        text: "Are all reachable power sockets fitted with rotating or screw-in safety covers?",
+        tip: "Power sockets act like magnets. Child safety covers prevent life-threatening electric shocks.",
+        explanation: "As soon as children start crawling, they explore holes near the floor. Unsecured sockets are one of the biggest hazards in the home.",
+        amazonText: "👉 I fitted this 20-pack of twist-lock socket covers straight away - fits perfectly →"
+    },
+    furniture_anchors: {
+        title: "🧱 Shelves & cabinets anchored to the wall",
+        text: "Are freestanding cabinets, shelves, and dressers securely anchored to the wall in the upper third?",
+        tip: "Climbing or pulling out drawers shifts the centre of gravity - the piece of furniture tips over!",
+        explanation: "Tipping furniture causes the most severe head and chest injuries. Always anchor shelves firmly to the wall.",
+        amazonText: "👉 Take a look at these invisible furniture anti-tip anchors - easy to install →"
+    },
+    fireplace_guard: {
+        title: "🔥 Fireplace & fire-starting materials",
+        text: "Is the fireplace fenced off with a guard, and are lighters completely out of reach?",
+        tip: "Fireplace glass gets extremely hot - touching it immediately causes third-degree burns.",
+        explanation: "Besides the burn risk from the glass, matches and firelighters are toxic and a fire hazard.",
+        amazonText: "👉 We use a fireplace guard with a door like this during heating season - very sturdy →"
+    },
+    baby_sids: {
+        title: "🛏️ Safe sleep environment (SIDS protection)",
+        text: "Does your baby sleep in a sleep sack on a firm mattress - without pillows, bumpers, furs, or soft toys?",
+        tip: "Prevents overheating and airway blockage in the crib.",
+        explanation: "No blankets or pillows in the first year of life! Babies regulate their temperature through their head and must not overheat.",
+        amazonText: "👉 We always used breathable baby sleep sacks like this - absolutely great →"
+    },
+    cords_blind: {
+        title: "🧵 Blind & curtain cords",
+        text: "Are blind, curtain, or cord pulls wound up high out of reach?",
+        tip: "Strangulation risk! Children can quickly get tangled in dangling loops while playing.",
+        explanation: "Long cords at a child's height are an underestimated danger. Wind them onto a cord winder or shorten them.",
+        amazonText: "👉 These small cord winders for windows make cords safe right away →"
+    },
+    doors_windows: {
+        title: "🚪 Windows, doors & edges",
+        text: "Are window handles lockable, door stoppers fitted, and table corners padded?",
+        tip: "Prevents falls from windows, trapped fingers, and cuts to the head.",
+        explanation: "Swap window handles at the hardware store for lockable ones. Finger-pinch guards on doors prevent squashed fingers.",
+        amazonText: "👉 We simply slide these soft foam door stoppers onto the top of the door →"
+    },
+    gp_meds: {
+        title: "👴 Grandparents: medication & handbags",
+        text: "When visiting relatives, are all pill boxes, heart/blood pressure medication, and handbags out of reach?",
+        tip: "Heart or blood pressure pills belonging to grandparents can be fatal to toddlers in the smallest doses!",
+        explanation: "Poisonings often happen where the environment isn't permanently childproofed. Grandma's handbag on the floor is a classic hazard.",
+        amazonText: "👉 Take a look at these lockable medication bags for visits →"
+    },
+    toxic_plants: {
+        title: "🪴 Toxic plants & potting soil",
+        text: "Have toxic houseplants (e.g. dieffenbachia, orchids, ivy) been removed and is potting soil covered?",
+        tip: "Potting soil invites digging; many houseplants cause severe chemical burns when chewed.",
+        explanation: "When in doubt, ask your florist. If you're unsure, it's better to give away potentially toxic plants.",
+        amazonText: "👉 There are handy plant pot covers to stop soil from being dug out →"
+    },
+    pets_rules: {
+        title: "🐈 Pets, litter tray & food",
+        text: "Are the litter tray and food bowls out of reach, and is your child NEVER left alone with animals?",
+        tip: "Animals react unpredictably in unfamiliar situations - especially when their fur gets pulled.",
+        explanation: "Teach your child early that the bowl and sleeping spot are strictly off-limits. Never leave child and animal unsupervised in a room.",
+        amazonText: "👉 We use this stair gate with a cat flap - the dog/cat can get through, the child can't →"
+    },
+    water_safety: {
+        title: "🌊 Garden pond, pool & rain barrel",
+        text: "Are ponds/pools completely fenced off and rain barrels firmly screwed shut?",
+        tip: "Drowning is silent! Toddlers go under without a sound, without calling for help - even in shallow water.",
+        explanation: "Toddlers have a heavy head and reflexive shock reactions. Fence ponds off completely or secure them with a sturdy grate.",
+        amazonText: "👉 This tear-resistant pond safety net holds up completely reliably →"
+    },
+    garage_chem: {
+        title: "🧰 Garage, shed & fertiliser",
+        text: "Are the shed and garage always locked when they contain pesticides, lubricants, and tools?",
+        tip: "Plant poisons and firelighters cause the most severe poisonings.",
+        explanation: "The garage and shed must always stay locked. Never decant fertiliser or cleaning products into drink bottles!",
+        amazonText: "👉 A sturdy padlock reliably protects the garden shed →"
+    },
+    child_seat_condition: {
+        title: "🚗 Car seat: condition & accident history",
+        text: "Do you use a newly bought car seat, or one whose full history you know 100%?",
+        tip: "Car seats should generally be bought NEW! Even minor accidents or falls can cause invisible micro-cracks in the material that destroy its protection in a real crash.",
+        explanation: "Used seats from strangers carry a high risk: micro-cracks in the plastic structure can't be seen from outside. After any accident (even at low speed), the seat must be replaced. Also make sure not to strap children into the seat wearing thick winter coats, since the harness would then have too much slack.",
+        amazonText: "👉 We rely on rear-facing seats with ISOFIX - check out the current test winners →"
+    },
+    child_seat_sos_label: {
+        title: "🏷️ Emergency cards & contact details on the car seat",
+        text: "Is the car seat labelled with your contact details, pre-existing conditions, and your child's name?",
+        tip: "If the driver is unresponsive after an accident, the ambulance crew instantly knows the child's name and who to notify!",
+        explanation: "In an emergency, every second counts. A waterproof emergency card or sticker right on the back of the car seat gives responders vital info (name, age, allergies, emergency contacts for grandparents/parents) when the parents can't provide it themselves.",
+        amazonText: "👉 We use these emergency stickers for car seats ourselves - directly writable & eye-catching →"
+    }
+};
+
 // =========================================================
 // GENERIEREN DER FRAGEN FÜR DEN USER
 // =========================================================
 
 let activeQuestions = [];
+
+// Liefert das übersetzte Feld einer riskQuestions-Frage (Titel, Text, Tipp,
+// Erklärung, Amazon-Text), sofern eine englische Version in RISK_QUESTIONS_EN
+// hinterlegt ist - sonst Fallback auf das deutsche Original.
+function rq(q, field) {
+    if (currentLang !== 'de' && RISK_QUESTIONS_EN[q.id] && RISK_QUESTIONS_EN[q.id][field] !== undefined) {
+        return RISK_QUESTIONS_EN[q.id][field];
+    }
+    return q[field];
+}
 
 function generateRiskCheck() {
     const config = {
@@ -1432,10 +1618,10 @@ function generateRiskCheck() {
             explanationHtml = `
                 <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1;">
                     <button onclick="const el = document.getElementById('exp_${index}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';" style="background: none; border: none; color: #2980b9; font-weight: bold; font-size: 14px; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px;">
-                        📖 Warum ist das wichtig? ▾
+                        ${t('riskWhyImportant')}
                     </button>
                     <div id="exp_${index}" style="display: none; margin-top: 10px; padding: 12px; background: #f8fafc; border-left: 4px solid #3498db; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.5;">
-                        ${q.explanation}
+                        ${rq(q, 'explanation')}
                     </div>
                 </div>
             `;
@@ -1443,11 +1629,11 @@ function generateRiskCheck() {
 
         container.innerHTML += `
             <div style="background: #ffffff; padding: 15px; border-radius: 10px; margin-bottom: 12px; border-left: 5px solid #27ae60; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-                <strong style="color: #2c3e50; font-size: 16px;">${q.title}</strong>
-                <p style="margin: 8px 0 12px 0; font-size: 14px; color: #34495e;">${q.text}</p>
+                <strong style="color: #2c3e50; font-size: 16px;">${rq(q, 'title')}</strong>
+                <p style="margin: 8px 0 12px 0; font-size: 14px; color: #34495e;">${rq(q, 'text')}</p>
                 <div style="display: flex; gap: 20px; color: #2c3e50; font-weight: bold;">
-                    <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="yes" checked> Ja / Erfüllt</label>
-                    <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="no"> Nein / Handlungsbedarf</label>
+                    <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="yes" checked> ${t('riskYesLabel')}</label>
+                    <label style="cursor: pointer;"><input type="radio" name="q_${index}" value="no"> ${t('riskNoLabel')}</label>
                 </div>
                 ${explanationHtml}
             </div>
@@ -1490,46 +1676,36 @@ function evaluateRiskCheck() {
     window.scrollTo(0, 0);
 
     const scoreDisplay = document.getElementById('score-display');
-    scoreDisplay.innerHTML = `${score}% Kindersicher`;
+    scoreDisplay.innerHTML = t('riskScoreLabel').replace('{score}', score);
     scoreDisplay.style.color = score >= 80 ? '#27ae60' : (score >= 50 ? '#f39c12' : '#c0392b');
 
     const recContainer = document.getElementById('recommendations-container');
     recContainer.innerHTML = "";
 
     // 1. Pädagogische Einleitung
-    const introHtml = `
-        <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
-            <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Dein persönliches Präventions-Ergebnis</strong>
-            Wusstest du, dass sich rund <strong>60 % der Unfälle im Kindesalter präventiv verhindern lassen</strong>? Die richtigen Sicherheitsmaßnahmen zur rechten Zeit sorgen dafür, dass dein Zuhause ein geschützter Raum ist.
-            <br><br>
-            <strong>Erziehung vs. Sicherung:</strong> Deine Wohnung muss nicht zu einem unüberwindbaren <em>Fort Knox</em> werden! Kinder müssen eigene Erfahrungen sammeln. Während lebensbedrohliche Gefahren (wie offene Steckdosen, Klippen an Treppen oder Gifte) konsequent gesichert werden müssen, spielt in vielen Bereichen die aktive Erziehung von Beginn an eine wichtige Rolle.
-            <br><br>
-            ⚠️ <strong>Wichtig:</strong> Kinder entwickeln sich rasend schnell! Führe diesen Check bei jedem großen Entwicklungsschritt (z. B. wenn dein Kind anfängt zu krabbeln oder zu klettern) einfach noch einmal durch.
-        </div>
-    `;
-    recContainer.innerHTML += introHtml;
+    recContainer.innerHTML += t('riskIntroResultHtml');
 
     // 2. Empfehlungen rendern
     if (recommendations.length === 0) {
-        recContainer.innerHTML += "<p style='color: #27ae60; font-weight: bold; text-align: center; font-size: 16px;'>🎉 Hervorragend! Dein Zuhause ist perfekt auf diese Entwicklungsstufe abgestimmt.</p>";
+        recContainer.innerHTML += `<p style='color: #27ae60; font-weight: bold; text-align: center; font-size: 16px;'>${t('riskNoIssues')}</p>`;
     } else {
-        recContainer.innerHTML += "<h3 style='color: #c0392b; margin-top: 15px; margin-bottom: 15px;'>⚠️ Hier besteht Handlungsbedarf in deinem Zuhause:</h3>";
+        recContainer.innerHTML += `<h3 style='color: #c0392b; margin-top: 15px; margin-bottom: 15px;'>${t('riskHandlungsbedarf')}</h3>`;
         recommendations.forEach(r => {
             let amazonBtnHtml = "";
             if (r.amazonLink && r.amazonText) {
                 amazonBtnHtml = `
                     <a href="${r.amazonLink}" target="_blank" style="display: block; margin-top: 10px; background-color: #ff9900; color: #111111 !important; text-decoration: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; font-size: 13px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        ${r.amazonText}
+                        ${rq(r, 'amazonText')}
                     </a>
                 `;
             }
 
             recContainer.innerHTML += `
                 <div style="background: #ffffff; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #e74c3c; border: 1px solid #cbd5e1; border-left-width: 5px; color: #2c3e50;">
-                    <strong style="font-size: 16px; color: #1e293b;">${r.title}</strong>
-                    <p style="margin: 6px 0 8px 0; font-size: 14px; color: #475569;">${r.text}</p>
+                    <strong style="font-size: 16px; color: #1e293b;">${rq(r, 'title')}</strong>
+                    <p style="margin: 6px 0 8px 0; font-size: 14px; color: #475569;">${rq(r, 'text')}</p>
                     <div style="background: #fef2f2; padding: 8px 12px; border-radius: 6px; font-size: 13px; color: #991b1b; margin-bottom: 8px;">
-                        💡 <em>Warum wichtig:</em> ${r.explanation || r.tip}
+                        💡 <em>${t('riskWhyImportantLabel')}</em> ${rq(r, 'explanation') || rq(r, 'tip')}
                     </div>
                     ${amazonBtnHtml}
                 </div>
@@ -1540,7 +1716,7 @@ function evaluateRiskCheck() {
     // 3. Print / PDF Button am Ende
     recContainer.innerHTML += `
         <button onclick="window.print()" style="margin-top: 20px; background: #27ae60; color: white; border: none; padding: 14px 20px; border-radius: 25px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 8px;">
-            🖨️ Auswertung als PDF speichern / ausdrucken
+            ${t('riskPrintBtn')}
         </button>
     `;
 }
