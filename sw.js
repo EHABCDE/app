@@ -1,5 +1,5 @@
-// WICHTIG: Version auf v22 erhöht, um das Update bei allen Nutzern zu erzwingen!
-const CACHE_NAME = 'eh-abc-v22';
+// WICHTIG: Version auf v23 erhöht, um das Update bei allen Nutzern zu erzwingen!
+const CACHE_NAME = 'eh-abc-v23';
 const ASSETS = [
   './',
   './index.html',
