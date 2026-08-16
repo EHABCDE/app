@@ -751,13 +751,17 @@ function toggleEmergencyMode() {
         main.classList.remove('mode-panic');
         main.classList.add('mode-learn');
         btn.classList.remove('is-panic');
-        btn.innerHTML = '🚨 NOTFALL';
+        // Als data-i18n-Span statt hart codiertem Text setzen, damit der Button
+        // bei einem späteren Sprachwechsel weiterhin von applyTranslations()
+        // aktualisiert wird (siehe lang.js) - vorher ging die Übersetzbarkeit
+        // hier beim ersten Umschalten verloren.
+        btn.innerHTML = '🚨 <span data-i18n="emergencyBtn">' + t('emergencyBtn') + '</span>';
     } else {
         // In den Notfallmodus wechseln
         main.classList.remove('mode-learn');
         main.classList.add('mode-panic');
         btn.classList.add('is-panic');
-        btn.innerHTML = '📚 Zurück zum Lernmodus';
+        btn.innerHTML = '📚 <span data-i18n="emergencyBtnBackToLearn">' + t('emergencyBtnBackToLearn') + '</span>';
     }
 
     aktualisiereGlobaleNotfallLeisten();

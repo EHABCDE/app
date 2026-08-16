@@ -16,10 +16,11 @@
 
 const LANG_STORAGE_KEY = 'eh_abc_lang';
 let currentLang = 'de';
-// Sichtbare Kürzel für den Sprachumschalter-Button. "UA" statt "UK" für
+// Sichtbare Kürzel für das Sprach-Dropdown. "UA" statt "UK" für
 // Ukrainisch, damit es nicht mit "United Kingdom" verwechselt wird.
 const LANG_LABELS = { de: 'DE', en: 'EN', uk: 'UA' };
-// Reihenfolge für den zyklischen Umschalter (siehe toggleLanguage): DE -> EN -> UA -> DE ...
+// Erlaubte/gültige Sprachen (Reihenfolge = Reihenfolge der <option>s im
+// Dropdown, siehe #lang-select in index.html und setLanguage() unten).
 const LANG_CYCLE = ['de', 'en', 'uk'];
 
 const TRANSLATIONS = {
@@ -28,6 +29,10 @@ const TRANSLATIONS = {
         // dem HTML übernommen - deshalb hier explizit statt automatisch befüllt.
         metronomeStart: '🔊 Taktgeber starten (110 BPM)',
         metronomeStop: '⏹️ Taktgeber stoppen',
+
+        // Notfall-Umschalt-Button-Text im Panik-Modus wird per JS (toggleEmergencyMode)
+        // gesetzt, nicht aus dem HTML übernommen - deshalb hier explizit gepflegt.
+        emergencyBtnBackToLearn: 'Zurück zum Lernmodus',
 
         // Giftnotruf-Anzeige (aktualisierePoisonCenterUI) wird per JS befüllt,
         // ebenfalls nicht aus dem HTML übernehmbar - deshalb explizit gepflegt.
@@ -96,6 +101,7 @@ const TRANSLATIONS = {
         back: '⬅ Back',
         backToChooser: '⬅ Back to selection',
         emergencyBtn: 'EMERGENCY',
+        emergencyBtnBackToLearn: 'Back to learn mode',
         appTitle: 'Erste Hilfe ABC',
         categorySubtitle: 'Who do you need help for?',
         categoryChild: 'Baby & Child',
@@ -103,6 +109,7 @@ const TRANSLATIONS = {
         mainTitleKind: '👶 Baby & Child',
         mainTitleErwachsene: '🧑 Adult',
         chooseSituation: 'Choose a situation:',
+        homeCheckPromoBtn: 'Interactive Home Safety Check (Prevention)',
         vkTileTitle: 'First Aid Kit Check',
         nsTileTitle: 'Emergency ID Card',
 
@@ -123,6 +130,7 @@ const TRANSLATIONS = {
         vkAffiliateTitle: 'View long-lasting first aid kits',
         vkAffiliateSubtitle: 'Saves you the next replacement for several years',
         affiliateDisclaimer: 'Transparency note: As an Amazon Associate I earn from qualifying purchases made through the recommendation links in this app.',
+        mainLegalDisclaimer: '<strong>Legal notice &amp; disclaimer:</strong><br>The content of this app was created with the greatest care and in line with current medical guidelines. It is intended solely as non-binding information and a memory aid. Use of the information provided is at your own risk.<br><br><strong>Important:</strong> In an emergency, this app never replaces the professional emergency call (112), a medical diagnosis, or treatment by a doctor! No liability is accepted for damage arising from the use or non-use of the information provided here.',
         vkEmpty: 'No first aid kit added yet.',
         vkStatusValid: 'Valid for {days} more days',
         vkStatusExpired: 'Expired!',
@@ -2687,6 +2695,7 @@ const TRANSLATIONS = {
         back: '⬅ Назад',
         backToChooser: '⬅ Назад до вибору',
         emergencyBtn: 'НЕВІДКЛАДНА ДОПОМОГА',
+        emergencyBtnBackToLearn: 'Повернутися до навчального режиму',
         appTitle: 'Erste Hilfe ABC',
         categorySubtitle: 'Кому потрібна допомога?',
         categoryChild: 'Немовля та дитина',
@@ -2694,6 +2703,7 @@ const TRANSLATIONS = {
         mainTitleKind: '👶 Немовля та дитина',
         mainTitleErwachsene: '🧑 Дорослий',
         chooseSituation: 'Оберіть ситуацію:',
+        homeCheckPromoBtn: 'Інтерактивна перевірка безпеки вдома (профілактика)',
         vkTileTitle: 'Перевірка аптечки',
         nsTileTitle: 'Картка невідкладної допомоги',
 
@@ -2714,6 +2724,7 @@ const TRANSLATIONS = {
         vkAffiliateTitle: 'Переглянути аптечки з тривалим терміном придатності',
         vkAffiliateSubtitle: 'Заощадить вам наступну заміну на кілька років',
         affiliateDisclaimer: 'Примітка щодо прозорості: як партнер Amazon, я отримую винагороду за покупки, здійснені за партнерськими посиланнями в цьому додатку.',
+        mainLegalDisclaimer: '<strong>Правова інформація та застереження:</strong><br>Зміст цього додатку створений з максимальною ретельністю та відповідно до чинних медичних рекомендацій. Він призначений виключно для необов\'язкової інформації та як допоміжний засіб для пам\'яті. Використання наданої інформації відбувається на власну відповідальність.<br><br><strong>Важливо:</strong> Цей додаток у жодному разі не замінює виклик екстрених служб (112), медичний діагноз чи лікування лікарем! Ми не несемо жодної відповідальності за шкоду, що виникла внаслідок використання чи невикористання наданої тут інформації.',
         vkEmpty: 'Аптечку ще не додано.',
         vkStatusValid: 'Дійсна ще {days} дн.',
         vkStatusExpired: 'Термін минув!',
@@ -5175,8 +5186,8 @@ function applyTranslations() {
         el.placeholder = t(key);
     });
 
-    const label = document.getElementById('lang-toggle-label');
-    if (label) label.textContent = LANG_LABELS[currentLang] || currentLang.toUpperCase();
+    const langSelect = document.getElementById('lang-select');
+    if (langSelect) langSelect.value = currentLang;
 
     // Warnhinweis für die noch nicht gegengeprüfte ukrainische Übersetzung
     // (siehe Absprache mit Johannes) - nur in "uk" sichtbar, sonst versteckt.
@@ -5210,10 +5221,10 @@ function applyTranslations() {
     }
 }
 
-function toggleLanguage() {
-    // Zyklisch DE -> EN -> UA -> DE ...
-    const idx = LANG_CYCLE.indexOf(currentLang);
-    currentLang = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
+// Setzt die Sprache direkt (aus dem Dropdown #lang-select in index.html).
+function setLanguage(lang) {
+    if (!LANG_CYCLE.includes(lang)) return;
+    currentLang = lang;
     localStorage.setItem(LANG_STORAGE_KEY, currentLang);
     applyTranslations();
 }

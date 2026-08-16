@@ -24,10 +24,12 @@
             </button>
         </div>
 
-        <!-- Sprachumschalter: zyklisch DE -> EN -> UA -> DE (siehe toggleLanguage in lang.js) -->
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" title="Language / Sprache / Мова" style="background:#fff; border:1px solid #cbd5e1; border-radius:20px; padding:6px 12px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-left:8px;">
-            🌐 <span id="lang-toggle-label">DE</span>
-        </button>
+        <!-- Sprachauswahl als Dropdown: DE / EN / UA (siehe setLanguage in lang.js) -->
+        <select id="lang-select" onchange="setLanguage(this.value)" title="Language / Sprache / Мова" style="background:#fff; border:1px solid #cbd5e1; border-radius:20px; padding:6px 10px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-left:8px;">
+            <option value="de">🌐 DE</option>
+            <option value="en">🌐 EN</option>
+            <option value="uk">🌐 UA</option>
+        </select>
 
         <!-- Kleines Logo im Header -->
         <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToCategoryChooser()" style="cursor: pointer;">
@@ -119,7 +121,7 @@
 
             <!-- Prominenter Präventions-Banner -->
             <button onclick="showScreen('screen-pravention')" class="promo-banner">
-                🛡️ Interaktiver Zuhause-Check (Prävention)
+                🛡️ <span data-i18n="homeCheckPromoBtn">Interaktiver Zuhause-Check (Prävention)</span>
             </button>
 
             <!-- Suche -->
@@ -142,12 +144,14 @@
 
             <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
             <div class="app-disclaimer">
-                <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
-                Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung. 
+                <div data-i18n-html="mainLegalDisclaimer">
+                    <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
+                    Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung.
+                    <br><br>
+                    <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
+                </div>
                 <br><br>
-                <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
-                <br><br>
-                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+                <small><em data-i18n="affiliateDisclaimer">Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
                 <div style="text-align:center; margin-top:12px; font-size:12px;">
                     <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;" data-i18n="privacyLink">Datenschutz</a>
                     &nbsp;·&nbsp;
@@ -178,12 +182,14 @@
 
             <!-- ⚖️ RECHTLICHER HINWEIS / DISCLAIMER -->
             <div class="app-disclaimer">
-                <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
-                Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung. 
+                <div data-i18n-html="mainLegalDisclaimer">
+                    <strong>Rechtlicher Hinweis &amp; Haftungsausschluss:</strong><br>
+                    Die Inhalte dieser App wurden mit größter Sorgfalt und nach aktuellen medizinischen Leitlinien erstellt. Sie dienen ausschließlich der unverbindlichen Information und als Gedächtnisstütze. Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung.
+                    <br><br>
+                    <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
+                </div>
                 <br><br>
-                <strong>Wichtig:</strong> Diese App ersetzt im Ernstfall niemals den professionellen Notruf (112), die medizinische Diagnose oder die Behandlung durch einen Arzt! Es wird keinerlei Haftung für Schäden übernommen, die aus der Anwendung oder Nichtanwendung der hier bereitgestellten Informationen entstehen.
-                <br><br>
-                <small><em>Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
+                <small><em data-i18n="affiliateDisclaimer">Hinweis zur Transparenz: Als Amazon-Partner verdiene ich an qualifizierten Verkäufen über die in der App enthaltenen Empfehlungslinks.</em></small>
                 <div style="text-align:center; margin-top:12px; font-size:12px;">
                     <a href="./datenschutz.html" style="color:#2980b9; text-decoration:none;" data-i18n="privacyLink">Datenschutz</a>
                     &nbsp;·&nbsp;

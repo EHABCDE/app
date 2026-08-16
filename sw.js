@@ -1,5 +1,5 @@
-// WICHTIG: Version auf v52 erhöht, um das Update bei allen Nutzern zu erzwingen!
-const CACHE_NAME = 'eh-abc-v52';
+// WICHTIG: Version auf v53 erhöht, um das Update bei allen Nutzern zu erzwingen!
+const CACHE_NAME = 'eh-abc-v53';
 const ASSETS = [
   './',
   './index.html',
