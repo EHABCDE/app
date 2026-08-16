@@ -681,3 +681,39 @@ textarea.ns-input {
     color: #93c5fd;
     text-decoration: none;
 }
+
+/* =========================================================
+   GRÖSSERE BILDSCHIRME (TABLET / IPAD / DESKTOP)
+   Nutzt auf breiteren Screens mehr vom vorhandenen Platz,
+   statt die Handy-Breite einfach mittig stehen zu lassen.
+   ========================================================= */
+
+@media (min-width: 900px) {
+    main {
+        max-width: 960px;
+    }
+
+    .category-card {
+        padding: 36px 16px;
+        min-height: 170px;
+    }
+
+    .category-icon {
+        font-size: 52px;
+    }
+
+    .topic-card {
+        min-height: 100px;
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1200px) {
+    main {
+        max-width: 1100px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
