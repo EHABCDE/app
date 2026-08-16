@@ -1,5 +1,5 @@
-// WICHTIG: Version auf v53 erhöht, um das Update bei allen Nutzern zu erzwingen!
-const CACHE_NAME = 'eh-abc-v53';
+// WICHTIG: Version auf v58 erhöht, um das Update bei allen Nutzern zu erzwingen!
+const CACHE_NAME = 'eh-abc-v58';
 const ASSETS = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ const ASSETS = [
   './logo.jpg',
   './datenschutz.html',
   './impressum.html',
+  './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
@@ -41,17 +42,32 @@ self.addEventListener('activate', (e) => {
 // Stale-While-Revalidate: IMMER sofort aus dem Cache laden für maximale Geschwindigkeit.
 // Gleichzeitig im Hintergrund prüfen, ob es im Netz eine neuere Version gibt.
 self.addEventListener('fetch', (e) => {
+  // Nur eigene GET-Anfragen behandeln - POST/PUT etc. lassen sich nicht cachen
+  // (cache.put() wirft dabei eine Exception), und fremde Domains (z. B. das
+  // lage-api-Backend oder nominatim.openstreetmap.org) sollen nicht versehentlich
+  // im App-Cache landen, sondern ganz normal direkt vom Netz beantwortet werden.
+  if (e.request.method !== 'GET' || new URL(e.request.url).origin !== self.location.origin) {
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       const fetchPromise = fetch(e.request).then((networkResponse) => {
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(e.request, networkResponse.clone());
-        });
+        // Nur erfolgreiche Antworten cachen, sonst würde z. B. eine 404-Antwort
+        // dauerhaft im Cache landen und spätere echte Treffer verdecken. Das
+        // Cache-Schreiben selbst wird über waitUntil() an den Install-/Fetch-
+        // Lebenszyklus gebunden, damit der Service Worker nicht vorzeitig
+        // beendet wird, bevor cache.put() fertig ist.
+        if (networkResponse && networkResponse.ok) {
+          e.waitUntil(
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, networkResponse.clone()))
+          );
+        }
         return networkResponse;
       }).catch(() => {
         // Netzwerk-Fehler ignorieren, da wir die Offline-Dateien haben
       });
-      
+
       // Liefere sofort die Offline-Version, wenn vorhanden. Sonst warte aufs Netz.
       return cachedResponse || fetchPromise;
     })

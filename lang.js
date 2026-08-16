@@ -95,7 +95,40 @@ const TRANSLATIONS = {
         riskNoIssues: '🎉 Hervorragend! Dein Zuhause ist perfekt auf diese Entwicklungsstufe abgestimmt.',
         riskHandlungsbedarf: '⚠️ Hier besteht Handlungsbedarf in deinem Zuhause:',
         riskWhyImportantLabel: 'Warum wichtig:',
-        riskPrintBtn: '🖨️ Auswertung als PDF speichern / ausdrucken'
+        riskPrintBtn: '🖨️ Auswertung als PDF speichern / ausdrucken',
+
+        // Verbandkasten-Liste (vkRendereListe) und Notfall-Steckbrief-Liste/-Karte
+        // (nsRendereListe) werden komplett per JS aus script.js zusammengebaut,
+        // nicht aus dem HTML übernommen - deshalb hier explizit gepflegt (sonst
+        // zeigt t() beim Fallback auf "de" nur den rohen Key-Namen an).
+        vkEmpty: 'Noch keine Verbandkasten hinzugefügt.',
+        vkStatusValid: 'Noch {days} Tage gültig',
+        vkStatusExpired: 'Abgelaufen!',
+        vkStatusExpiring: 'Läuft in {days} Tagen ab',
+        vkExpiryLabel: 'Ablaufdatum:',
+        nsEmpty: 'Noch keine Person hinzugefügt.',
+        nsYears: 'Jahre',
+        nsBadgeAllergies: 'Allergien',
+        nsBadgeMedication: 'Medikamente',
+        nsEditPerson: 'Person bearbeiten',
+        nsBackToList: 'Zurück zur Liste',
+        nsBloodType: 'Blutgruppe',
+        nsConditions: 'Vorerkrankungen',
+        nsDoctor: 'Hausarzt',
+        nsEmergencyContact: 'Notfallkontakt',
+
+        // Push-Erinnerungs-Statusmeldungen (vkInitScreen/vkErinnerungAktivieren)
+        // werden per JS gesetzt, nicht aus dem HTML übernommen.
+        vkPushActive: '✅ Erinnerungen sind aktiv.',
+        vkPushUnsupported: 'Push-Erinnerungen werden von diesem Browser leider nicht unterstützt.',
+        vkPushDenied: 'Ohne erlaubte Benachrichtigungen kann ich dich leider nicht erinnern.',
+        vkPushFailed: 'Erinnerungen konnten nicht aktiviert werden.',
+
+        // aria-label für die Icon-only Löschen-/Bearbeiten-Buttons in der
+        // Verbandkasten- und Notfall-Steckbrief-Liste (einzige zugängliche
+        // Beschriftung für Screenreader-Nutzer:innen) - per JS gesetzt.
+        deleteLabel: 'Löschen',
+        editLabel: 'Bearbeiten'
     }, // alle weiteren Keys werden beim Start automatisch aus dem HTML befüllt
     en: {
         back: '⬅ Back',
@@ -165,12 +198,23 @@ const TRANSLATIONS = {
         nsConditions: 'Pre-existing conditions',
         nsDoctor: 'Family doctor',
         nsEmergencyContact: 'Emergency contact',
+        vkPushActive: '✅ Reminders are active.',
+        vkPushUnsupported: 'Sorry, push reminders are not supported by this browser.',
+        vkPushDenied: 'Without notification permission, I sadly can\'t remind you.',
+        vkPushFailed: 'Reminders could not be activated.',
+        deleteLabel: 'Delete',
+        editLabel: 'Edit',
 
         save: 'Save',
         cancel: 'Cancel',
         searchPlaceholderChild: '🔍 Search situation... (e.g. electricity, bee, cough)',
         searchPlaceholderAdult: '🔍 Search situation...',
         installBtn: 'Add app to home screen',
+        installModalTitle: '📲 Add app to home screen',
+        installModalIntro: 'Install this app on your phone to use it like a real app (without the address bar) and also offline:',
+        installIosInstructionsHtml: '<strong>🍎 For iPhone / iPad (Safari):</strong><br>\n                1. Tap the <strong>Share icon</strong> at the bottom of Safari (square with an arrow pointing up 📤).<br>\n                2. Scroll down in the menu and select <strong>"Add to Home Screen"</strong> ➕.<br>\n                3. Tap <strong>"Add"</strong> in the top right corner.',
+        installAndroidInstructionsHtml: '<strong>🤖 For Android (Chrome):</strong><br>\n                1. Tap the <strong>three dots</strong> in the top right corner (menu ⋮).<br>\n                2. Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.<br>\n                3. Confirm with <strong>"Install"</strong>.',
+        installCloseBtn: 'Understood & Close',
         feedbackBtn: 'Feedback & suggestions',
         privacyLink: 'Privacy',
         imprintLink: 'Legal notice',
@@ -341,7 +385,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">4</span>
-                    <strong>CALL 112:</strong> Only call for help now! Put your phone on speaker next to the child and keep going without stopping - <strong>30:2, compressions and breaths</strong> - until help arrives.
+                    <strong>CALL 112:</strong> Only now call for help! Put your phone on speaker next to the child and keep going without stopping - <strong>30:2, compressions and breaths</strong> - until help arrives.
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -388,7 +432,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
-                    <strong>CALL 112:</strong> Only call for help now! Put your phone on speaker next to the baby and keep going without stopping until help arrives.
+                    <strong>CALL 112:</strong> Only now call for help! Put your phone on speaker next to the baby and keep going without stopping until help arrives.
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -1911,11 +1955,11 @@ const TRANSLATIONS = {
         // Ton: englischer Rettungssanitäter erklärt es kurz & einfach.
         // =====================================================
         content_hitzschlag_erw_panic: `
-                <h1 style="color: #e74c3c;">🥵 EMERGENCY: HEATSTROKE & HEAT EXHAUSTION</h1>
+                <h1 style="color: #e74c3c;">🥵 EMERGENCY: HEATSTROKE & SUNSTROKE</h1>
 
                 <div class="emergency-step">
                     <span class="step-num">1</span>
-                    <strong>RECOGNISE IT:</strong> Heat exhaustion from sun - bright red, hot head, stiff neck, headache, nausea after sun exposure to the head. Heatstroke - very high body temperature, hot skin, confusion up to unconsciousness: life-threatening!
+                    <strong>RECOGNISE IT:</strong> Sunstroke - bright red, hot head, stiff neck, headache, nausea after sun exposure to the head. Heatstroke - very high body temperature, hot skin, confusion up to unconsciousness: life-threatening!
                 </div>
 
                 <div class="emergency-step">
@@ -1930,7 +1974,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">4</span>
-                    <strong>POSITIONING:</strong> For heat exhaustion, raise the head and upper body slightly. If consciousness is impaired: recovery position.
+                    <strong>POSITIONING:</strong> For sunstroke, raise the head and upper body slightly. If consciousness is impaired: recovery position.
                 </div>
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
@@ -1943,8 +1987,8 @@ const TRANSLATIONS = {
                     <strong>CALL 112</strong> straight away for heatstroke (very high temperature, impaired consciousness) - untreated it can be life-threatening!
                 </div>`,
         content_hitzschlag_erw_learn: `
-                <h1>🔬 Background: Heatstroke & Heat Exhaustion</h1>
-                <p>Heat exhaustion from the sun happens from direct, prolonged sun exposure to the bare head and irritates the meninges - core body temperature usually stays normal. Heatstroke, on the other hand, is overheating of the whole body where the body's own temperature regulation fails, and it's an acute emergency.</p>
+                <h1>🔬 Background: Heatstroke & Sunstroke</h1>
+                <p>Sunstroke happens from direct, prolonged sun exposure to the bare head and irritates the meninges - core body temperature usually stays normal. Heatstroke, on the other hand, is overheating of the whole body where the body's own temperature regulation fails, and it's an acute emergency.</p>
 
                 <h3>Groups at higher risk</h3>
                 <p>Young children, older people, and anyone physically active in great heat are at increased risk. Drinking enough, wearing a hat, and avoiding the strong midday sun are effective prevention.</p>`,
@@ -2724,7 +2768,7 @@ const TRANSLATIONS = {
         vkAffiliateTitle: 'Переглянути аптечки з тривалим терміном придатності',
         vkAffiliateSubtitle: 'Заощадить вам наступну заміну на кілька років',
         affiliateDisclaimer: 'Примітка щодо прозорості: як партнер Amazon, я отримую винагороду за покупки, здійснені за партнерськими посиланнями в цьому додатку.',
-        mainLegalDisclaimer: '<strong>Правова інформація та застереження:</strong><br>Зміст цього додатку створений з максимальною ретельністю та відповідно до чинних медичних рекомендацій. Він призначений виключно для необов\'язкової інформації та як допоміжний засіб для пам\'яті. Використання наданої інформації відбувається на власну відповідальність.<br><br><strong>Важливо:</strong> Цей додаток у жодному разі не замінює виклик екстрених служб (112), медичний діагноз чи лікування лікарем! Ми не несемо жодної відповідальності за шкоду, що виникла внаслідок використання чи невикористання наданої тут інформації.',
+        mainLegalDisclaimer: '<strong>Правова інформація та застереження:</strong><br>Зміст цього додатку створений з максимальною ретельністю та відповідно до чинних медичних рекомендацій. Він має суто інформаційний характер і слугує допоміжним засобом для пам\'яті. Використання наданої інформації відбувається на власну відповідальність.<br><br><strong>Важливо:</strong> Цей додаток у жодному разі не замінює виклик екстрених служб (112), медичний діагноз чи лікування лікарем! Ми не несемо жодної відповідальності за шкоду, що виникла внаслідок використання чи невикористання наданої тут інформації.',
         vkEmpty: 'Аптечку ще не додано.',
         vkStatusValid: 'Дійсна ще {days} дн.',
         vkStatusExpired: 'Термін минув!',
@@ -2759,12 +2803,23 @@ const TRANSLATIONS = {
         nsConditions: 'Наявні захворювання',
         nsDoctor: 'Сімейний лікар',
         nsEmergencyContact: 'Контакт для екстрених випадків',
+        vkPushActive: '✅ Нагадування активні.',
+        vkPushUnsupported: 'На жаль, цей браузер не підтримує push-нагадування.',
+        vkPushDenied: 'Без дозволу на сповіщення я, на жаль, не зможу вам нагадати.',
+        vkPushFailed: 'Не вдалося активувати нагадування.',
+        deleteLabel: 'Видалити',
+        editLabel: 'Редагувати',
 
         save: 'Зберегти',
         cancel: 'Скасувати',
         searchPlaceholderChild: '🔍 Пошук ситуації... (напр. електрика, бджола, кашель)',
         searchPlaceholderAdult: '🔍 Пошук ситуації...',
         installBtn: 'Додати додаток на головний екран',
+        installModalTitle: '📲 Додати додаток на головний екран',
+        installModalIntro: 'Встанови цей додаток на телефон, щоб користуватися ним як справжнім застосунком (без адресного рядка) і також офлайн:',
+        installIosInstructionsHtml: '<strong>🍎 Для iPhone / iPad (Safari):</strong><br>\n                1. Натисни внизу в Safari на <strong>значок «Поділитися»</strong> (квадрат зі стрілкою вгору 📤).<br>\n                2. Прогорни меню вниз і вибери <strong>«На екран «Домівка»»</strong> ➕.<br>\n                3. Натисни вгорі справа <strong>«Додати»</strong>.',
+        installAndroidInstructionsHtml: '<strong>🤖 Для Android (Chrome):</strong><br>\n                1. Натисни вгорі справа на <strong>три крапки</strong> (меню ⋮).<br>\n                2. Вибери <strong>«Додати на головний екран»</strong> або <strong>«Установити додаток»</strong>.<br>\n                3. Підтверди, натиснувши <strong>«Установити»</strong>.',
+        installCloseBtn: 'Зрозуміло і закрити',
         feedbackBtn: 'Відгук та пропозиції',
         privacyLink: 'Конфіденційність',
         imprintLink: 'Вихідні дані',
@@ -2872,11 +2927,11 @@ const TRANSLATIONS = {
 
         content_notfallcheck_erw: `
                 <h1 style="color: #d35400;">❓ Невідкладний випадок чи ні?</h1>
-                <p>Скористайтеся <strong>правилом 3-А</strong>, щоб визначити, чи потрібна дорослому негайна допомога (виклик 112). Натисніть відповідь, яка підходить найкраще.</p>
+                <p>Скористайтеся <strong>правилом трьох перевірок</strong>, щоб визначити, чи потрібна дорослому негайна допомога (виклик 112). Натисніть відповідь, яка підходить найкраще.</p>
 
                 <!-- STEP 1: Responsiveness -->
                 <div id="checkerw-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. А – Активність (свідомість)</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. Свідомість</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Як людина реагує, коли до неї звертаються або торкаються/трясуть за плече?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -2891,7 +2946,7 @@ const TRANSLATIONS = {
 
                 <!-- STEP 2: Breathing -->
                 <div id="checkerw-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. А – Дихальні шляхи/Дихання</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. Дихання</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Чи дихає людина нормально?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -2906,7 +2961,7 @@ const TRANSLATIONS = {
 
                 <!-- STEP 3: Appearance -->
                 <div id="checkerw-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. А – Зовнішній вигляд</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. Зовнішній вигляд</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Який вигляд має шкіра людини?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -2975,7 +3030,7 @@ const TRANSLATIONS = {
                     <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
                         Людина реагує, дихає нормально, в цілому виглядає добре, немає жодної з тривожних ознак, і ваше внутрішнє відчуття спокійне. Це дуже добра ознака! Гострий невідкладний випадок тут вкрай малоймовірний.
                         <br><br>
-                        <em>Порада: якщо якісь симптоми все ж викликають занепокоєння, можна спокійно звернутися на 116 117 (чергова лікарська служба) або до сімейного лікаря.</em>
+                        <em>Порада: якщо якісь симптоми все ж викликають занепокоєння, можна спокійно зателефонувати на 116 117 (чергова лікарська служба) або до сімейного лікаря.</em>
                     </p>
                     <button onclick="resetNotfallCheckErw(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
                         🏠 На головний екран
@@ -2984,11 +3039,11 @@ const TRANSLATIONS = {
 
         content_notfallcheck: `
                 <h1 style="color: #d35400;">❓ Невідкладний випадок чи ні?</h1>
-                <p>Скористайтеся <strong>правилом 3-А</strong>, щоб визначити, чи потрібна вашій дитині негайна медична допомога. Натисніть відповідь, яка підходить найкраще.</p>
+                <p>Скористайтеся <strong>правилом трьох перевірок</strong>, щоб визначити, чи потрібна вашій дитині негайна медична допомога. Натисніть відповідь, яка підходить найкраще.</p>
 
                 <!-- STEP 1: Responsiveness -->
                 <div id="check-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. А – Активність (свідомість)</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. Свідомість</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Як ваша дитина реагує, коли до неї звертаються або торкаються?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -3003,7 +3058,7 @@ const TRANSLATIONS = {
 
                 <!-- STEP 2: Breathing -->
                 <div id="check-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. А – Дихальні шляхи/Дихання</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. Дихання</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Чи дихає ваша дитина нормально?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -3018,7 +3073,7 @@ const TRANSLATIONS = {
 
                 <!-- STEP 3: Appearance -->
                 <div id="check-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
-                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. А – Зовнішній вигляд</h2>
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. Зовнішній вигляд</h2>
                     <p style="margin-bottom: 20px; color: #475569;">Який колір шкіри у вашої дитини?</p>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -3072,7 +3127,7 @@ const TRANSLATIONS = {
                     <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
                         Ваша дитина реагує, дихає нормально, виглядає рожевою, і ваше внутрішнє відчуття спокійне. Це дуже добра ознака! Гострий невідкладний випадок тут вкрай малоймовірний.
                         <br><br>
-                        <em>Порада: при температурі, болю чи поганому самопочутті можна спокійно звернутися на 116 117 (чергова лікарська служба) або до дитячого лікаря.</em>
+                        <em>Порада: при температурі, болю чи поганому самопочутті можна спокійно зателефонувати на 116 117 (чергова лікарська служба) або до дитячого лікаря.</em>
                     </p>
                     <button onclick="resetNotfallCheck(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
                         🏠 На головний екран
@@ -3084,7 +3139,7 @@ const TRANSLATIONS = {
         // die einleitende Ergebnis-HTML. Die 20 einzelnen Sicherheitsfragen
         // selbst liegen in script.js als RISK_QUESTIONS_UK. ----
         riskTitle: '🛡️ Інтерактивна перевірка безпеки вдома',
-        riskIntroStrong: '💡 Чи знали ви, що близько 60% дитячих травм можна запобігти?',
+        riskIntroStrong: '💡 Чи знали ви, що близько 60% дитячих травм можна уникнути?',
         riskIntroText: 'Правильні заходи безпеки у потрібний час роблять ваш дім безпечним для дитини, при цьому ви можете вільно ним користуватися. Зробіть свій дім безпечним крок за кроком - з урахуванням віку дитини та особливостей вашого житла!',
         riskStep1Title: '👶 1. Оберіть етап розвитку дитини:',
         riskStageBaby: '<strong>Немовля (0-5 місяців):</strong> Ще не рухається самостійно, лежить на спині/животику.',
@@ -3110,7 +3165,7 @@ const TRANSLATIONS = {
         riskIntroResultHtml: `
         <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
             <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Ваш персональний результат профілактики</strong>
-            Чи знали ви, що близько <strong>60% дитячих травм можна запобігти</strong>? Правильні заходи безпеки у потрібний час допомагають вашому дому залишатися захищеним простором.
+            Чи знали ви, що близько <strong>60% дитячих травм можна уникнути</strong>? Правильні заходи безпеки у потрібний час допомагають вашому дому залишатися захищеним простором.
             <br><br>
             <strong>Виховання проти повного захисту від небезпек:</strong> Ваш дім не повинен перетворюватися на неприступну <em>фортецю</em>! Дитині потрібно набувати власного досвіду. Хоча небезпечні для життя ризики (наприклад, відкриті розетки, незахищені сходи чи отрути) необхідно послідовно усувати, активна батьківська увага відіграє важливу роль з самого початку.
             <br><br>
@@ -3150,7 +3205,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">4</span>
-                    <strong>ВИКЛИЧТЕ 112:</strong> Телефонуйте на допомогу тільки зараз! Увімкніть гучний зв'язок і покладіть телефон поруч із дитиною, продовжуйте без зупинки - <strong>30:2, натискання та вдихи</strong> - поки не прибуде допомога.
+                    <strong>ВИКЛИЧТЕ 112:</strong> Аж тепер телефонуйте по допомогу! Увімкніть гучний зв'язок і покладіть телефон поруч із дитиною, продовжуйте без зупинки - <strong>30:2, натискання та вдихи</strong> - поки не прибуде допомога.
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -3167,7 +3222,7 @@ const TRANSLATIONS = {
                 <p>Порівняно з дорослими, у немовлят відносно більша голова та більший язик, тому вони дихають переважно через ніс. У дітей до одного року потилиця настільки велика, що закидання голови назад фактично перекрило б дихальні шляхи. Утримання голови в нейтральному "нюхаючому" положенні (обличчя дивиться прямо вгору) тримає дихальні шляхи відкритими. Лише приблизно з одного року дихальні шляхи змінюються настільки, що для їхньої прохідності потрібне обережне закидання голови назад.</p>
 
                 <h3>Серце та кровообіг</h3>
-                <p>Серцевий м'яз маленької дитини ще не повністю розвинений, тому серце має битися частіше, щоб встигати. Помітно повільне серцебиття у немовляти часто є першою тривожною ознакою важкої нестачі кисню. Якщо ви - випадковий свідок і не впевнені щодо співвідношення 15:2 для дітей, просто робіть 30:2 - це набагато краще, ніж нічого не робити через невпевненість!</p>
+                <p>Серцевий м'яз маленької дитини ще не повністю розвинений, тому серце має битися частіше, щоб встигати. Помітно повільне серцебиття у немовляти часто є першою тривожною ознакою важкої нестачі кисню. Якщо ви як особа, що надає першу допомогу, не впевнені щодо співвідношення 15:2 для дітей, просто робіть 30:2 - це набагато краще, ніж нічого не робити через невпевненість!</p>
 
                 <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
                     <strong>Наукові джерела (доказові настанови та інформація):</strong><br>
@@ -3197,7 +3252,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
-                    <strong>ВИКЛИЧТЕ 112:</strong> Телефонуйте на допомогу тільки зараз! Увімкніть гучний зв'язок і покладіть телефон поруч із немовлям, продовжуйте без зупинки, поки не прибуде допомога.
+                    <strong>ВИКЛИЧТЕ 112:</strong> Аж тепер телефонуйте по допомогу! Увімкніть гучний зв'язок і покладіть телефон поруч із немовлям, продовжуйте без зупинки, поки не прибуде допомога.
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -3310,7 +3365,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
                     <span class="step-num">3</span>
-                    <strong>ЗБЕРІГАЙТЕ СПОКІЙ І САДОВІТЬ ПРЯМО:</strong>
+                    <strong>ЗБЕРІГАЙТЕ СПОКІЙ І САДІТЬ ПРЯМО:</strong>
                     <br>• Посадіть дитину **прямо** - так легше дихати, коли дихальні шляхи починають набрякати.
                     <br>• Якщо жало видно, обережно видаліть його пінцетом або нігтем. Не стискайте його пальцями (це виштовхне ще більше отрути!).
                 </div>
@@ -3319,7 +3374,7 @@ const TRANSLATIONS = {
                     <span class="step-num">4</span>
                     <strong>АЛЕРГІЧНИЙ НАБІР ПЕРШОЇ ДОПОМОГИ (якщо є):</strong>
                     <br>• У дитини відома алергія і є аварійний набір?
-                    <br>• Введіть **автоін'єктор адреналіну** (наприклад, Fastjekt / Jext) різко прямо в **зовнішню частину стегна** і утримуйте 5-10 секунд (це працює навіть через одяг!).
+                    <br>• Введіть **автоін'єктор адреналіну** (наприклад, Fastjekt / Jext), притиснувши його під прямим кутом (90°) до **зовнішньої частини стегна**, і утримуйте 5-10 секунд (це працює навіть через одяг!).
                 </div>`,
 
         content_insektenstich_learn: `
@@ -3327,7 +3382,7 @@ const TRANSLATIONS = {
                 <p>Укус у руку чи ногу зазвичай лише неприємний. Але якщо дитина проковтне осу чи бджолу, п'ючи з відкритої банки, укус у рот чи горло може стати життєзагрозливим. Тканина там може набрякнути дуже сильно за кілька хвилин і перекрити дихальні шляхи.</p>
 
                 <h3>Чому холод так добре допомагає?</h3>
-                <p>Лід і холодна вода різко звужують кровоносні судини в горлі. Це сповільнює накопичення рідини в тканині, фізично стримуючи життєзагрозливий набряк, доки не прибудуть рятувальники або лікарня не зможе призначити ліки (стероїди/антигістамінні препарати) для зменшення набряку.</p>
+                <p>Лід і холодна вода різко звужують кровоносні судини в горлі. Це сповільнює накопичення рідини в тканині, фізично стримуючи життєзагрозливий набряк, доки не прибуде швидка допомога або лікарня не зможе призначити ліки (стероїди/антигістамінні препарати) для зменшення набряку.</p>
 
                 <h3>Анафілактичний шок</h3>
                 <p>При справжній алергії на отруту комах імунна система реагує надмірно. Кровоносні судини по всьому тілу раптово розширюються, артеріальний тиск різко падає, а дихальні шляхи звужуються (анафілаксія). Тут допоможе лише адреналін - він одразу знову звужує судини та стабілізує роботу серця і кровообігу.</p>
@@ -3511,7 +3566,7 @@ const TRANSLATIONS = {
                     <span class="step-num">3</span>
                     <strong>ЕКСТРЕНІ ЛІКИ (якщо є):</strong>
                     <br>• Ваш педіатр вже призначив екстрені ліки?
-                    <br>• Дайте дитині **гормональну свічку**, або відповідний сироп/спрей, точно за інструкцією лікаря. (Гормони зменшують набряк, але діють приблизно через 20-30 хвилин).
+                    <br>• Дайте дитині **свічку з кортикостероїдом (кортизоном)**, або відповідний сироп/спрей, точно за інструкцією лікаря. (Кортикостероїди зменшують набряк, але діють приблизно через 20-30 хвилин).
                 </div>
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
@@ -3539,7 +3594,7 @@ const TRANSLATIONS = {
 
         content_vergiftung_panic: `
                 <h1 style="color: #27ae60;">🧪 НЕВІДКЛАДНА ДОПОМОГА: ОТРУЄННЯ</h1>
-                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ НІКОЛИ НЕ ВИКЛИКАЙТЕ БЛЮВАННЯ! Це може пошкодити стравохід або спричинити поперхування.</p>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ НІКОЛИ НЕ ВИКЛИКАЙТЕ БЛЮВАННЯ! Це може спричинити хімічний опік стравоходу або задуху.</p>
 
                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #27ae60;">
                     <span class="step-num">1</span>
@@ -3570,7 +3625,7 @@ const TRANSLATIONS = {
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
                     <strong>ПРИ ЗАСОБАХ ДЛЯ ЧИЩЕННЯ (ПІНА):</strong>
-                    <br>• Дитина проковтнула засіб для миття посуду, мило чи пральний засіб? **Ніколи не давайте пити воду!** Це спричинить утворення піни в шлунку, а піна може потрапити в легені (небезпека поперхування).
+                    <br>• Дитина проковтнула засіб для миття посуду, мило чи пральний засіб? **Ніколи не давайте пити воду!** Це спричинить утворення піни в шлунку, а піна може потрапити в легені (небезпека задухи).
                     <br>• Якщо у вас є протипінний засіб (наприклад, Sab Simplex / Lefax), дайте його після консультації з токсикологічним центром.
                 </div>`,
 
@@ -3671,7 +3726,7 @@ const TRANSLATIONS = {
                 <p>Падіння з висоти власного зросту дитини зазвичай безпечні. Для дорослого падіння з висоти 3 метри і більше (приблизно 1,5 зросту тіла) вважається критичним. Для немовляти падіння з пеленального столика (близько 80 см) несе точно порівнянний, серйозний ризик травми!</p>
 
                 <h3>Ризик відкритого тім'ячка</h3>
-                <p>Якщо мозок сильно струшується від удару, може виникнути крововилив. Оскільки кістки черепа і тім'ячко у немовлят ще не повністю зрослися, мозок має трохи простору для набряку. На жаль, це також означає, що зміни в поведінці та симптоми крововиливу в мозок (наприклад, блювання чи млявість) часто проявляються **із затримкою**. Уважно спостерігайте за дитиною після будь-якого серйозного падіння, і якщо у вас є хоч найменші сумніви, зверніться до рятувальників для огляду.</p>
+                <p>Якщо мозок сильно струшується від удару, може виникнути крововилив. Оскільки кістки черепа і тім'ячко у немовлят ще не повністю зрослися, мозок має трохи простору для набряку. На жаль, це також означає, що зміни в поведінці та симптоми крововиливу в мозок (наприклад, блювання чи млявість) часто проявляються **із затримкою**. Уважно спостерігайте за дитиною після будь-якого серйозного падіння, і якщо у вас є хоч найменші сумніви, зверніться до лікаря для огляду.</p>
 
                 <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
                     <strong>Наукові джерела (доказова інформація для пацієнтів):</strong><br>
@@ -3763,7 +3818,7 @@ const TRANSLATIONS = {
                     <strong>ЯКЩО НЕ ДИХАЄ: 5 ПОЧАТКОВИХ РЯТУВАЛЬНИХ ВДИХІВ!</strong>
                     <br>• Оскільки основна проблема тут - нестача кисню: одразу зробіть **5 початкових рятувальних вдихів** (обережно вдувайте повітря, поки грудна клітка не підніметься).
                     <br>• Потім протягом 1 хвилини чергуйте: **30 натискань на грудну клітку : 2 рятувальних вдихи**.
-                    <br>• *Телефонуйте 112 лише після цієї 1 хвилини СЛР, якщо ви самі!*
+                    <br>• *Телефонуйте 112 лише після цієї 1 хвилини СЛР, якщо ви наодинці!*
                 </div>
 
                 <div class="emergency-step">
@@ -3887,7 +3942,7 @@ const TRANSLATIONS = {
                     <span class="step-num">3</span>
                     <strong>ВИРІШІТЬ:</strong><br>
                     • Дихає <strong>нормально</strong> → Одразу покладіть у <strong>стабільне бокове положення</strong> (крок 4).<br>
-                    • <strong>Не дихає, або дихає ненормально</strong> (наприклад, зі свистом) → Телефонуйте 112 і негайно починайте <strong>СЛР</strong>!
+                    • <strong>Не дихає, або дихає ненормально</strong> (наприклад, поодинокі судомні "хапаючі" вдихи - агональне дихання) → Телефонуйте 112 і негайно починайте <strong>СЛР</strong>!
                 </div>
 
                 <div class="emergency-step">
@@ -3906,7 +3961,7 @@ const TRANSLATIONS = {
 
         content_bewusstlosigkeit_erw_learn: `
                 <h1>🔬 Що варто знати: непритомність</h1>
-                <p>Коли людина непритомна, захисні рефлекси організму вимикаються, а м'язи повністю розслабляються. Через це язик може запасти назад і перекрити дихальні шляхи. Оскільки кашльовий рефлекс також відсутній, слина, блювотні маси чи кров можуть безперешкодно потрапити в дихальні шляхи і спричинити поперхування.</p>
+                <p>Коли людина непритомна, захисні рефлекси організму вимикаються, а м'язи повністю розслабляються. Через це язик може запасти назад і перекрити дихальні шляхи. Оскільки кашльовий рефлекс також відсутній, слина, блювотні маси чи кров можуть безперешкодно потрапити в дихальні шляхи і спричинити задуху.</p>
 
                 <h3>Можливі причини</h3>
                 <p>Непритомність може мати багато причин: серйозні травми голови, тепловий удар, судомні напади, сильна кровотеча, а особливо у дорослих - гострі стани, такі як інсульт, інфаркт міокарда чи порушення серцевого ритму.</p>
@@ -3943,7 +3998,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    <strong>ПРОДОВЖУЙТЕ</strong>, поки не прибудуть рятувальники, або людина не покаже ознак життя (наприклад, самостійне дихання, кашель, рух) - тоді покладіть її в стабільне бокове положення і продовжуйте стежити за диханням.
+                    <strong>ПРОДОВЖУЙТЕ</strong>, поки не прибуде швидка допомога, або людина не покаже ознак життя (наприклад, самостійне дихання, кашель, рух) - тоді покладіть її в стабільне бокове положення і продовжуйте стежити за диханням.
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -3960,7 +4015,7 @@ const TRANSLATIONS = {
                 <p>Якщо мозок залишається без кисню навіть на кілька хвилин, виникають незворотні пошкодження. Саме тому важлива кожна секунда - і саме тому поєднання натискань на грудну клітку та рятувальних вдихів настільки важливе: натискання підтримують певний кровообіг, а вдихи забезпечують кров киснем.</p>
 
                 <h3>Дефібрилятор (АЗД)</h3>
-                <p>Автоматичний зовнішній дефібрилятор голосом супроводжує кожен крок і сам визначає, чи потрібен розряд - як випадковий свідок, ви справді не можете зробити щось неправильно. Що швидше АЗД використовується при зупинці серця, то кращі шанси на виживання.</p>
+                <p>Автоматичний зовнішній дефібрилятор голосом супроводжує кожен крок і сам визначає, чи потрібен розряд - як особа, що надає першу допомогу, ви справді не можете зробити щось неправильно. Що швидше АЗД використовується при зупинці серця, то кращі шанси на виживання.</p>
 
                 <h3>Діти та немовлята</h3>
                 <p>У них реанімація виконується дещо інакше: спочатку роблять п'ять рятувальних вдихів, і лише потім натискання на грудну клітку. Деталі можна знайти в розділі "СЛР" у категорії "Немовля та дитина".</p>`,
@@ -3990,7 +4045,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    <strong>ЧЕРГУЙТЕ:</strong> Продовжуйте чергувати удари по спині та поштовхи в живіт (до 5 кожного разу), поки предмет не звільниться або не прибудуть рятувальники.
+                    <strong>ЧЕРГУЙТЕ:</strong> Продовжуйте чергувати удари по спині та поштовхи в живіт (до 5 кожного разу), поки предмет не звільниться або не прибуде швидка допомога.
                 </div>
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
@@ -4025,12 +4080,12 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
                     <span class="step-num">4</span>
-                    <strong>АВАРІЙНИЙ НАБІР?</strong> Якщо у людини відома алергія, запитайте про автоін'єктор адреналіну (ручку), який вона може мати при собі, і допоможіть їй ним скористатися (введіть різко в зовнішню частину стегна, утримуйте 5-10 секунд).
+                    <strong>АВАРІЙНИЙ НАБІР?</strong> Якщо у людини відома алергія, запитайте про автоін'єктор адреналіну (ручку), який вона може мати при собі, і допоможіть їй ним скористатися (притисніть під прямим кутом (90°) до зовнішньої частини стегна, утримуйте 5-10 секунд).
                 </div>
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">5</span>
-                    <strong>ЯКЩО ДИХАННЯ ЗУПИНЯЄТЬСЯ:</strong> Негайно починайте рятувальне дихання/СЛР і продовжуйте, поки не прибудуть рятувальники.
+                    <strong>ЯКЩО ДИХАННЯ ЗУПИНЯЄТЬСЯ:</strong> Негайно починайте рятувальне дихання/СЛР і продовжуйте, поки не прибуде швидка допомога.
                 </div>`,
 
         content_insektenstich_mund_erw_learn: `
@@ -4109,13 +4164,13 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
                     <span class="step-num">4</span>
-                    <strong>ПОКЛАДІТЬ РІВНО:</strong> Покладіть людину рівно на спину. Ми навмисно не піднімаємо ноги - при серцевій недостатності, інфаркті чи ураженні клапанів це може спричинити набряк легень, і як випадковий свідок ви зазвичай не можете точно виключити такий стан.<br>
+                    <strong>ПОКЛАДІТЬ РІВНО:</strong> Покладіть людину рівно на спину. Ми навмисно не піднімаємо ноги - при серцевій недостатності, інфаркті чи ураженні клапанів це може спричинити набряк легень, і як особа, що надає першу допомогу, ви зазвичай не можете точно виключити такий стан.<br>
                     <strong>ВИНЯТОК:</strong> Якщо є труднощі з диханням або симптоми з боку грудної клітки/серця, натомість трохи підніміть верхню частину тіла.
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    Продовжуйте уважно стежити за станом і диханням, поки не прибудуть рятувальники.
+                    Продовжуйте уважно стежити за станом і диханням, поки не прибуде швидка допомога.
                 </div>`,
 
         content_schock_erw_learn: `
@@ -4564,7 +4619,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">5</span>
-                    Якщо кровотечу на руці чи нозі не вдається зупинити, незважаючи на тисну пов'язку, як останній засіб накладіть джгут (руками або спеціальним пристроєм) ближче до тіла від рани - лише при небезпечній для життя кровотечі.
+                    Якщо кровотечу на руці чи нозі не вдається зупинити, незважаючи на тиснучу пов'язку, як останній засіб накладіть джгут (руками або спеціальним пристроєм) ближче до тіла від рани - лише при небезпечній для життя кровотечі.
                 </div>
 
                 <div class="emergency-step">
@@ -4583,7 +4638,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
                     <span class="step-num">1</span>
-                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> Накрийте куксу стерильними пов'язками і сильно притисніть; за потреби додайте тисну пов'язку.
+                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> Накрийте куксу стерильними пов'язками і сильно притисніть; за потреби додайте тиснучу пов'язку.
                 </div>
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
@@ -4642,7 +4697,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    При відкритій рані грудної клітки з чутним "хлюпаючим" звуком: вільно накрийте рану повітронепроникним матеріалом, приклеєним з трьох сторін, щоб повітря могло виходити, але не заходити назад.
+                    При відкритій рані грудної клітки з чутним свистячим/присмоктувальним звуком повітря: вільно накрийте рану повітронепроникним матеріалом, приклеєним з трьох сторін, щоб повітря могло виходити, але не заходити назад.
                 </div>
 
                 <div class="emergency-step">
@@ -4718,7 +4773,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">4</span>
-                    <strong>ПОЗИЦІОНУВАННЯ:</strong> При тепловому виснаженні трохи підніміть голову і верхню частину тіла. Якщо порушена свідомість: стабільне бокове положення.
+                    <strong>ПОЗИЦІОНУВАННЯ:</strong> При сонячному ударі трохи підніміть голову і верхню частину тіла. Якщо порушена свідомість: стабільне бокове положення.
                 </div>
 
                 <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
@@ -4891,12 +4946,36 @@ const TRANSLATIONS = {
         // ---- Batch 5f (Themen Erwachsene, Teil 6/7): Інфаркт міокарда, Інсульт, Діабетична невідкладність, Сепсис, Гострий біль у животі. ----
         content_herzinfarkt_erw_panic: `
                 <h1 style="color: #c0392b;">❤️‍🩹 НЕВІДКЛАДНА ДОПОМОГА: ІНФАРКТ МІОКАРДА</h1>
-                Крок 1: РОЗПІЗНАЙТЕ ЙОГО: Раптовий, сильний, часто тиснучий або пекучий біль за грудиною, що поширюється на руку, плече, спину, шию або щелепу - часто супроводжується тривогою, задишкою, холодним потом або нудотою. У жінок ознаки можуть бути менш типовими.
-                Крок 2 (виділено темним #78281f): НЕГАЙНО ВИКЛИЧТЕ 112 - за будь-якої підозри, навіть якщо симптоми тим часом слабшають.
-                Крок 3: ПОЛОЖЕННЯ: Заспокойте людину і допоможіть їй зручно сісти з піднятою верхньою частиною тіла або в напівсидячому положенні.
-                Крок 4: ОСЛАБТЕ ТІСНИЙ ОДЯГ (комір, краватку, ремінь), забезпечте доступ свіжого повітря.
-                Крок 5 (виділено #34495e): При відомому серцевому захворюванні: якщо у людини є призначений лікарем нітроспрей чи ліки, допоможіть їй їх прийняти.
-                Крок 6 (виділено темним #2c0e0e): Постійно спостерігайте за станом людини - якщо вона втрачає свідомість і перестає дихати, негайно починайте СЛР.`,
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>РОЗПІЗНАЙТЕ ЙОГО:</strong> Раптовий, сильний, часто тиснучий або пекучий біль за грудиною, що поширюється на руку, плече, спину, шию або щелепу - часто супроводжується тривогою, задишкою, холодним потом або нудотою. У жінок ознаки можуть бути менш типовими.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>НЕГАЙНО ВИКЛИЧТЕ 112</strong> - за будь-якої підозри, навіть якщо симптоми тим часом слабшають.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ПОЛОЖЕННЯ:</strong> Заспокойте людину і допоможіть їй зручно сісти з піднятою верхньою частиною тіла або в напівсидячому положенні.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ОСЛАБТЕ ТІСНИЙ ОДЯГ</strong> (комір, краватку, ремінь), забезпечте доступ свіжого повітря.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    При відомому серцевому захворюванні: якщо у людини є призначений лікарем нітроспрей чи ліки, допоможіть їй їх прийняти.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Постійно спостерігайте за станом людини - якщо вона втрачає свідомість і перестає дихати, негайно починайте <strong>СЛР</strong>.
+                </div>`,
         content_herzinfarkt_erw_learn: `
                 <h1>🔬 Що варто знати: інфаркт міокарда</h1>
                 <p>Інфаркт міокарда зазвичай виникає, коли тромб раптово перекриває коронарну артерію, припиняючи кровопостачання частини серцевого м'яза. Без лікування ця тканина гине протягом короткого часу.</p>
@@ -4905,11 +4984,31 @@ const TRANSLATIONS = {
 
         content_schlaganfall_erw_panic: `
                 <h1 style="color: #8e44ad;">🧠 НЕВІДКЛАДНА ДОПОМОГА: ІНСУЛЬТ</h1>
-                Крок 1 (виділено темним #78281f): ТЕСТ FAST: Обличчя - попросіть посміхнутися: чи опускається один кутик рота? Руки - попросіть одночасно підняти обидві руки: чи опускається одна з них? Мовлення - попросіть повторити речення: чи звучить воно нерозбірливо? Час - дійте негайно, якщо є хоча б одна з цих ознак!
-                Крок 2 (виділено темним #78281f): НЕГАЙНО ВИКЛИЧТЕ 112 і повідомте точний час появи симптомів - це критично важливо для лікування.
-                Крок 3: ЗАСПОКОЙТЕ ТА ЗАЛИШАЙТЕСЯ ПОРУЧ: Тримайте людину спокійною, не залишайте її саму, не давайте їсти чи пити (ковтання може бути порушене).
-                Крок 4: ПОЛОЖЕННЯ: Якщо людина притомна, посадіть її з піднятою верхньою частиною тіла. Якщо непритомна, але дихає нормально: стабільне бокове положення на ураженому (слабшому) боці.
-                Крок 5: Уважно спостерігайте і перевіряйте дихання до приїзду швидкої допомоги.`,
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ТЕСТ FAST:</strong> <em>Face</em> (обличчя) - попросіть посміхнутися: чи опускається один кутик рота? <em>Arms</em> (руки) - попросіть одночасно підняти обидві руки: чи опускається одна з них? <em>Speech</em> (мовлення) - попросіть повторити речення: чи звучить воно нерозбірливо? <em>Time</em> (час) - дійте негайно, якщо є хоча б одна з цих ознак!
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>НЕГАЙНО ВИКЛИЧТЕ 112</strong> і повідомте точний час появи симптомів - це критично важливо для лікування.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗАСПОКОЙТЕ ТА ЗАЛИШАЙТЕСЯ ПОРУЧ:</strong> Тримайте людину спокійною, не залишайте її саму, не давайте їсти чи пити (ковтання може бути порушене).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ПОЛОЖЕННЯ:</strong> Якщо людина притомна, посадіть її з піднятою верхньою частиною тіла. Якщо непритомна, але дихає нормально: стабільне бокове положення на ураженому (слабшому) боці.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Уважно спостерігайте і перевіряйте дихання до приїзду швидкої допомоги.
+                </div>`,
         content_schlaganfall_erw_learn: `
                 <h1>🔬 Що варто знати: інсульт</h1>
                 <p>Інсульт зазвичай виникає, коли тромб перекриває судину в мозку (значно рідше - через крововилив у мозок). Уражена ділянка мозку втрачає кровопостачання - залежно від зони можуть частково втрачатися мовлення, рухи чи інші функції.</p>
@@ -4917,26 +5016,70 @@ const TRANSLATIONS = {
                 <p>Коли судина закупорена, після появи симптомів є обмежене вікно часу, протягом якого ліки чи процедура можуть відкрити її знову. Чим точніше відомий час появи симптомів, тим краще лікарі можуть вирішити, яке лікування ще можливе.</p>`,
 
         content_diabetes_erw_panic: `
-                <h1 style="color: #b7950b;">🍬 НЕВІДКЛАДНА ДОПОМОГА: ДІАБЕТИЧНА НЕВІДКЛАДНІСТЬ</h1>
-                Крок 1: РОЗПІЗНАЙТЕ НИЗЬКИЙ РІВЕНЬ ЦУКРУ В КРОВІ (трапляється частіше, розвивається швидко): тремтіння, сильний голод, блідість, пітливість, сплутаність свідомості, незвично дратівливий настрій, аж до втрати свідомості.
-                Крок 2 (виділено #34495e): ЯКЩО ЛЮДИНА ПРИТОМНА: Одразу дайте швидкі вуглеводи (таблетки глюкози, солодкий сік або колу) - НЕ давайте, якщо людина непритомна або не може безпечно ковтати!
-                Крок 3: Зазвичай стан покращується протягом кількох хвилин. Після цього також запропонуйте повільні вуглеводи (наприклад, хліб).
-                Крок 4: РОЗПІЗНАЙТЕ ВИСОКИЙ РІВЕНЬ ЦУКРУ В КРОВІ (розвивається повільніше): сильна спрага, часте сечовипускання, глибоке, прискорене дихання, фруктовий запах (ацетону) з рота, порушення свідомості.
-                Крок 5 (виділено темним #78281f): ВИКЛИЧТЕ 112, якщо людина непритомна, якщо стан не покращується протягом кількох хвилин після прийому цукру, або якщо є підозра на високий рівень цукру в крові.
-                Крок 6: Якщо людина непритомна, але дихає нормально: стабільне бокове положення, постійно перевіряйте дихання, за відсутності дихання починайте СЛР.`,
+                <h1 style="color: #b7950b;">🍬 НЕВІДКЛАДНА ДОПОМОГА: НЕВІДКЛАДНИЙ СТАН ПРИ ДІАБЕТІ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>РОЗПІЗНАЙТЕ НИЗЬКИЙ РІВЕНЬ ЦУКРУ В КРОВІ</strong> (трапляється частіше, розвивається швидко): тремтіння, сильний голод, блідість, пітливість, сплутаність свідомості, незвично дратівливий настрій, аж до втрати свідомості.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>ЯКЩО ЛЮДИНА ПРИТОМНА:</strong> Одразу дайте швидкі вуглеводи (таблетки глюкози, солодкий сік або колу) - НЕ давайте, якщо людина непритомна або не може безпечно ковтати!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    Зазвичай стан покращується протягом кількох хвилин. Після цього також запропонуйте повільні вуглеводи (наприклад, хліб).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>РОЗПІЗНАЙТЕ ВИСОКИЙ РІВЕНЬ ЦУКРУ В КРОВІ</strong> (розвивається повільніше): сильна спрага, часте сечовипускання, глибоке, прискорене дихання, фруктовий запах (ацетону) з рота, порушення свідомості.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>ВИКЛИЧТЕ 112</strong>, якщо людина непритомна, якщо стан не покращується протягом кількох хвилин після прийому цукру, або якщо є підозра на високий рівень цукру в крові.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Якщо людина непритомна, але дихає нормально: стабільне бокове положення, постійно перевіряйте дихання, за відсутності дихання починайте <strong>СЛР</strong>.
+                </div>`,
         content_diabetes_erw_learn: `
-                <h1>🔬 Що варто знати: діабетична невідкладність</h1>
+                <h1>🔬 Що варто знати: невідкладний стан при діабеті</h1>
                 <p>У людей з діабетом рівень цукру в крові може виходити за межі норми - або занадто низько (гіпоглікемія) через надлишок інсуліну, недостатнє харчування чи незвичне фізичне навантаження, або занадто високо (гіперглікемія) через недостатню кількість інсуліну чи гостре захворювання.</p>
                 <h3>Чому цукор дають лише притомній людині</h3>
                 <p>Низький рівень цукру в крові зазвичай розвивається швидко і добре реагує на прийом цукру. Але якщо людина непритомна або більше не може безпечно ковтати, виникає ризик задухи - у цьому випадку правильним рішенням є виклик 112.</p>`,
 
         content_sepsis_erw_panic: `
                 <h1 style="color: #922b21;">🦠 НЕВІДКЛАДНА ДОПОМОГА: СЕПСИС (ЗАРАЖЕННЯ КРОВІ)</h1>
-                Крок 1: РОЗПІЗНАЙТЕ ПОПЕРЕДЖУВАЛЬНІ ОЗНАКИ: Висока температура або незвично низька температура тіла, прискорений пульс, прискорене дихання, крайня слабкість, сплутаність свідомості, холодна або плямиста шкіра - часто після перенесеної інфекції чи рани.
-                Крок 2 (виділено темним #78281f): ВИКЛИЧТЕ 112 - сепсис є гострою, небезпечною для життя невідкладною ситуацією, де важлива кожна година.
-                Крок 3 (виділено #34495e): Обов'язково повідомте бригаді швидкої допомоги про будь-яку відому інфекцію, нещодавню операцію, рану чи інфекцію сечовивідних шляхів заздалегідь - це прискорює діагностику.
-                Крок 4: ПОЛОЖЕННЯ: Тримайте людину в теплі та спокої, покладіть її горизонтально або з трохи піднятими ногами, якщо у неї немає утрудненого дихання.
-                Крок 5: Постійно перевіряйте свідомість і дихання до приїзду швидкої допомоги.`,
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>РОЗПІЗНАЙТЕ ПОПЕРЕДЖУВАЛЬНІ ОЗНАКИ:</strong> Висока температура або незвично низька температура тіла, прискорений пульс, прискорене дихання, крайня слабкість, сплутаність свідомості, холодна або плямиста шкіра - часто після перенесеної інфекції чи рани.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ВИКЛИЧТЕ 112</strong> - сепсис є гострою, небезпечною для життя невідкладною ситуацією, де важлива кожна година.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    Обов'язково повідомте бригаді швидкої допомоги про будь-яку відому інфекцію, нещодавню операцію, рану чи інфекцію сечовивідних шляхів заздалегідь - це прискорює діагностику.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ПОЛОЖЕННЯ:</strong> Тримайте людину в теплі та спокої, покладіть її горизонтально або з трохи піднятими ногами, якщо у неї немає утрудненого дихання.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Постійно перевіряйте свідомість і дихання до приїзду швидкої допомоги.
+                </div>`,
         content_sepsis_erw_learn: `
                 <h1>🔬 Що варто знати: сепсис</h1>
                 <p>Сепсис виникає, коли організм реагує на інфекцію надмірною реакцією всієї системи кровообігу, пошкоджуючи при цьому власні тканини й органи. Він може розвинутися навіть із на перший погляд безпечних інфекцій - таких як інфікована рана чи інфекція сечовивідних шляхів.</p>
@@ -4968,7 +5111,7 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
                     <span class="step-num">5</span>
-                    <strong>ВИКЛИЧТЕ 112</strong> при раптовому, дуже сильному болю в животі, твердому/чутливому животі, проблемах з кровообігом або гарячці - в інших випадках негайно зверніться до лікаря.
+                    <strong>ВИКЛИЧТЕ 112</strong> при раптовому, дуже сильному болю в животі, твердому/чутливому животі, проблемах з кровообігом або гарячці - в інших випадках зверніться до лікаря найближчим часом.
                 </div>`,
         content_bauchschmerz_erw_learn: `
                 <h1>🔬 Що варто знати: гострий біль у животі</h1>
@@ -5218,6 +5361,14 @@ function applyTranslations() {
     // Sprache stehen lassen (siehe initGeoLocation in script.js).
     if (typeof renderGeoAnzeigen === 'function' && typeof geoUiWurdeInitialisiert !== 'undefined' && geoUiWurdeInitialisiert) {
         renderGeoAnzeigen();
+    }
+
+    // Taktgeber-Buttons mit dem tatsächlichen Lauf-Zustand abgleichen - sonst
+    // würde ein Sprachwechsel während der Taktgeber läuft (z. B. mitten in
+    // einer Reanimation) den Button fälschlich wieder auf "Start" zurücksetzen,
+    // obwohl der Ton weiterläuft (siehe metronomeAktualisiereLabels in script.js).
+    if (typeof metronomeAktualisiereLabels === 'function') {
+        metronomeAktualisiereLabels();
     }
 }
 

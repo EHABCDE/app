@@ -73,6 +73,7 @@ body {
     border: none;
     border-radius: 30px;
     padding: 10px 22px;
+    min-height: 44px;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.3px;
@@ -347,6 +348,7 @@ main.mode-learn .panic-content {
     color: white;
     border: none;
     padding: 10px 18px;
+    min-height: 44px;
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;

@@ -207,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTopics(topics);
     renderAdultTopics(adultTopics);
     initGeoLocation();
-    injectInstallModalHtml();
     aktualisiereGlobaleNotfallLeisten();
 });
 
@@ -294,6 +293,14 @@ function showScreen(screenId) {
         target.classList.remove('screen-hidden');
         target.classList.add('screen-active');
         window.scrollTo(0, 0);
+
+        // Fokus auf den neuen Bildschirm setzen, damit Screenreader- und
+        // Tastatur-Nutzer beim Bildschirmwechsel nicht auf dem alten,
+        // jetzt unsichtbaren Element "hängen bleiben".
+        if (!target.hasAttribute('tabindex')) {
+            target.setAttribute('tabindex', '-1');
+        }
+        target.focus({ preventScroll: true });
     }
 
     currentScreenId = screenId;
@@ -314,6 +321,16 @@ function showScreen(screenId) {
     if (screenId === 'screen-wissensquiz') {
         wqStart();
     }
+
+    // Interaktive Checks IMMER frisch starten, wenn ihr Bildschirm (wieder)
+    // geöffnet wird - sonst zeigt ein erneuter Aufruf (z. B. für eine andere
+    // Person/Situation) kommentarlos noch das alte Ergebnis der letzten Nutzung
+    // an, was in beide Richtungen gefährlich ist (falsche Entwarnung genauso
+    // wie ein unnötiger falscher Alarm).
+    if (screenId === 'screen-notfallcheck') resetNotfallCheck();
+    if (screenId === 'screen-notfallcheck_erw') resetNotfallCheckErw();
+    if (screenId === 'screen-kopfverletzung_erw') resetKopfverletzungCheck();
+    if (screenId === 'screen-stuerze') resetKindSturzCheck();
 }
 
 // =========================================================
@@ -370,11 +387,11 @@ function vkRendereListe() {
         return `
             <div class="vk-eintrag" style="border-left: 5px solid ${statusFarbe};">
                 <div class="vk-eintrag-info">
-                    <strong>${vk.name}</strong>
+                    <strong>${nsEscape(vk.name)}</strong>
                     <span style="color:${statusFarbe}; font-weight:600; font-size:13px;">${statusText}</span>
                     <span style="color:#94a3b8; font-size:12px;">${t('vkExpiryLabel')} ${datumFormatiert}</span>
                 </div>
-                <button class="vk-loeschen-btn" onclick="vkLoeschen('${vk.id}')" aria-label="Löschen">🗑️</button>
+                <button class="vk-loeschen-btn" onclick="vkLoeschen('${vk.id}')" aria-label="${t('deleteLabel')}">🗑️</button>
             </div>
         `;
     }).join('');
@@ -417,7 +434,7 @@ function vkInitScreen() {
     vkRendereListe();
     const statusEl = document.getElementById('vk-push-status');
     if (statusEl && localStorage.getItem(VK_PUSH_AKTIV_KEY) === '1') {
-        statusEl.textContent = '✅ Erinnerungen sind aktiv.';
+        statusEl.textContent = t('vkPushActive');
     }
     // Sicherheitsnetz: bei jedem Öffnen des Screens den aktuellen Stand erneut
     // an den Server melden, falls ein früherer Sync (z. B. direkt nach dem
@@ -439,14 +456,14 @@ async function vkErinnerungAktivieren() {
     const statusEl = document.getElementById('vk-push-status');
 
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-        if (statusEl) statusEl.textContent = 'Push-Erinnerungen werden von diesem Browser leider nicht unterstützt.';
+        if (statusEl) statusEl.textContent = t('vkPushUnsupported');
         return;
     }
 
     try {
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') {
-            if (statusEl) statusEl.textContent = 'Ohne erlaubte Benachrichtigungen kann ich dich leider nicht erinnern.';
+            if (statusEl) statusEl.textContent = t('vkPushDenied');
             return;
         }
 
@@ -465,10 +482,10 @@ async function vkErinnerungAktivieren() {
         localStorage.setItem(VK_PUSH_AKTIV_KEY, '1');
         await vkSyncMitServer(subscription);
 
-        if (statusEl) statusEl.textContent = '✅ Erinnerungen sind aktiv.';
+        if (statusEl) statusEl.textContent = t('vkPushActive');
     } catch (e) {
         console.error('Push-Aktivierung fehlgeschlagen:', e);
-        if (statusEl) statusEl.textContent = 'Erinnerungen konnten nicht aktiviert werden.';
+        if (statusEl) statusEl.textContent = t('vkPushFailed');
     }
 }
 
@@ -530,10 +547,16 @@ function nsAlter(geburtsdatum) {
     return alter;
 }
 
+// Escaped Nutzereingaben, bevor sie per innerHTML wieder ins DOM eingefügt
+// werden - sowohl für normalen Text-Inhalt als auch für den Einsatz INNERHALB
+// eines HTML-Attributs (z. B. href="tel:${nsEscape(telefon)}"). Wichtig: nur
+// über textContent/innerHTML zu escapen reicht NICHT für Attribut-Kontexte,
+// da Anführungszeichen dabei nicht kodiert werden - deshalb hier zusätzlich
+// manuell ersetzt.
 function nsEscape(text) {
     const div = document.createElement('div');
     div.textContent = text || '';
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function nsRendereListe() {
@@ -559,8 +582,8 @@ function nsRendereListe() {
                     </span>
                 </div>
                 <div class="ns-eintrag-aktionen">
-                    <button onclick="nsBearbeiten('${p.id}')" aria-label="Bearbeiten">✏️</button>
-                    <button onclick="nsLoeschen('${p.id}')" aria-label="Löschen">🗑️</button>
+                    <button onclick="nsBearbeiten('${p.id}')" aria-label="${t('editLabel')}">✏️</button>
+                    <button onclick="nsLoeschen('${p.id}')" aria-label="${t('deleteLabel')}">🗑️</button>
                 </div>
             </div>
         `;
@@ -658,7 +681,7 @@ function nsKarteAnzeigen(id) {
     const telZeile = (label, name, telefon) => telefon ? `
         <div class="ns-karte-zeile">
             <span class="ns-karte-label">${label}</span>
-            <a href="tel:${telefon.replace(/\s/g, '')}" class="ns-karte-tel">${name ? nsEscape(name) + ' – ' : ''}${nsEscape(telefon)}</a>
+            <a href="tel:${nsEscape(telefon.replace(/\s/g, ''))}" class="ns-karte-tel">${name ? nsEscape(name) + ' – ' : ''}${nsEscape(telefon)}</a>
         </div>` : '';
 
     document.getElementById('ns-kartenansicht').innerHTML = `
@@ -713,14 +736,20 @@ function aktualisiereGlobaleNotfallLeisten() {
     const istPanikModus = main.classList.contains('mode-panic');
     const stufe = holeNotfallStufe(currentScreenId);
 
+    // Ziel-Screen für den Notfall-Check-Button IMMER aktuell halten, unabhängig
+    // davon, ob die Leiste hier gerade eingeblendet wird - kopfverletzungAuswerten()
+    // und kindSturzAuswerten() können sie nämlich auch außerhalb dieser Funktion
+    // direkt sichtbar machen (z. B. im Lernmodus), und ohne onclick wäre der
+    // Button dann tot (sichtbar, aber ohne Reaktion auf Antippen).
+    const checkZielId = currentCategory === 'erwachsene' ? 'screen-notfallcheck_erw' : 'screen-notfallcheck';
+    checkBar.onclick = () => showScreen(checkZielId);
+
     if (istPanikModus && stufe === true) {
         notrufBar.style.display = 'block';
         checkBar.style.display = 'none';
     } else if (istPanikModus && stufe === false) {
         notrufBar.style.display = 'none';
         checkBar.style.display = 'block';
-        const checkZielId = currentCategory === 'erwachsene' ? 'screen-notfallcheck_erw' : 'screen-notfallcheck';
-        checkBar.onclick = () => showScreen(checkZielId);
     } else {
         notrufBar.style.display = 'none';
         checkBar.style.display = 'none';
@@ -769,17 +798,37 @@ function toggleEmergencyMode() {
 
 // Metronom für Reanimation (Lautstärke maximiert & schrillerer Ton für Kurse)
 let metronomeInterval = null;
-function toggleMetronome() {
-    // Klassenbasiert statt ID-basiert: so werden ALLE Taktgeber-Buttons
-    // (Baby/Kind- und Erwachsenen-Reanimation, sowie künftig weitere) synchron
-    // aktualisiert, unabhängig davon, von welchem Screen aus gestartet wurde.
+
+// Bringt ALLE Taktgeber-Buttons (Baby/Kind- und Erwachsenen-Reanimation) mit
+// dem tatsächlichen Lauf-Zustand (metronomeInterval) in Einklang. Wird sowohl
+// nach dem Umschalten hier aufgerufen als auch von applyTranslations() (siehe
+// lang.js) nach jedem Sprachwechsel - sonst kann der Button nach einem
+// Sprachwechsel während der Taktgeber läuft fälschlich wieder "Start" anzeigen,
+// obwohl der Ton weiterläuft (ausgerechnet auf dem Reanimations-Screen).
+function metronomeAktualisiereLabels() {
     const btns = document.querySelectorAll('.metronome-btn');
+    const label = metronomeInterval ? t('metronomeStop') : t('metronomeStart');
+    btns.forEach(btn => { btn.innerHTML = label; });
+}
+
+// Ein AudioContext wird über die Laufzeit der Seite wiederverwendet statt bei
+// jedem Start/Stopp neu erzeugt - manche Browser (v. a. Safari) begrenzen die
+// Anzahl gleichzeitig offener AudioContexts, und bei einer länger dauernden
+// Reanimation mit mehrfachem Start/Stopp des Taktgebers würde sich das sonst
+// aufsummieren.
+let metronomeAudioCtx = null;
+
+function toggleMetronome() {
     if (metronomeInterval) {
         clearInterval(metronomeInterval);
         metronomeInterval = null;
-        btns.forEach(btn => btn.innerHTML = t('metronomeStart'));
     } else {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!metronomeAudioCtx) {
+            metronomeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } else if (metronomeAudioCtx.state === 'suspended') {
+            metronomeAudioCtx.resume();
+        }
+        const audioCtx = metronomeAudioCtx;
         metronomeInterval = setInterval(() => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -796,8 +845,8 @@ function toggleMetronome() {
             osc.start();
             osc.stop(audioCtx.currentTime + 0.08);
         }, (60 / 110) * 1000);
-        btns.forEach(btn => btn.innerHTML = t('metronomeStop'));
     }
+    metronomeAktualisiereLabels();
 }
 
 // =========================================================
@@ -831,6 +880,15 @@ function kopfverletzungAuswerten() {
     }
 }
 
+// Setzt den Kopfverletzungs-Check auf den Ausgangszustand zurück (alle Häkchen
+// weg, Ergebnis geleert) - wird von showScreen() bei jedem (erneuten) Aufruf
+// des Bildschirms ausgeführt, siehe Kommentar dort.
+function resetKopfverletzungCheck() {
+    document.querySelectorAll('#screen-kopfverletzung_erw .kopf-warnzeichen-check').forEach(cb => { cb.checked = false; });
+    const ergebnisDiv = document.getElementById('kopf-warnzeichen-ergebnis');
+    if (ergebnisDiv) ergebnisDiv.innerHTML = '';
+}
+
 // =========================================================
 // 🤕 INTERAKTIVER WARNZEICHEN-CHECK: STURZ AUF DEN KOPF (BABY & KIND)
 // =========================================================
@@ -857,6 +915,15 @@ function kindSturzAuswerten() {
         if (notrufBar) notrufBar.style.display = 'none';
         if (checkBar) checkBar.style.display = 'block';
     }
+}
+
+// Setzt den Sturz-auf-den-Kopf-Check auf den Ausgangszustand zurück (alle
+// Häkchen weg, Ergebnis geleert) - wird von showScreen() bei jedem (erneuten)
+// Aufruf des Bildschirms ausgeführt, siehe Kommentar dort.
+function resetKindSturzCheck() {
+    document.querySelectorAll('#screen-stuerze .kind-sturz-warnzeichen-check').forEach(cb => { cb.checked = false; });
+    const ergebnisDiv = document.getElementById('kind-sturz-warnzeichen-ergebnis');
+    if (ergebnisDiv) ergebnisDiv.innerHTML = '';
 }
 
 // Merkt sich den zuletzt ermittelten Standort-Zustand, damit renderGeoAnzeigen()
@@ -1072,69 +1139,32 @@ function rendereAktuelleLage() {
         return;
     }
 
-    container.innerHTML = alleEintraege.map(e => `
+    container.innerHTML = alleEintraege.map(e => {
+        // Backend-Werte (lage-api) vor dem Einfügen ins DOM escapen, statt
+        // ungeprüft in innerHTML zu schreiben - selbst bei einer eigenen API
+        // ist das die sichere Grundhaltung (z. B. falls eine Quelle mal
+        // manipulierte Werte durchreicht). Bei quelle_url zusätzlich nur
+        // http(s)-Links zulassen, um javascript:-URLs im href auszuschließen.
+        let quelleUrl = '';
+        try {
+            const parsed = new URL(e.quelle_url, window.location.href);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                quelleUrl = parsed.href;
+            }
+        } catch (err) { /* ungültige URL -> kein Link */ }
+
+        return `
         <div class="lage-card ${e.istWarnung ? 'lage-card-warnung' : 'lage-card-hinweis'}">
-            <div class="lage-card-title">${e.istWarnung ? '⚠️' : 'ℹ️'} ${e.titel || ''}</div>
-            <div class="lage-card-wert">${e.wert || ''}</div>
-            <div class="lage-card-quelle">Quelle: <a href="${e.quelle_url}" target="_blank" rel="noopener">${e.quelle || 'Quelle'}</a></div>
+            <div class="lage-card-title">${e.istWarnung ? '⚠️' : 'ℹ️'} ${nsEscape(e.titel || '')}</div>
+            <div class="lage-card-wert">${nsEscape(e.wert || '')}</div>
+            <div class="lage-card-quelle">Quelle: <a href="${nsEscape(quelleUrl)}" target="_blank" rel="noopener">${nsEscape(e.quelle || 'Quelle')}</a></div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 function triggerEmergencyCall() {
     window.location.href = 'tel:112';
-}
-
-// =========================================================
-// 📲 INSTALLATIONS-ANLEITUNG (MODAL FÜR KUNDEN)
-// =========================================================
-
-function injectInstallModalHtml() {
-    if (document.getElementById('install-modal')) return;
-
-    const modalHtml = `
-        <div id="install-modal" class="modal-hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; padding: 20px;">
-            <div style="background:#ffffff; max-width:450px; width:100%; padding:25px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.3); color:#2c3e50; position:relative; text-align:left;">
-                <h2 style="margin-top:0; color:#27ae60; font-size:20px;">📲 App zum Startbildschirm</h2>
-                <p style="font-size:14px; color:#555; line-height:1.5;">Installiere diese App auf deinem Handy, um sie wie eine echte App (ohne Adresszeile) und auch offline zu nutzen:</p>
-
-                <div id="install-ios-instructions" style="background:#f8fafc; padding:12px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:15px; font-size:14px; line-height:1.6;">
-                    <strong>🍎 Für iPhone / iPad (Safari):</strong><br>
-                    1. Tippe unten in Safari auf das <strong>Teilen-Symbol</strong> <span style="font-size:16px;">(Viereck mit Pfeil nach oben 📤)</span>.<br>
-                    2. Scrolle im Menü nach unten und wähle <strong>„Zum Home-Bildschirm“</strong> ➕.<br>
-                    3. Tippe oben rechts auf <strong>„Hinzufügen“</strong>.
-                </div>
-
-                <div id="install-android-instructions" style="background:#f8fafc; padding:12px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:15px; font-size:14px; line-height:1.6;">
-                    <strong>🤖 Für Android (Chrome):</strong><br>
-                    1. Tippe oben rechts auf die <strong>drei Punkte</strong> <span style="font-size:16px;">(Menü ⋮)</span>.<br>
-                    2. Wähle <strong>„Zum Startbildschirm hinzufügen“</strong> oder <strong>„App installieren“</strong>.<br>
-                    3. Bestätige mit <strong>„Installieren“</strong>.
-                </div>
-
-                <button onclick="closeInstallGuide()" style="background:#34495e; color:white; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
-                    Verstanden &amp; Schließen
-                </button>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-}
-
-function showInstallGuide() {
-    const modal = document.getElementById('install-modal');
-    if (modal) {
-        modal.classList.remove('modal-hidden');
-        modal.classList.add('modal-visible');
-    }
-}
-
-function closeInstallGuide() {
-    const modal = document.getElementById('install-modal');
-    if (modal) {
-        modal.classList.remove('modal-visible');
-        modal.classList.add('modal-hidden');
-    }
 }
 
 // =========================================================
@@ -1982,6 +2012,7 @@ let wqScore = 0;
 let wqCorrectCount = 0;
 let wqQuestionStartTime = 0;
 let wqTimeoutId = null;
+let wqFeedbackTimeoutId = null;
 let wqCurrentAnswered = false;
 
 function wqShuffle(arr) {
@@ -2011,6 +2042,13 @@ function wqStart() {
     wqIndex = 0;
     wqScore = 0;
     wqCorrectCount = 0;
+
+    // Timer/Feedback-Timeouts einer eventuell noch laufenden vorherigen Runde
+    // kappen - sonst kann ein spät feuernder alter setTimeout() mitten in der
+    // neuen Runde ungefragt die Feedback-Ansicht mit veralteten Werten öffnen.
+    clearTimeout(wqTimeoutId);
+    clearTimeout(wqFeedbackTimeoutId);
+    wqCurrentAnswered = false;
 
     document.getElementById('wq-results-view').style.display = 'none';
     document.getElementById('wq-feedback-view').style.display = 'none';
@@ -2108,7 +2146,7 @@ function wqSelectAnswer(isCorrect, clickedBtn) {
 
     // Kurze Pause, damit man die grün/rot markierte Antwort noch bewusst sehen kann,
     // bevor zur Punkte-/Erklärungs-Ansicht gewechselt wird (Feedback: 600ms war zu knapp zum Lesen).
-    setTimeout(() => wqShowFeedback(isCorrect, points, q.explain), 1800);
+    wqFeedbackTimeoutId = setTimeout(() => wqShowFeedback(isCorrect, points, q.explain), 1800);
 }
 
 function wqShowFeedback(isCorrect, points, explain) {
