@@ -16,6 +16,11 @@
 
 const LANG_STORAGE_KEY = 'eh_abc_lang';
 let currentLang = 'de';
+// Sichtbare Kürzel für den Sprachumschalter-Button. "UA" statt "UK" für
+// Ukrainisch, damit es nicht mit "United Kingdom" verwechselt wird.
+const LANG_LABELS = { de: 'DE', en: 'EN', uk: 'UA' };
+// Reihenfolge für den zyklischen Umschalter (siehe toggleLanguage): DE -> EN -> UA -> DE ...
+const LANG_CYCLE = ['de', 'en', 'uk'];
 
 const TRANSLATIONS = {
     de: {
@@ -95,6 +100,9 @@ const TRANSLATIONS = {
         categorySubtitle: 'Who do you need help for?',
         categoryChild: 'Baby & Child',
         categoryAdult: 'Adult',
+        mainTitleKind: '👶 Baby & Child',
+        mainTitleErwachsene: '🧑 Adult',
+        chooseSituation: 'Choose a situation:',
         vkTileTitle: 'First Aid Kit Check',
         nsTileTitle: 'Emergency ID Card',
 
@@ -2660,6 +2668,2021 @@ const TRANSLATIONS = {
                         📦 View waterproof children's SOS bracelets on Amazon →
                     </a>
                 </div>`
+    },
+    // =========================================================
+    // UKRAINISCH (UA) - wird schrittweise befüllt, Priorität laut
+    // Absprache mit Johannes: 1. Grundgerüst 2. Notfall oder nicht?
+    // 3. Zuhause-Check 4. Themen Baby & Kind 5. Themen Erwachsene.
+    // Ton: medizinisches Fachpersonal erklärt es einer Laiin/einem
+    // Laien - klar, ruhig, ohne Fachjargon wo vermeidbar.
+    // WICHTIG: Diese Übersetzung wurde noch NICHT von einer
+    // ukrainischsprachigen Person gegengeprüft (siehe uk-unreviewed-
+    // banner in index.html) - erst nach Prüfung durch zwei
+    // ukrainischsprachige Kontakte als "geprüft" markieren.
+    // =========================================================
+    uk: {
+        // ---- Batch 1: Grundgerüst (Navigation, Start-/Kategorie-
+        // Auswahl, Formulare Verbandkasten-Check & Notfall-Steckbrief,
+        // alle Themen-Kachel-Titel, Taktgeber, Giftnotruf-Anzeige) ----
+        back: '⬅ Назад',
+        backToChooser: '⬅ Назад до вибору',
+        emergencyBtn: 'НЕВІДКЛАДНА ДОПОМОГА',
+        appTitle: 'Erste Hilfe ABC',
+        categorySubtitle: 'Кому потрібна допомога?',
+        categoryChild: 'Немовля та дитина',
+        categoryAdult: 'Дорослий',
+        mainTitleKind: '👶 Немовля та дитина',
+        mainTitleErwachsene: '🧑 Дорослий',
+        chooseSituation: 'Оберіть ситуацію:',
+        vkTileTitle: 'Перевірка аптечки',
+        nsTileTitle: 'Картка невідкладної допомоги',
+
+        quickCallTitle: '🚨 Швидкий виклик 112',
+        quickCallButton: '📞 Зателефонувати 112 зараз',
+        notfallCheckBarTitle: '❓ Не впевнені, чи це невідкладний випадок?',
+        notfallCheckBarText: 'Не знаєте, чи потрібно викликати екстрену допомогу? Короткий тест допоможе це оцінити.',
+        notfallCheckBarButton: '🚦 Почати перевірку',
+
+        vkTitle: 'Перевірка аптечки',
+        vkSubtitle: 'Більше не пропустите закінчення терміну придатності аптечки',
+        vkLegalNote: 'Аптечка в автомобілі є обов\'язковою в Німеччині (стандарт DIN 13164). Надрукований термін придатності - це рекомендація виробника для повної функціональності (наприклад, стерильності): явно прострочену аптечку можуть відзначити під час технічного огляду автомобіля (Hauptuntersuchung).',
+        vkNamePlaceholder: 'Назва (напр. Авто - VW Golf)',
+        vkAddBtn: 'Додати аптечку',
+        vkReminderTitle: 'Нагадування через push-повідомлення',
+        vkReminderText: 'Ми автоматично нагадаємо вам за 30 днів до закінчення терміну придатності - прямо на телефон.',
+        vkActivateBtn: 'Увімкнути нагадування',
+        vkAffiliateTitle: 'Переглянути аптечки з тривалим терміном придатності',
+        vkAffiliateSubtitle: 'Заощадить вам наступну заміну на кілька років',
+        affiliateDisclaimer: 'Примітка щодо прозорості: як партнер Amazon, я отримую винагороду за покупки, здійснені за партнерськими посиланнями в цьому додатку.',
+        vkEmpty: 'Аптечку ще не додано.',
+        vkStatusValid: 'Дійсна ще {days} дн.',
+        vkStatusExpired: 'Термін минув!',
+        vkStatusExpiring: 'Закінчується через {days} дн.',
+        vkExpiryLabel: 'Термін придатності:',
+
+        nsTitle: 'Картка невідкладної допомоги',
+        nsSubtitle: 'Важлива інформація для рятувальників, садочка та школи - завжди під рукою',
+        nsPrivacyNote: 'Ці дані зберігаються виключно на вашому пристрої і ніколи не передаються на жоден сервер.',
+        nsAddPerson: 'Додати особу',
+        nsEditPerson: 'Редагувати дані',
+        nsNamePlaceholder: 'Ім\'я *',
+        nsBloodTypeOption: 'Група крові (необов\'язково)',
+        nsAllergiesPlaceholder: 'Алергії (необов\'язково)',
+        nsMedicationPlaceholder: 'Постійні ліки (необов\'язково)',
+        nsConditionsPlaceholder: 'Наявні захворювання (необов\'язково)',
+        nsDoctorNamePlaceholder: 'Сімейний лікар (необов\'язково)',
+        nsDoctorPhonePlaceholder: 'Телефон лікаря (необов\'язково)',
+        nsContactNamePlaceholder: 'Контакт для екстрених випадків - ім\'я (необов\'язково)',
+        nsContactPhonePlaceholder: 'Контакт для екстрених випадків - телефон (необов\'язково)',
+        nsLockTipTitle: 'Порада: додайте також на екран блокування',
+        nsLockTipText: 'Ця картка видна лише тоді, коли телефон розблокований і додаток відкрито. Додайте основну інформацію також у вбудовану функцію "Медична інформація" вашого телефону - вона доступна прямо з екрана виклику екстрених служб на заблокованому екрані:',
+        nsLockTipIos: '<strong>iPhone:</strong> Відкрийте додаток "Здоров\'я" → Профіль (у правому верхньому куті) → "Медична картка" → "Редагувати"',
+        nsLockTipAndroid: '<strong>Android:</strong> Налаштування → "Безпека та надзвичайні ситуації" → "Медична інформація" (назва може відрізнятися залежно від виробника)',
+        nsLegalDisclaimer: '<strong>Правова інформація та застереження:</strong><br>Дані, збережені тут, вводите ви самі, і ми їх не перевіряємо. Ви відповідаєте за точність та актуальність цієї інформації.<br><br>Ця картка ніколи не замінює виклик екстрених служб (112), медичний діагноз чи лікування лікарем! Вона слугує лише додатковою пам\'яткою для рятувальників, персоналу садочка чи вчителів.',
+        nsEmpty: 'Особу ще не додано.',
+        nsYears: 'років',
+        nsBadgeAllergies: 'Алергії',
+        nsBadgeMedication: 'Ліки',
+        nsBackToList: 'Назад до списку',
+        nsBloodType: 'Група крові',
+        nsConditions: 'Наявні захворювання',
+        nsDoctor: 'Сімейний лікар',
+        nsEmergencyContact: 'Контакт для екстрених випадків',
+
+        save: 'Зберегти',
+        cancel: 'Скасувати',
+        searchPlaceholderChild: '🔍 Пошук ситуації... (напр. електрика, бджола, кашель)',
+        searchPlaceholderAdult: '🔍 Пошук ситуації...',
+        installBtn: 'Додати додаток на головний екран',
+        feedbackBtn: 'Відгук та пропозиції',
+        privacyLink: 'Конфіденційність',
+        imprintLink: 'Вихідні дані',
+
+        // Назви плиток тем (немовлята та діти)
+        topic_notfallcheck: '❓ Невідкладний випадок чи ні?',
+        topic_feedback: '💬 Відгук та допомога',
+        topic_reanimation: '🫀 СЛР / реанімація',
+        topic_sids: '🛏️ Синдром раптової дитячої смерті (СРДС)',
+        topic_fieberkrampf: '🌡️ Фебрильні судоми',
+        topic_insektenstich: '🐝 Укус у рот / шок',
+        topic_insektenstich_allgemein: '🐝 Укус комахи та алергія',
+        topic_kleinteile: '🔋 Батарейки-таблетки та магніти',
+        topic_verbrennung: '🔥 Опіки / ошпарення',
+        topic_pseudokrupp: '🗣️ Напад несправжнього крупу',
+        topic_vergiftung: '🧪 Отруєння',
+        topic_stuerze: '🤕 Падіння на голову',
+        topic_strom: '⚡ Ураження електричним струмом',
+        topic_ertrinken: '🌊 Утоплення',
+        topic_verschlucken: '⚠️ Гостре поперхування',
+        topic_notrufnummern: '📞 Важливі номери екстрених служб',
+        topic_notfallpass: '📋 Дитяча картка невідкладної допомоги',
+
+        // Назви плиток тем (дорослі)
+        topic_notfallcheck_erw: '❓ Невідкладний випадок чи ні?',
+        topic_bewusstlosigkeit_erw: '😵 Непритомність і стабільне бокове положення',
+        topic_reanimation_erw: '🫀 СЛР та дефібриляція',
+        topic_ersticken_erw: '🫁 Поперхування (стороннє тіло)',
+        topic_insektenstich_mund_erw: '🐝 Укус комахи в рот/горло',
+        topic_elektrounfall_erw: '⚡ Ураження електричним струмом',
+        topic_schock_erw: '🆘 Шок',
+        topic_allergie_erw: '🤧 Важка алергічна реакція',
+        topic_zahnverletzung_erw: '🦷 Травма зуба',
+        topic_nasenbluten_erw: '🩸 Носова кровотеча',
+        topic_zeckenstich_erw: '🕷️ Укус кліща',
+        topic_wundversorgung_erw: '🩹 Рани та догляд за ними',
+        topic_fremdkoerper_auge_erw: '👁️ Стороннє тіло в оці',
+        topic_tierbiss_erw: '🐕 Укус тварини',
+        topic_gelenkverletzung_erw: '🦵 Забій, розтягнення та надрив зв\'язок',
+        topic_sonnenbrand_erw: '☀️ Сонячний опік',
+        topic_kopfverletzung_erw: '🤕 Травма голови та струс мозку',
+        topic_starke_blutung_erw: '💥 Сильна кровотеча',
+        topic_amputationsverletzung_erw: '✂️ Ампутаційна травма',
+        topic_bauch_brustverletzung_erw: '🩻 Травма живота та грудної клітки',
+        topic_knochenbruch_erw: '🦴 Перелом кістки',
+        topic_hitzschlag_erw: '🥵 Тепловий та сонячний удар',
+        topic_unterkuehlung_erw: '🥶 Переохолодження та обмороження',
+        topic_verbrennung_erw: '🔥 Опіки та ошпарення',
+        topic_vergiftung_erw: '🧪 Отруєння',
+        topic_veraetzung_erw: '⚗️ Хімічний опік (шкіра та око)',
+        topic_herzinfarkt_erw: '❤️‍🩹 Інфаркт міокарда',
+        topic_schlaganfall_erw: '🧠 Інсульт',
+        topic_diabetes_erw: '🍬 Діабетична невідкладна ситуація',
+        topic_sepsis_erw: '🦠 Сепсис (зараження крові)',
+        topic_bauchschmerz_erw: '🤢 Гостре захворювання черевної порожнини',
+        topic_asthma_erw: '😮‍💨 Напад астми',
+        topic_krampfanfall_erw: '⚡ Судомний напад (епілепсія)',
+
+        // Кнопка задавача темпу (реанімація)
+        metronomeStart: '🔊 Почати задавач темпу (110 уд./хв)',
+        metronomeStop: '⏹️ Зупинити задавач темпу',
+
+        // Відображення токсикологічного центру (заповнюється через JS)
+        poisonCenterLabelExact: '📞 Відповідальний токсикологічний центр:',
+        poisonCenterLabelFallback: '📞 Відповідальний токсикологічний центр (загальнодержавний):',
+        poisonCallLinkText: 'Зателефонувати {nummer}',
+        poisonLocationExact: '📍 <em>Відповідає за {bundesland}: токсикологічний центр {ort}</em>',
+        poisonLocationFallback: '📍 <em>Місцезнаходження невідоме – загальнодержавний центр {ort}</em>',
+        poisonCallBtnText: '📞 Зателефонувати до токсикологічного центру {ort} ({nummer})',
+
+        // ---- Batch 2: "Notfall oder nicht?" (interaktiver 3-A-Regel-Check
+        // für Kind & Erwachsene), Ergebnis-Texte der Warnzeichen-Checks
+        // (Sturz auf den Kopf / Kopfverletzung) sowie die Standort-Anzeige. ----
+
+        // Ergebnis des Warnzeichen-Checks: Sturz auf den Kopf (Kind)
+        kindSturzWarnzeichenGefunden: `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 Виявлено щонайменше одну тривожну ознаку. Негайно телефонуйте <strong>112</strong> або відразу везіть дитину до лікарні!
+                </div>`,
+        kindSturzKeineWarnzeichen: `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ Наразі гострих тривожних ознак немає. Все одно уважно спостерігайте протягом 48 годин (див. крок 4) і одразу телефонуйте 112, якщо стан погіршиться.
+                </div>`,
+
+        // Ergebnis des Warnzeichen-Checks: Kopfverletzung (Erwachsene)
+        kopfWarnzeichenGefunden: `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 Виявлено щонайменше одну тривожну ознаку. Негайно телефонуйте <strong>112</strong>!
+                </div>`,
+        kopfKeineWarnzeichen: `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ Наразі гострих тривожних ознак немає. Продовжуйте спостерігати щонайменше 24 години і одразу телефонуйте 112, якщо стан погіршиться.
+                </div>`,
+
+        // Standort-Anzeige (initGeoLocation/renderGeoAnzeigen), per JS befüllt
+        geoWirdErmitteltVoll: '📍 Визначаємо ваше місцезнаходження (GPS та адреса)...',
+        geoWirdErmittelt: '📍 Визначаємо ваше місцезнаходження...',
+        geoAdresseNichtGeladen: 'Не вдалося завантажити адресу',
+        geoAdresseOfflineNurGps: 'Офлайн / адреса лише за GPS',
+        geoLocationHtml: '📍 <strong>Адреса:</strong> {adresse}<br>🌍 <strong>GPS:</strong> {lat}, {lon}',
+        geoNichtErmittelt: '📍 Не вдалося автоматично визначити ваше місцезнаходження. У невідкладному випадку подивіться на найближчі вказівники вулиць!',
+        geoNichtErmitteltKurz: '📍 Не вдалося визначити ваше місцезнаходження.',
+        geoNichtUnterstuetzt: '📍 Цей браузер не підтримує визначення місцезнаходження.',
+        geoNichtUnterstuetztKurz: '📍 Визначення місцезнаходження не підтримується.',
+
+        content_notfallcheck_erw: `
+                <h1 style="color: #d35400;">❓ Невідкладний випадок чи ні?</h1>
+                <p>Скористайтеся <strong>правилом 3-А</strong>, щоб визначити, чи потрібна дорослому негайна допомога (виклик 112). Натисніть відповідь, яка підходить найкраще.</p>
+
+                <!-- STEP 1: Responsiveness -->
+                <div id="checkerw-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. А – Активність (свідомість)</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Як людина реагує, коли до неї звертаються або торкаються/трясуть за плече?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-1', 'checkerw-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Реагує чітко, відповідає, орієнтується (знає, де перебуває і що сталося).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Зовсім не реагує, дуже сплутана свідомість, або раптова сильна сонливість/відсутність реакції.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Breathing -->
+                <div id="checkerw-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. А – Дихальні шляхи/Дихання</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Чи дихає людина нормально?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-2', 'checkerw-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Так, спокійно і рівномірно (навіть якщо трохи частіше через біль чи хвилювання).
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Ні, дихання дуже утруднене, зі свистом, хрипами, дуже поверхневе, або з паузами.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Appearance -->
+                <div id="checkerw-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. А – Зовнішній вигляд</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Який вигляд має шкіра людини?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-3', 'checkerw-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Нормальний колір, можливо, почервоніння від навантаження або трохи блідості від болю.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Землистий колір, синюшний (особливо губи), холодна і липка на дотик, або раптово плямиста/мармурова.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Alarm signs (FAST, chest pain, severe bleeding) -->
+                <div id="checkerw-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">4. Тривожні ознаки</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Чи є у людини хоча б одна з таких гострих тривожних ознак: опущений кутик рота, раптовий параліч/слабкість з одного боку, невиразна мова, раптовий сильний біль у грудях з поширенням у руку/щелепу, або сильна кровотеча, яку не вдається зупинити?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-4', 'checkerw-step-5', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Ні, нічого з цього немає.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Так, є щонайменше одна з цих ознак.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Gut feeling -->
+                <div id="checkerw-step-5" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">Ваше внутрішнє відчуття</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Що підказує ваше внутрішнє відчуття - або відчуття самої постраждалої людини?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStepErw('checkerw-step-5', 'checkerw-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Людині нездужається, але загалом поводиться як зазвичай.
+                        </button>
+                        <button onclick="nextCheckStepErw('checkerw-step-5', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Раптово щось зовсім не так, як завжди. Внутрішня тривога б'є на сполох.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT: EMERGENCY -->
+                <div id="checkerw-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 ВИЯВЛЕНО НЕВІДКЛАДНИЙ ВИПАДОК</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
+                        Порушена одна з життєво важливих функцій, є тривожна ознака, або ваше внутрішнє відчуття б'є на сполох. Не зволікайте!
+                    </p>
+
+                    <!-- Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="checkerw-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Визначаємо ваше місцезнаходження...
+                    </div>
+
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Зателефонувати 112 зараз
+                    </button>
+                    <button onclick="resetNotfallCheckErw()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Почати перевірку заново
+                    </button>
+                </div>
+
+                <!-- RESULT: STABLE -->
+                <div id="checkerw-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 СТАН ЛЮДИНИ СТАБІЛЬНИЙ</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        Людина реагує, дихає нормально, в цілому виглядає добре, немає жодної з тривожних ознак, і ваше внутрішнє відчуття спокійне. Це дуже добра ознака! Гострий невідкладний випадок тут вкрай малоймовірний.
+                        <br><br>
+                        <em>Порада: якщо якісь симптоми все ж викликають занепокоєння, можна спокійно звернутися на 116 117 (чергова лікарська служба) або до сімейного лікаря.</em>
+                    </p>
+                    <button onclick="resetNotfallCheckErw(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 На головний екран
+                    </button>
+                </div>`,
+
+        content_notfallcheck: `
+                <h1 style="color: #d35400;">❓ Невідкладний випадок чи ні?</h1>
+                <p>Скористайтеся <strong>правилом 3-А</strong>, щоб визначити, чи потрібна вашій дитині негайна медична допомога. Натисніть відповідь, яка підходить найкраще.</p>
+
+                <!-- STEP 1: Responsiveness -->
+                <div id="check-step-1" class="quiz-card screen-active" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">1. А – Активність (свідомість)</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Як ваша дитина реагує, коли до неї звертаються або торкаються?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-1', 'check-step-2', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Голосно плаче, опирається, протестує або дивиться на мене.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-1', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Дуже млява, обм'якла, як ганчір'яна лялька, або взагалі не прокидається.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Breathing -->
+                <div id="check-step-2" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">2. А – Дихальні шляхи/Дихання</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Чи дихає ваша дитина нормально?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-2', 'check-step-3', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Так, дихання спокійне і рівномірне (навіть якщо, наприклад, трохи сопить через нежить при температурі).
+                        </button>
+                        <button onclick="nextCheckStep('check-step-2', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Ні, дихання із зусиллям, зі свистом, хрипами, або сильно роздуваються крила носа.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Appearance -->
+                <div id="check-step-3" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">3. А – Зовнішній вигляд</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Який колір шкіри у вашої дитини?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-3', 'check-step-4', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Рожевий, нормальний колір, або типові гарячі червоні щічки при температурі.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-3', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Землистий, дуже блідий, синюшний (особливо навколо губ), або плямистий/мармуровий.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Parent gut check -->
+                <div id="check-step-4" class="quiz-card screen-hidden" style="background: #ffffff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #cbd5e1;">
+                    <h2 style="margin-top:0; color: #2c3e50; font-size: 18px;">Батьківське внутрішнє відчуття</h2>
+                    <p style="margin-bottom: 20px; color: #475569;">Ніхто не знає вашу дитину так добре, як ви. Що підказує ваше внутрішнє відчуття?</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="nextCheckStep('check-step-4', 'check-result-relax', false)" style="background: #f8fafc; border: 2px solid #27ae60; color: #1e8449; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            ✅ Дитина нездужає або неспокійна, але в цілому поводиться як завжди.
+                        </button>
+                        <button onclick="nextCheckStep('check-step-4', '', true)" style="background: #fadbd8; border: 2px solid #e74c3c; color: #900C3F; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-align: left;">
+                            🚨 Раптово щось зовсім не так, як завжди. Моя внутрішня тривога б'є на сполох.
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT: EMERGENCY -->
+                <div id="check-result-emergency" class="screen-hidden" style="background: #2c0e0e; padding: 25px; border-radius: 12px; border-left: 6px solid #e74c3c; color: white;">
+                    <h2 style="margin-top:0; color: #e74c3c;">🚨 ВИЯВЛЕНО НЕВІДКЛАДНИЙ ВИПАДОК</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 15px;">
+                        Порушена одна з життєво важливих функцій, або ваше внутрішнє відчуття б'є на сполох. Не зволікайте!
+                    </p>
+
+                    <!-- NEU: Standortanzeige direkt im Notfall-Check-Ergebnis -->
+                    <div id="check-geo-display" style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #f1c40f; font-weight: bold;">
+                        📍 Визначаємо ваше місцезнаходження...
+                    </div>
+
+                    <button onclick="triggerEmergencyCall()" style="background-color: #e74c3c; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        📞 Зателефонувати 112 зараз
+                    </button>
+                    <button onclick="resetNotfallCheck()" style="background: transparent; color: #cbd5e1; border: 1px solid #cbd5e1; padding: 10px; border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 15px;">
+                        🔄 Почати перевірку заново
+                    </button>
+                </div>
+
+                <!-- RESULT: MINOR / STABLE -->
+                <div id="check-result-relax" class="screen-hidden" style="background: #e8f8f5; padding: 25px; border-radius: 12px; border-left: 6px solid #27ae60; color: #1e8449;">
+                    <h2 style="margin-top:0; color: #27ae60;">💚 ДИТИНА СТАБІЛЬНА</h2>
+                    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 20px; color: #2c3e50;">
+                        Ваша дитина реагує, дихає нормально, виглядає рожевою, і ваше внутрішнє відчуття спокійне. Це дуже добра ознака! Гострий невідкладний випадок тут вкрай малоймовірний.
+                        <br><br>
+                        <em>Порада: при температурі, болю чи поганому самопочутті можна спокійно звернутися на 116 117 (чергова лікарська служба) або до дитячого лікаря.</em>
+                    </p>
+                    <button onclick="resetNotfallCheck(); goToStart();" style="background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;">
+                        🏠 На головний екран
+                    </button>
+                </div>`,
+
+        // ---- Batch 3: Zuhause-Check (interaktiver Präventions-/Risiko-
+        // Check) - statischer Bildschirmtext, Ergebnis-/Bedientexte und
+        // die einleitende Ergebnis-HTML. Die 20 einzelnen Sicherheitsfragen
+        // selbst liegen in script.js als RISK_QUESTIONS_UK. ----
+        riskTitle: '🛡️ Інтерактивна перевірка безпеки вдома',
+        riskIntroStrong: '💡 Чи знали ви, що близько 60% дитячих травм можна запобігти?',
+        riskIntroText: 'Правильні заходи безпеки у потрібний час роблять ваш дім безпечним для дитини, при цьому ви можете вільно ним користуватися. Зробіть свій дім безпечним крок за кроком - з урахуванням віку дитини та особливостей вашого житла!',
+        riskStep1Title: '👶 1. Оберіть етап розвитку дитини:',
+        riskStageBaby: '<strong>Немовля (0-5 місяців):</strong> Ще не рухається самостійно, лежить на спині/животику.',
+        riskStageCrawler: '<strong>Повзунок (6-12 місяців):</strong> Пересувається, повзає, хапає предмети (оральна фаза).',
+        riskStageToddler: '<strong>Малюк (1-3+ роки):</strong> Ходить, лазить, відкриває шафи.',
+        riskStep2Title: '🏡 2. Що стосується вашого житла?',
+        riskSituGrandparents: 'Візити до бабусі/дідуся чи родичів',
+        riskSituStairs: 'Сходи в будинку/квартирі',
+        riskSituFireplace: 'Є камін',
+        riskSituPets: 'Домашні тварини (собака / кіт / гризуни)',
+        riskSituWater: 'Садовий ставок, басейн, колодязь або бочка для дощової води',
+        riskSituGarage: 'Гараж / сарай / комора',
+        riskStartBtn: '🚀 Почати персональну перевірку',
+        riskShowResultBtn: '📊 Показати результат',
+        riskResultTitle: '🎯 Ваш результат безпеки',
+        riskRedoBtn: '🔄 Повторити перевірку',
+
+        // Zuhause-Check - Ergebnis-/Interaktionstext, per JS gesetzt
+        riskWhyImportant: '📖 Чому це важливо? ▾',
+        riskYesLabel: 'Так / Виконано',
+        riskNoLabel: 'Ні / Потрібні дії',
+        riskScoreLabel: '{score}% безпечно для дитини',
+        riskIntroResultHtml: `
+        <div style="background: #e8f8f5; border-left: 5px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
+            <strong style="color: #1e8449; font-size: 16px; display: block; margin-bottom: 6px;">💡 Ваш персональний результат профілактики</strong>
+            Чи знали ви, що близько <strong>60% дитячих травм можна запобігти</strong>? Правильні заходи безпеки у потрібний час допомагають вашому дому залишатися захищеним простором.
+            <br><br>
+            <strong>Виховання проти повного захисту від небезпек:</strong> Ваш дім не повинен перетворюватися на неприступну <em>фортецю</em>! Дитині потрібно набувати власного досвіду. Хоча небезпечні для життя ризики (наприклад, відкриті розетки, незахищені сходи чи отрути) необхідно послідовно усувати, активна батьківська увага відіграє важливу роль з самого початку.
+            <br><br>
+            ⚠️ <strong>Важливо:</strong> Діти розвиваються дуже швидко! Просто повторюйте цю перевірку на кожному важливому етапі розвитку (наприклад, коли дитина починає повзати чи лазити).
+        </div>`,
+        riskNoIssues: '🎉 Чудово! Ваш дім ідеально підготовлений для цього етапу розвитку.',
+        riskHandlungsbedarf: '⚠️ Ось на що варто звернути увагу у вашому домі:',
+        riskWhyImportantLabel: 'Чому це важливо:',
+        riskPrintBtn: '🖨️ Зберегти результат як PDF / роздрукувати',
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Baby & Kind) - Übersetzungs-Batch 1:
+        // Reanimation, Plötzlicher Kindstod (SIDS), Fieberkrampf,
+        // Stich im Mund/Schock, Insektenstich & Allergie (allgemein).
+        // Ton: medizinisches Fachpersonal erklärt es Eltern - klar & einfach.
+        // =====================================================
+        content_reanimation_panic: `
+                <h1 style="color: #c0392b;">🫀 НЕВІДКЛАДНА ДОПОМОГА: СЛР</h1>
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ШВИДКА ПЕРЕВІРКА:</strong> Дитина не реагує і не дихає нормально? Негайно покладіть дитину на <strong>тверду рівну поверхню</strong>!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ВІДКРИЙТЕ ДИХАЛЬНІ ШЛЯХИ:</strong><br>
+                    • <em>До 1 року (немовля):</em> Тримайте голову в нейтральному положенні (обличчя дивиться прямо вгору - уявіть, що дощ повинен падати прямо в нього!).<br>
+                    • <em>Після 1 року (дитина):</em> Обережно закиньте голову назад.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ПОЧНІТЬ ЗАРАЗ (1 ХВИЛИНА):</strong><br>
+                    • Зробіть <strong>5 початкових рятувальних вдихів</strong> (обережно вдувайте повітря, поки грудна клітка не підніметься).<br>
+                    • Потім протягом 1 хвилини чергуйте: <strong>30 натискань на грудну клітку : 2 рятувальних вдихи</strong>.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ВИКЛИЧТЕ 112:</strong> Телефонуйте на допомогу тільки зараз! Увімкніть гучний зв'язок і покладіть телефон поруч із дитиною, продовжуйте без зупинки - <strong>30:2, натискання та вдихи</strong> - поки не прибуде допомога.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button class="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        🔊 Почати задавач темпу (110 уд./хв)
+                    </button>
+                </div>`,
+
+        content_reanimation_learn: `
+                <h1>🔬 Що варто знати: СЛР</h1>
+                <p>У немовлят і малих дітей відсутнє або значно ослаблене дихання - найчастіша причина зупинки серця. Це майже завжди спричинено нестачею кисню - тому перші рятувальні вдихи настільки важливі.</p>
+
+                <h3>Чому дихальні шляхи потребують особливої уваги</h3>
+                <p>Порівняно з дорослими, у немовлят відносно більша голова та більший язик, тому вони дихають переважно через ніс. У дітей до одного року потилиця настільки велика, що закидання голови назад фактично перекрило б дихальні шляхи. Утримання голови в нейтральному "нюхаючому" положенні (обличчя дивиться прямо вгору) тримає дихальні шляхи відкритими. Лише приблизно з одного року дихальні шляхи змінюються настільки, що для їхньої прохідності потрібне обережне закидання голови назад.</p>
+
+                <h3>Серце та кровообіг</h3>
+                <p>Серцевий м'яз маленької дитини ще не повністю розвинений, тому серце має битися частіше, щоб встигати. Помітно повільне серцебиття у немовляти часто є першою тривожною ознакою важкої нестачі кисню. Якщо ви - випадковий свідок і не впевнені щодо співвідношення 15:2 для дітей, просто робіть 30:2 - це набагато краще, ніж нічого не робити через невпевненість!</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Наукові джерела (доказові настанови та інформація):</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/krankheiten/ploetzlicher-kindstod-anscheinend-lebensbedrohliches-ereignis/ursachen-risikofaktoren/" target="_blank">🔗 Kinderärzte im Netz - причини та фактори ризику життєзагрозливих подій (нім.)</a>
+                </div>`,
+
+        content_sids_panic: `
+                <h1 style="color: #c0392b;">🛏️ НЕВІДКЛАДНА ДОПОМОГА: ДИТИНА НЕ ДИХАЄ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Якщо ваше немовля не реагує і не дихає нормально, НЕГАЙНО починайте СЛР!</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ШВИДКА ПЕРЕВІРКА:</strong> Негайно покладіть немовля на <strong>тверду рівну поверхню</strong>. Тримайте голову в нейтральному положенні (обличчя дивиться прямо вгору, ніби дощ повинен падати прямо в нього).
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ПОЧНІТЬ ЗАРАЗ:</strong><br>
+                    • Зробіть <strong>5 початкових рятувальних вдихів</strong> (обережно вдувайте повітря одночасно в рот ТА ніс, поки грудна клітка не підніметься).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>НАТИСКАННЯ (1 ХВИЛИНА):</strong><br>
+                    • Протягом 1 хвилини чергуйте: <strong>15 натискань на грудну клітку : 2 рятувальних вдихи</strong> (двома пальцями на нижній третині грудини). <em>Примітка: якщо через стрес важко рахувати, 30:2 теж цілком підійде! Головне - діяти!</em>
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ВИКЛИЧТЕ 112:</strong> Телефонуйте на допомогу тільки зараз! Увімкніть гучний зв'язок і покладіть телефон поруч із немовлям, продовжуйте без зупинки, поки не прибуде допомога.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button onclick="showScreen('screen-reanimation')" style="background-color: #34495e; color: white; border: none; padding: 12px 20px; border-radius: 20px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        ➡️ Перейти до повного екрана СЛР (із задавачем темпу)
+                    </button>
+                </div>`,
+
+        content_sids_learn: `
+                <h1>🔬 Що варто знати: синдром раптової дитячої смерті (СРДС)</h1>
+                <p>СРДС (синдром раптової дитячої смерті) означає раптову, незрозумілу смерть немовляти під час сну. Хороша новина: завдяки просвітницькій роботі та послідовному дотриманню рекомендацій із профілактики кількість випадків за останні 14 років знизилася приблизно на 80%.</p>
+
+                <h3>Найважливіші кроки профілактики:</h3>
+                <ul style="padding-left: 20px; margin-bottom: 20px; line-height: 1.6;">
+                    <li><strong>Спати на спині:</strong> Завжди кладіть немовля спати на спину.</li>
+                    <li><strong>Спальний мішок, а не ковдра:</strong> Використовуйте дитячий спальний мішок без вільної ковдри, щоб дихання немовляти не могло бути перекрите тканиною, що накрила обличчя.</li>
+                    <li><strong>Тверда матрац і порожнє ліжечко:</strong> Використовуйте тверду, повітропроникну матрацу, яка не сильно продавлюється. Подушкам, овечим шкурам, бортикам та м'яким іграшкам не місце в ліжечку!</li>
+                    <li><strong>Температура:</strong> Оптимальна температура в кімнаті для сну - від 16 до 18°C. Не ставте ліжечко під прямі сонячні промені і не поруч із гарячою батареєю.</li>
+                    <li><strong>Без шапочки вдома:</strong> Ніякого головного убору в ліжечку - немовлята втрачають надлишкове тепло через голову.</li>
+                    <li><strong>Середовище без диму:</strong> Уникайте куріння протягом першого року життя дитини. Якщо обоє батьків курять і сплять в одному ліжку з немовлям, ризик СРДС зростає.</li>
+                    <li><strong>Перевіряйте захворювання:</strong> Немовлят до 3 місяців із температурою, або дітей із температурою понад три дні чи закладеним носом, варто показати педіатру, щоб допомогти прочистити дихальні шляхи.</li>
+                </ul>
+
+                <div class="product-box">
+                    <strong>🛡️ Розумний моніторинг сну та життєвих показників:</strong><br>
+                    Багато батьків користуються сучасними технологіями моніторингу для спокою, поки немовля спить в іншій кімнаті. **Owlet Dream Sock** відстежує сон, частоту серцевих скорочень і насичення киснем у реальному часі. Якщо показники (наприклад, насичення O₂ або пульс) падають, система одразу сповіщає ваш телефон.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Дає батькам додаткове відчуття спокою в критичні періоди розвитку.
+                    <a href="https://www.amazon.de/Owlet-Dream-Sock-Live%C3%bcbertragung-Sauerstoffs%C3%A4ttigung/dp/B0D7QHKDBG?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути Owlet Dream Sock на Amazon →
+                    </a>
+                </div>`,
+
+        content_fieberkrampf_panic: `
+                <h1 style="color: #3498db;">🌡️ НЕВІДКЛАДНА ДОПОМОГА: ФЕБРИЛЬНІ СУДОМИ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ ЗБЕРІГАЙТЕ СПОКІЙ! Типові фебрильні судоми майже завжди припиняються самостійно.</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ЗАПОБІЖІТЬ ТРАВМУВАННЮ:</strong>
+                    <br>• Приберіть тверді або гострі предмети з дороги.
+                    <br>• Підкладіть під голову дитини щось м'яке (наприклад, подушку або куртку).
+                    <br>• <strong>Важливо:</strong> Ніколи не утримуйте дитину силою і не трясіть її!
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>НІЧОГО В РОТ:</strong>
+                    <br>• <strong>Не</strong> кладіть нічого (наприклад, прорізувач чи ложку) в рот дитини.
+                    <br>• Не намагайтеся силою відкрити рот.
+                    <br>• Не давайте жодних ліків чи рідини через рот під час нападу (небезпека поперхнутися!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ВИКЛИЧТЕ 112, ЯКЩО...</strong>
+                    <br>• ...це **перший** фебрильний напад судом у дитини.
+                    <br>• ...напад триває довше **5 хвилин**.
+                    <br>• ...дитина не приходить до тями належним чином після нападу, або синіє.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ПІСЛЯ НАПАДУ:</strong>
+                    <br>• Коли тремтіння припиниться: покладіть дитину в <strong>стабільне бокове положення</strong>, щоб слина могла витікати, а дихальні шляхи залишалися вільними.
+                    <br>• Продовжуйте стежити за диханням.
+                </div>`,
+
+        content_fieberkrampf_learn: `
+                <h1>🔬 Що варто знати: фебрильні судоми</h1>
+                <p>Приблизно у 5% усіх дітей віком від 6 місяців до 6 років колись трапляються фебрильні судоми. Зазвичай це відбувається на початку інфекції, коли температура швидко піднімається вище 38,5°C. Мозок маленької дитини ще не повністю дозрів і реагує на таку швидку зміну коротким "перевантаженням".</p>
+
+                <h3>Чому це виглядає так лячно?</h3>
+                <p>Під час фебрильного нападу дитина втрачає свідомість, і її звичайні захисні рефлекси вимикаються. Це може виглядати як напруження всього тіла або ритмічні посмикування (тоніко-клонічні рухи) всього тіла. Легкий сірий чи синюватий відтінок губ під час нападу часто є нормою, викликаною нерівномірним диханням. Важливо для батьків: типовий фебрильний напад зазвичай триває не довше 5 хвилин і не означає, що у дитини епілепсія чи інший судомний розлад.</p>
+
+                <h3>Що можна зробити в повсякденному житті:</h3>
+                <p>Якщо ваша дитина схильна до фебрильних судом, порадьтеся з педіатром щодо застосування жарознижувальних засобів, починаючи з певної температури. Після нападу переконайтеся, що дитина перебуває в стабільному боковому положенні (на боці або животі) і отримує достатньо повітря.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Наукові джерела (доказова інформація для пацієнтів):</strong><br>
+                    <a href="https://register.awmf.org/de/leitlinien/detail/027-074" target="_blank">🔗 AWMF Register - настанова S3 щодо ведення гарячки (нім.)</a><br>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Рекомендовано для аптечки:</strong><br>
+                    Щоб стежити за температурою вашої дитини під час можливого фебрильного нападу - абсолютно без стресу, за секунди, без дотику - ми рекомендуємо лідера ринку: безконтактний лобний термометр **Braun No-Touch** у стильному чорному кольорі.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Швидкі безконтактні вимірювання позбавляють дитину зайвого стресу під час підйому температури.
+                    <a href="https://www.amazon.de/Braun-Ber%C3%BChrungsfrei-Stirnthermometer-AgePrecision-schwarz/dp/B07R2KJTVY?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути Braun No-Touch на Amazon →
+                    </a>
+                </div>`,
+
+        content_insektenstich_panic: `
+                <h1 style="color: #3498db;">🐝 НЕВІДКЛАДНА ДОПОМОГА: УКУС У РОТ / ШОК</h1>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ВИКЛИЧТЕ 112, ЯКЩО:</strong>
+                    <br>• Будь-який укус **у рот, горло чи шию** (бджола чи оса - не має значення!).
+                    <br>• Відома алергія, або перші ознаки шоку (висип по всьому тілу, утруднене дихання, набряк обличчя).
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>ОХОЛОДЖУЙТЕ ЗСЕРЕДИНИ Й ЗЗОВНІ:</strong>
+                    <br>• Одразу дайте дитині **смоктати шматочки льоду** або холодну воду для ковтання (це сповільнює набряк у горлі).
+                    <br>• Охолоджуйте шию ззовні вологою тканиною або холодним компресом (загорнутим у рушник).
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ЗБЕРІГАЙТЕ СПОКІЙ І САДОВІТЬ ПРЯМО:</strong>
+                    <br>• Посадіть дитину **прямо** - так легше дихати, коли дихальні шляхи починають набрякати.
+                    <br>• Якщо жало видно, обережно видаліть його пінцетом або нігтем. Не стискайте його пальцями (це виштовхне ще більше отрути!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>АЛЕРГІЧНИЙ НАБІР ПЕРШОЇ ДОПОМОГИ (якщо є):</strong>
+                    <br>• У дитини відома алергія і є аварійний набір?
+                    <br>• Введіть **автоін'єктор адреналіну** (наприклад, Fastjekt / Jext) різко прямо в **зовнішню частину стегна** і утримуйте 5-10 секунд (це працює навіть через одяг!).
+                </div>`,
+
+        content_insektenstich_learn: `
+                <h1>🔬 Що варто знати: набряк дихальних шляхів та анафілаксія</h1>
+                <p>Укус у руку чи ногу зазвичай лише неприємний. Але якщо дитина проковтне осу чи бджолу, п'ючи з відкритої банки, укус у рот чи горло може стати життєзагрозливим. Тканина там може набрякнути дуже сильно за кілька хвилин і перекрити дихальні шляхи.</p>
+
+                <h3>Чому холод так добре допомагає?</h3>
+                <p>Лід і холодна вода різко звужують кровоносні судини в горлі. Це сповільнює накопичення рідини в тканині, фізично стримуючи життєзагрозливий набряк, доки не прибудуть рятувальники або лікарня не зможе призначити ліки (стероїди/антигістамінні препарати) для зменшення набряку.</p>
+
+                <h3>Анафілактичний шок</h3>
+                <p>При справжній алергії на отруту комах імунна система реагує надмірно. Кровоносні судини по всьому тілу раптово розширюються, артеріальний тиск різко падає, а дихальні шляхи звужуються (анафілаксія). Тут допоможе лише адреналін - він одразу знову звужує судини та стабілізує роботу серця і кровообігу.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Інформація з клінічних настанов:</strong><br>
+                    <a href="https://register.awmf.org/de/leitlinien/detail/061-025" target="_blank">🔗 Настанова AWMF S2k - невідкладна допомога при анафілактичних реакціях (нім.)</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Розумний помічник на літо:</strong><br>
+                    Якщо дитину під час гри на вулиці вкусив комар, ґедзь чи оса в руку або ногу, концентроване тепло допомагає краще, ніж хімічні засоби. **heat it - пристрій для лікування укусів комах для смартфонів** - руйнує білки, що спричиняють свербіж, у отруті за кілька секунд.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Компактний розмір - поміщається на брелок, тож миттєве полегшення свербежу завжди під рукою.
+                    <a href="https://www.amazon.de/heat-Insektenstichheiler-Smartphone-Chemiefreie-konzentrierter/dp/B0D26GWWD1?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути heat it sting healer на Amazon →
+                    </a>
+                </div>`,
+
+        content_insektenstich_allgemein_panic: `
+                <h1 style="color: #e74c3c;">🐝 УКУС КОМАХИ ТА АЛЕРГІЯ</h1>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>КОЛИ ТЕЛЕФОНУВАТИ 112?</strong>
+                    <br>• <strong>Укус у рот чи горло</strong> (дихальні шляхи можуть набрякнути й перекритися!)
+                    <br>• <strong>Утруднене дихання, свист при диханні</strong> або хрипкий голос
+                    <br>• <strong>Раптовий висип/кропив'янка</strong> по всьому тілу, запаморочення чи блювання
+                    <br><br>👉 <em>Одразу телефонуйте 112, дайте лід або морозиво на паличці для смоктання, охолоджуйте шию і посадіть дитину прямо!</em>
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>ВІДОМА АЛЕРГІЯ (аварійний набір):</strong>
+                    <br>• У дитини є <strong>автоін'єктор адреналіну (ручка)</strong>?
+                    <br>• Введіть його різко прямо в <strong>зовнішню частину стегна</strong> і утримуйте 5-10 секунд!
+                </div>`,
+
+        content_insektenstich_allgemein_learn: `
+                <h1 style="color: #e67e22;">🔬 Звичайна реакція на укус (рука / нога)</h1>
+                <p>Укуси в руку чи ногу неприємні, але зазвичай безпечні. Серйозна алергічна реакція виникає лише тоді, коли додається набряк обличчя або утруднене дихання.</p>
+
+                <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 15px; color: #2c3e50;">
+                    <strong style="color: #27ae60;">🩹 Перша допомога при звичайному укусі:</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.5;">
+                        <li><strong>Видаліть жало:</strong> Не стискайте його пінцетом, інакше виштовхнете ще більше отрути.</li>
+                        <li><strong>Охолоджуйте:</strong> Завжди загортайте холодний компрес у тканину (ніколи не прикладайте прямо до шкіри).</li>
+                        <li><strong>Не дозволяйте чухати:</strong> Тримайте рану чистою, щоб уникнути інфікування.</li>
+                    </ul>
+                </div>
+
+                <div class="product-box">
+                    <strong>🌡️ Рекомендовано: heat it - пристрій для лікування укусів комах для смартфонів</strong><br>
+                    Швидко полегшує свербіж і біль від укусів комах без хімії - лише за допомогою концентрованого тепла. Чудово підходить дітям від 3 років, оскільки час обробки дуже короткий і щадний.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Маленький, як брелок - не займає місця в сумці для підгузків і ніколи не потребує батарейок.
+                    <a href="https://www.amazon.de/heat-Insektenstichheiler-Smartphone-Chemiefreie-konzentrierter/dp/B0D26GWWD1?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути heat it sting healer на Amazon →
+                    </a>
+                </div>`,
+
+        // ---- Batch 4b (Themen Baby, Teil 2/3): Knopfzellen & Magnete,
+        // Verbrennung, Pseudokrupp, Vergiftung, Sturz auf den Kopf. ----
+        content_kleinteile_panic: `
+                <h1 style="color: #e67e22;">🔋 НЕВІДКЛАДНА ДОПОМОГА: БАТАРЕЙКИ-ТАБЛЕТКИ / МАГНІТИ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ ДОСИТЬ ПІДОЗРИ! Дійте негайно. Не чекайте на симптоми!</p>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>НЕГАЙНО ЇДЬТЕ ДО ЛІКАРНІ:</strong>
+                    <br>• Їдьте **одразу** до найближчої дитячої лікарні (або телефонуйте 112, якщо у дитини є труднощі з диханням).
+                    <br>• Якщо можливо, візьміть упаковку або такий самий предмет, щоб допомогти з ідентифікацією.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>ЦЕ ТЕПЕР ЗАБОРОНЕНО:</strong>
+                    <br>• **Не** викликайте у дитини блювання! (Шлунковий сік, що повертається назад, повторно пошкоджує стравохід).
+                    <br>• Не давайте дитині нічого їсти чи пити (виняток дивіться у кроці 3).
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #27ae60;">
+                    <span class="step-num">3</span>
+                    <strong>ПЕРША ДОПОМОГА З МЕДОМ (з 1 року!):</strong>
+                    <br>• Якщо проковтування **батарейки-таблетки** сталося менше 12 годин тому, і дитині більше 1 року: одразу дайте **1-2 чайні ложки рідкого меду**.
+                    <br>• Повторюйте це кожні 10 хвилин по дорозі до лікарні.
+                    <br>• *Мед вкриває батарейку захисною плівкою і сповільнює хімічну реакцію!*
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ПОПЕРЕДЖЕННЯ ЩОДО МАГНІТІВ:</strong>
+                    <br>• Дитина проковтнула **більше одного** магніту (або магніт разом зі шматком металу)? Це абсолютно невідкладний хірургічний випадок! Магніти можуть притягуватися один до одного через кишківник і прорвати отвір у його стінці.
+                </div>`,
+
+        content_kleinteile_learn: `
+                <h1>🔬 Що варто знати: хімічні опіки та сила магнітів</h1>
+                <p>Батарейки-таблетки та потужні магніти - одні з найнебезпечніших предметів, які може проковтнути маленька дитина. Складність у тому, що спочатку це часто непомітно, оскільки у дитини немає явних труднощів із диханням.</p>
+
+                <h3>Що відбувається з батарейкою-таблеткою?</h3>
+                <p>Якщо пласка батарейка застрягає у вузькому стравоході, волога слизова оболонка замикає електричний контур. Тече струм, розщеплюючи тканинну рідину і утворюючи сильно їдкий луг. Це може прожечи стравохід наскрізь усього за кілька годин.</p>
+
+                <h3>Метод із медом (наукове підтвердження):</h3>
+                <p>Дослідження показали, що мед - завдяки своїй злегка кислій реакції та густій консистенції - може надзвичайно ефективно сповільнити утворення цього небезпечного лугу. Важливо: ніколи не використовуйте цей метод у немовлят до одного року (ризик дитячого ботулізму!).</p>
+
+                <h3>Чому магніти такі небезпечні?</h3>
+                <p>Один магніт зазвичай виходить природним шляхом. Але якщо проковтнуто два або більше, вони рухаються різними петлями кишківника з різною швидкістю. Якщо вони зустрічаються всередині кишківника, вони затискають між собою тонку стінку кишки. Кровопостачання переривається, і за дуже короткий час може утворитися отвір.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Педіатричні рекомендації та профілактика:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/verschluckte-gegenstaende/" target="_blank">🔗 Kinderärzte im Netz - предмети, які можна проковтнути, та профілактика (нім.)</a>
+                </div>`,
+
+        content_verbrennung_panic: `
+                <h1 style="color: #e67e22;">🔥 НЕВІДКЛАДНА ДОПОМОГА: ОПІКИ / ОШПАРЕННЯ</h1>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ПРИПИНІТЬ НЕБЕЗПЕКУ Й ЗНІМІТЬ ОДЯГ:</strong>
+                    <br>• Негайно зніміть одяг, просочений чимось гарячим (наприклад, чаєм чи кавою)! Кожна секунда, коли гаряча тканина залишається на шкірі, погіршує ситуацію.
+                    <br>• <strong>Виняток:</strong> якщо одяг вже міцно прилип до шкіри, не зривайте його!
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>ПРАВИЛЬНО ОХОЛОДЖУЙТЕ (ЛИШЕ НЕВЕЛИКІ ДІЛЯНКИ):</strong>
+                    <br>• Одразу охолоджуйте обпечені ділянки **прохолодною водопровідною водою** (близько 15-20°C) **максимум 2 хвилини**.
+                    <br>• <strong>Життєво важливе попередження:</strong> ніколи не використовуйте крижану воду чи холодні компреси! Ніколи не охолоджуйте велику ділянку тіла (ризик переохолодження у немовлят)!
+                    <br>• Завжди обережно охолоджуйте обличчя і руки.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ЗАКРИЙТЕ РАНУ Й УНИКАЙТЕ ДОМАШНІХ ЗАСОБІВ:</strong>
+                    <br>• Вільно накрийте опік стерильною неприлипаючою пов'язкою (з аптечки).
+                    <br>• **Не** наносьте на рану домашні засоби на кшталт борошна, олії, зубної пасти чи присипки!
+                    <br>• Ніколи не проколюйте пухирі від опіку!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>КОЛИ ЗВЕРТАТИСЯ ДО ЛІКАРЯ / ВИКЛИКАТИ ДОПОМОГУ?</strong>
+                    <br>• Телефонуйте **112**, якщо опік великий (більший за долоню дитини), або якщо постраждали обличчя, статеві органи чи суглоби.
+                    <br>• Зверніться до педіатра при будь-якому видимому пухирі від опіку.
+                </div>`,
+
+        content_verbrennung_learn: `
+                <h1>🔬 Що варто знати: термічні травми</h1>
+                <p>Опіки окропом найчастіше трапляються у віці, коли дитина починає підтягуватися на столах і стягувати на себе предмети - наприклад, чайник, чашку кави чи скатертину.</p>
+
+                <h3>Пастка переохолодження (принцип кубика льоду)</h3>
+                <p>Діти перегріваються і охолоджуються набагато швидше за дорослих. Причина: у немовляти надзвичайно велика площа поверхні тіла відносно його об'єму. Уявіть це як маленький кубик, де майже кожна сторона контактує з навколишньою температурою - тоді як дорослий (наче кілька складених разом кубиків) може утримувати всередині набагато більше тепла. Немовлята також ще не можуть регулювати температуру тіла тремтінням.</p>
+
+                <h3>Правильне охолодження</h3>
+                <p>Щоб зупинити подальше термічне пошкодження, гарячий мокрий одяг потрібно зняти негайно. Після цього охолоджуйте **лише невеликі ділянки (не більші за долоню)** прохолодними вологими тканинами **не довше 2 хвилин** - щоб не спричинити небезпечне переохолодження у дитини!</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Профілактика та перша допомога:</strong><br>
+                    <a href="https://www.paulinchen.de/brandverletzung/erste-hilfe/" target="_blank">🔗 Paulinchen e.V. - перша допомога при опіках та ошпаренні (нім.)</a>
+                </div>`,
+
+        content_pseudokrupp_panic: `
+                <h1 style="color: #3498db;">🗣️ НЕВІДКЛАДНА ДОПОМОГА: НАПАД НЕСПРАВЖНЬОГО КРУПУ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ ЗБЕРІГАЙТЕ СПОКІЙ! Ваш страх передається дитині і посилює труднощі з диханням.</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ТРИМАЙТЕ ВЕРТИКАЛЬНО ТА ЗАСПОКОЮЙТЕ:</strong>
+                    <br>• Одразу візьміть дитину на руки і тримайте її **вертикально**.
+                    <br>• Розмовляйте спокійно. Якщо дитина плаче чи кричить, тиск ще більше посилює набряк у гортані!
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">2</span>
+                    <strong>ДИХАННЯ ХОЛОДНИМ ПОВІТРЯМ (МИТТЄВИЙ ЕФЕКТ):</strong>
+                    <br>• Піднесіть дитину до **відкритого холодильника чи морозильної камери**, або одразу до **відкритого вікна / балкону** (спочатку тепло її вкутайте!).
+                    <br>• Холодне вологе повітря дуже швидко зменшує набряклу слизову оболонку гортані.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ЕКСТРЕНІ ЛІКИ (якщо є):</strong>
+                    <br>• Ваш педіатр вже призначив екстрені ліки?
+                    <br>• Дайте дитині **гормональну свічку**, або відповідний сироп/спрей, точно за інструкцією лікаря. (Гормони зменшують набряк, але діють приблизно через 20-30 хвилин).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>КОЛИ ТЕЛЕФОНУВАТИ 112?</strong>
+                    <br>• Якщо стан не покращується через 10-15 хвилин, попри холодне повітря.
+                    <br>• Якщо губи чи нігті синіють.
+                    <br>• Якщо шкіра між ребрами різко втягується під час кожного вдиху.
+                </div>`,
+
+        content_pseudokrupp_learn: `
+                <h1>🔬 Що варто знати: що таке несправжній круп?</h1>
+                <p>Напад несправжнього крупу - це вірусне запалення слизової оболонки навколо гортані та голосових зв'язок. Найчастіше він трапляється у дітей віком від 6 місяців до 3 років, оскільки їхні дихальні шляхи анатомічно ще дуже вузькі.</p>
+
+                <h3>Типові симптоми вночі:</h3>
+                <p>Дитина зазвичай прокидається вночі із **сухим гавкаючим кашлем** (звучить як у тюленя). Часто чути свистячий чи хрипкий звук під час вдиху (це називається стридор). Часто це супроводжується охриплістю голосу.</p>
+
+                <h3>Чому холодне повітря допомагає краще, ніж гаряча пара?</h3>
+                <p>Раніше поширеною порадою було наповнити ванну кімнату гарячою парою. Однак сучасні дослідження показують, що **холодне повітря** (на вулиці або біля відкритого холодильника) працює значно краще. Холод звужує кровоносні судини слизової оболонки, що фізично зменшує набряк. Прохолодне повітря також заспокоює дихальний рефлекс.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Інформація для пацієнтів:</strong><br>
+                    <a href="https://www.gesundheitsinformation.de/pseudokrupp.html" target="_blank">🔗 IQWiG - розпізнавання та лікування несправжнього крупу (нім.)</a>
+                </div>`,
+
+        content_vergiftung_panic: `
+                <h1 style="color: #27ae60;">🧪 НЕВІДКЛАДНА ДОПОМОГА: ОТРУЄННЯ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ НІКОЛИ НЕ ВИКЛИКАЙТЕ БЛЮВАННЯ! Це може пошкодити стравохід або спричинити поперхування.</p>
+
+               <div class="emergency-step" style="background-color: #1a252f; border-left-color: #27ae60;">
+                    <span class="step-num">1</span>
+                    <strong>ТОКСИКОЛОГІЧНИЙ ЦЕНТР АБО ВИКЛИК ЕКСТРЕНОЇ ДОПОМОГИ:</strong>
+                    <br>• Дитина стабільна/притомна? Одразу телефонуйте до центру, відповідального за ваш регіон:
+
+                    <div id="poison-center-display" style="margin: 10px 0; padding: 10px; background: rgba(39, 174, 96, 0.2); border-radius: 8px; border: 1px solid #27ae60; text-align: center;">
+                        ⏳ Шукаємо токсикологічний центр для вашого місцезнаходження...
+                    </div>
+
+                    <br>• Дитина непритомна або має серйозні труднощі з диханням? <strong>Негайно телефонуйте 112!</strong>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗБЕРЕЖІТЬ РЕШТКИ РЕЧОВИНИ:</strong>
+                    <br>• Приберіть з рота дитини будь-які рештки речовини (частини рослини, засіб для чищення, таблетки).
+                    <br>• Збережіть упаковку, пляшку чи частини рослини, щоб показати лікарям.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ЛИШЕ ВОДА, ЯКЩО ТАК СКАЖЕ ТОКСИКОЛОГІЧНИЙ ЦЕНТР:</strong>
+                    <br>• Після консультації з токсикологічним центром: дайте дитині кілька ковтків **негазованої води або чаю** для полоскання і розведення.
+                    <br>• <strong>Молоко чи солона вода - категорично заборонені!</strong> (Молоко прискорює всмоктування деяких отрут у кишківнику; солона вода смертельно небезпечна для дітей!).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ПРИ ЗАСОБАХ ДЛЯ ЧИЩЕННЯ (ПІНА):</strong>
+                    <br>• Дитина проковтнула засіб для миття посуду, мило чи пральний засіб? **Ніколи не давайте пити воду!** Це спричинить утворення піни в шлунку, а піна може потрапити в легені (небезпека поперхування).
+                    <br>• Якщо у вас є протипінний засіб (наприклад, Sab Simplex / Lefax), дайте його після консультації з токсикологічним центром.
+                </div>`,
+
+        content_vergiftung_learn: `
+                <h1>🔬 Що варто знати: токсикологічні невідкладні стани</h1>
+                <p>Оскільки маленькі діти тягнуть усе до рота, вони перебувають в особливій групі ризику. Часто достатньо лише короткої миті неуважності, і дитина вже проковтнула засіб для чищення чи ліки. У старших дітей небезпека часто пов'язана з отруйними рідинами, перелитими в пляшки з-під напоїв.</p>
+
+                <h3>Смертельна небезпека блювання</h3>
+                <p>Ніколи не викликайте у дитини блювання! У шлунку дуже кисле середовище, і він відносно добре справляється з проковтнутими кислотами. Викликане блювання вдруге пошкоджує стравохід на зворотному шляху. Крім того, оскільки надгортанник маленької дитини ще не закривається повністю, під час блювання отрута може потрапити глибоко в трахею та легені і спричинити там важке пошкодження.</p>
+
+                <h3>Ліки для аптечки на випадок невідкладних станів</h3>
+                <p>Проковтування засобу для миття посуду спричиняє утворення піни в шлунку, що може викликати блювання. Після консультації з лікарем або токсикологічним центром засобом вибору тут є протипінний засіб (наприклад, суспензія Sab Simplex®), оскільки він руйнує піну. Для отрут, проковтнутих через рот, також можна використовувати активоване вугілля (знову ж таки лише за медичною рекомендацією), щоб зв'язати токсини в травному тракті і вивести їх з організму.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Офіційний перелік усіх токсикологічних центрів:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/vergiftungen/" target="_blank">🔗 Kinderärzte im Netz - довідник токсикологічних центрів (нім.)</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Усуньте приховані небезпеки:</strong><br>
+                    Профілактика - найкращий захист від отруєння. Чи то класична аптечка, шафки під раковиною у ванній, чи важкі кухонні шухляди - магнітний дитячий замок **MUTKIND®** надійно захищає від допитливих маленьких рук.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Замки повністю приклеюються зсередини. Це дбайливо ставиться до ваших меблів і абсолютно непомітно зовні, тож дитина навіть не намагатиметься їх розхитати.
+                    <a href="https://www.amazon.de/MUTKIND%C2%AE-Magnetische-Kindersicherung-Starker-Kleber/dp/B0F274BJG4?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути дитячий замок MUTKIND® на Amazon →
+                    </a>
+                </div>`,
+
+        content_stuerze_panic: `
+                <h1 style="color: #3498db;">🤕 НЕВІДКЛАДНА ДОПОМОГА: ПАДІННЯ НА ГОЛОВУ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ПЕРЕВІРТЕ РЕАКЦІЮ ТА ДИХАННЯ:</strong>
+                    <br>• Дитина не реагує на ваш голос чи легке потрушування?
+                    <br>• <strong>Непритомна, але дихає нормально:</strong> Одразу покладіть її в стабільне бокове положення і <strong>телефонуйте 112</strong>!
+                    <br>• <strong>Не дихає нормально:</strong> Негайно починайте натискання на грудну клітку!
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ШВИДКА ПЕРЕВІРКА НА СТРУС МОЗКУ:</strong> Позначте все, що відповідає дійсності:
+                    <div style="margin-top: 12px; text-align: left; font-weight: normal;">
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Дитина була короткочасно непритомна одразу після падіння</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>У дитини блювання (навіть через кілька годин)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Дитина надзвичайно сонлива, млява, або її важко розбудити</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Зіниці різного розміру, або дитина раптово почала косити</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>З вуха чи носа виділяється кров або прозора рідина</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Дитину не вдається заспокоїти за розумний час (залишається безутішною)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:0;">
+                            <input type="checkbox" class="kind-sturz-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Дитина поводиться не так, як зазвичай у цей час доби (наприклад, незвично сонлива вдень, або дивно бадьора/неспокійна вночі)</span>
+                        </label>
+                    </div>
+                    <button onclick="kindSturzAuswerten()" style="margin-top:14px; background-color:#f1c40f; color:#2c0e0e; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                        Перевірити зараз
+                    </button>
+                    <div id="kind-sturz-warnzeichen-ergebnis" style="margin-top:12px;"></div>
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">3</span>
+                    <strong>ЛІКУВАННЯ ГУЛЬ І ПОРІЗІВ:</strong>
+                    <br>• Якщо дитина плаче, але в іншому почувається добре: обережно охолоджуйте гулю (загорніть холодний компрес у тканину, ніколи не прикладайте прямо до шкіри!).
+                    <br>• При порізі із сильною кровотечею притисніть стерильну пов'язку до рани на кілька хвилин (рани на голові кровоточать дуже сильно!).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>СПОСТЕРЕЖЕННЯ ПРОТЯГОМ 48 ГОДИН:</strong>
+                    <br>• Навіть якщо одразу після падіння дитина здається в порядку: уважно спостерігайте за нею наступні 48 годин.
+                    <br>• Перевіряйте її двічі за ніч: чи легко вона рухається уві сні, чи нормально реагує на дотик? Якщо сон здається неприродно глибоким, зверніться до лікарні.
+                </div>`,
+
+        content_stuerze_learn: `
+                <h1>🔬 Що варто знати: черепно-мозкова травма</h1>
+                <p>Що молодша дитина, то більша у неї голова відносно решти тіла. Через цей зміщений центр ваги немовлята та малюки під час падіння майже завжди приземляються головою вперед.</p>
+
+                <h3>Коли висота стає критичною?</h3>
+                <p>Падіння з висоти власного зросту дитини зазвичай безпечні. Для дорослого падіння з висоти 3 метри і більше (приблизно 1,5 зросту тіла) вважається критичним. Для немовляти падіння з пеленального столика (близько 80 см) несе точно порівнянний, серйозний ризик травми!</p>
+
+                <h3>Ризик відкритого тім'ячка</h3>
+                <p>Якщо мозок сильно струшується від удару, може виникнути крововилив. Оскільки кістки черепа і тім'ячко у немовлят ще не повністю зрослися, мозок має трохи простору для набряку. На жаль, це також означає, що зміни в поведінці та симптоми крововиливу в мозок (наприклад, блювання чи млявість) часто проявляються **із затримкою**. Уважно спостерігайте за дитиною після будь-якого серйозного падіння, і якщо у вас є хоч найменші сумніви, зверніться до рятувальників для огляду.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Наукові джерела (доказова інформація для пацієнтів):</strong><br>
+                    <a href="https://www.gesundheitsinformation.de/gehirnerschuetterung.html" target="_blank">🔗 IQWiG - Струс мозку (легка ЧМТ) (нім.)</a><br>
+                    <a href="https://www.gesundheitsinformation.de/erste-hilfe-bei-einer-kopfverletzung.html" target="_blank">🔗 IQWiG - Перша допомога при травмі голови (нім.)</a><br>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Безпечне охолодження гуль та синців:</strong><br>
+                    Як ви дізналися з невідкладних кроків, крижані холодні компреси ніколи не можна прикладати прямо до голої шкіри дитини. **Багаторазові холодні компреси Hilph для дітей** мають м'які, зручні для дітей тканинні чохли, які делікатно дозують холод і водночас витирають сльози.
+                    <br><br>
+                    💡 <strong>Порада ABC:</strong> Гнучкі гелеві компреси залишаються м'якими навіть у замороженому стані і ідеально приймають форму дитячої голови.
+                    <a href="https://www.amazon.de/Hilph-Stoffh%C3%BClle-K%C3%BChlkissen-Weisheitsz%C3%A4hne-Insektenstiche/dp/B0DB5W1HHG?tag=ehabc-21" target="_blank" class="product-link-btn" style="background-color: #ff9900; color: #111111 !important;">
+                        📦 Переглянути дитячі холодні компреси Hilph на Amazon →
+                    </a>
+                </div>`,
+
+        // ---- Batch 4c (Themen Baby, Teil 3/3 - letzte Baby & Kind-Runde):
+        // Stromunfälle, Ertrinken, Akutes Verschlucken. ----
+        content_strom_panic: `
+                <h1 style="color: #f39c12;">⚡ НЕВІДКЛАДНА ДОПОМОГА: УРАЖЕННЯ ЕЛЕКТРИЧНИМ СТРУМОМ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ СПОЧАТКУ ЗАХИСТІТЬ СЕБЕ! Ніколи не торкайтеся дитини, поки вона ще контактує з електрикою!</p>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ВИМКНІТЬ СТРУМ:</strong>
+                    <br>• Негайно витягніть **вилку** приладу з розетки, або вимкніть **автоматичний вимикач (УЗО)** у щитку!
+                    <br>• Якщо це неможливо: скористайтеся **сухим непровідним предметом** (наприклад, дерев'яною ручкою мітли або товстою книгою), щоб відсунути дитину від джерела струму.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>ВИКЛИЧТЕ ДОПОМОГУ Й ПЕРЕВІРТЕ ЖИТТЄВІ ФУНКЦІЇ:</strong>
+                    <br>• Негайно телефонуйте **112** (увімкніть гучний зв'язок!).
+                    <br>• Перевірте реакцію дитини та її дихання.
+                    <br>• **Не дихає нормально?** Негайно починайте СЛР (30 натискань на грудну клітку : 2 рятувальних вдихи)!
+                </div>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #3498db;">
+                    <span class="step-num">3</span>
+                    <strong>ЯКЩО ПРИТОМНА: СТАБІЛЬНЕ БОКОВЕ ПОЛОЖЕННЯ ТА ОПІКИ:</strong>
+                    <br>• Якщо дитина дихає нормально, але непритомна: **стабільне бокове положення**.
+                    <br>• Охолодіть будь-які видимі опіки (там, де струм увійшов чи вийшов з тіла) прохолодною водою.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ЗАВЖДИ ЇДЬТЕ ДО ЛІКАРНІ (СПОСТЕРЕЖЕННЯ 24 ГОДИНИ):</strong>
+                    <br>• Навіть якщо одразу після удару струмом дитина здається абсолютно нормальною: **одразу їдьте до дитячої лікарні!**
+                    <br>• Електричний струм може спричинити небезпечні для життя **порушення серцевого ритму** через кілька годин. Дитина повинна перебувати під моніторингом ЕКГ протягом 24 годин.
+                </div>`,
+
+        content_strom_learn: `
+                <h1>🔬 Що варто знати: як електричний струм впливає на організм</h1>
+                <p>Ураження електричним струмом у дітей часто відрізняються від тих, що трапляються у дорослих. Якщо дорослі зазвичай травмуються на будівельних майданчиках або через великі побутові прилади, у маленьких дітей причиною часто стає прогризений кабель зарядного пристрою, відкрита розетка чи несправний побутовий прилад.</p>
+
+                <h3>Чому моніторинг ЕКГ обов'язковий?</h3>
+                <p>Наше серце регулюється власними крихітними електричними імпульсами. Якщо через тіло ззовні тече електричний струм, він може повністю збити ритм серця. Це може спричинити фібриляцію шлуночків або раптову зупинку серця. Складність у тому, що ці порушення ритму можуть проявитися із затримкою. Саме тому медичний моніторинг протягом щонайменше 24 годин є абсолютно обов'язковим.</p>
+
+                <h3>Низька напруга проти високої напруги</h3>
+                <p>Вдома ми маємо справу з низькою напругою (230 вольт). Це часто спричиняє м'язовий спазм, через який дитина не може самостійно відпустити джерело струму ("прилипання"). Аварії з високою напругою (наприклад, від контактної мережі поїздів чи трансформаторних підстанцій) спричиняють надзвичайно важкі, часто смертельні, внутрішні та зовнішні опіки через величезну кількість тепла.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Наукові джерела (доказова інформація для пацієнтів):</strong><br>
+                    <a href="https://www.kindergesundheit-info.de/themen/sicher-aufwachsen/alltagstipps/sicher-im-alltag/bei-stromunfaellen/" target="_blank">🔗 BIÖG - перша допомога при ураженні електричним струмом (нім.)</a><br>
+                    <a href="https://gesund.bund.de/icd-code-suche/t75-4" target="_blank">🔗 gesund.bund.de - травми, спричинені електричним струмом (нім.)</a>
+                </div>`,
+
+        content_ertrinken_panic: `
+                <h1 style="color: #1abc9c;">🌊 НЕВІДКЛАДНА ДОПОМОГА: УТОПЛЕННЯ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ ПОПЕРЕДЖЕННЯ: Утоплення відбувається ТИХО! Діти йдуть під воду без жодного звуку.</p>
+
+                <div class="emergency-step" style="background-color: #1a252f; border-left-color: #1abc9c;">
+                    <span class="step-num">1</span>
+                    <strong>ДІСТАНЬТЕ ЇЇ З ВОДИ:</strong>
+                    <br>• Негайно винесіть дитину на сушу (пам'ятайте про власну безпеку на глибокій воді!).
+                    <br>• Швидко зніміть мокрий одяг і загорніть дитину в теплі ковдри/куртки, щоб запобігти переохолодженню.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ПЕРЕВІРТЕ РЕАКЦІЮ ТА ДИХАННЯ:</strong>
+                    <br>• Не реагує? Відкрийте дихальні шляхи (розташуйте голову відповідно до віку дитини).
+                    <br>• Протягом 10 секунд дивіться і слухайте біля рота і носа, щоб перевірити наявність нормального дихання.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-left-color: #ff4d4d;">
+                    <span class="step-num">3</span>
+                    <strong>ЯКЩО НЕ ДИХАЄ: 5 ПОЧАТКОВИХ РЯТУВАЛЬНИХ ВДИХІВ!</strong>
+                    <br>• Оскільки основна проблема тут - нестача кисню: одразу зробіть **5 початкових рятувальних вдихів** (обережно вдувайте повітря, поки грудна клітка не підніметься).
+                    <br>• Потім протягом 1 хвилини чергуйте: **30 натискань на грудну клітку : 2 рятувальних вдихи**.
+                    <br>• *Телефонуйте 112 лише після цієї 1 хвилини СЛР, якщо ви самі!*
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ЯКЩО ПРИТОМНА / ПІНА З РОТА:</strong>
+                    <br>• Якщо дитина дихає, але сонлива: **стабільне бокове положення** (голова нижче, щоб вода могла витекти).
+                    <br>• <strong>Життєво важливо:</strong> будь-яку дитину, яка була під водою або якій робили реанімацію, потрібно доставити до лікарні на швидкій - навіть якщо вона знову здається в порядку! (Ризик відстроченого ураження легень).
+                </div>`,
+
+        content_ertrinken_learn: `
+                <h1>🔬 Що варто знати: нещасні випадки при утопленні</h1>
+                <p>Утоплення - одна з найпоширеніших причин випадкової смерті у маленьких дітей. Причина - "ларингоспазм": щойно вода досягає гортані, вона рефлекторно закривається. Дитина більше не може дихати і втрачає свідомість - часто без жодного звуку.</p>
+
+                <h3>Чому перші 5 рятувальних вдихів такі важливі?</h3>
+                <p>На відміну від дорослих, основна проблема при утопленні - гостра нестача кисню. Серце часто ще якийсь час продовжує битися, але без жодного кисню. Завдяки **5 початковим рятувальним вдихам** ви подаєте життєво необхідний кисень у легені і часто можете відразу відновити кровообіг. Саме тому настанови тут відрізняються від звичайного підходу.</p>
+
+                <h3>Міф про "сухе утоплення"</h3>
+                <p>Якщо вода потрапляє в легені дитини, це може пошкодити тендітні повітряні мішечки. Через кілька годин (до 24 годин) у легенях може накопичуватися рідина - дитина фактично "тоне" на суходолі, із затримкою. Після будь-якого випадку у воді завжди слідкуйте за кашлем, прискореним диханням чи надмірною втомою.</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Наукові джерела (доказова інформація для пацієнтів):</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/ertrinken/" target="_blank">🔗 Kinderärzte im Netz - невідкладні дії при утопленні (нім.)</a>
+                </div>`,
+
+        content_verschlucken_panic: `
+                <h1 style="color: #e67e22;">⚠️ НЕВІДКЛАДНА ДОПОМОГА: ПОПЕРХУВАННЯ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ПЕРЕВІРТЕ КАШЕЛЬ:</strong> Чи кашляє дитина сильно?
+                    <br>• <strong>Так:</strong> Просто заспокойте її та підбадьорюйте кашляти далі. Не втручайтеся!
+                    <br>• <strong>Ні (слабкий/неефективний кашель, труднощі з диханням, синіє):</strong> Дійте негайно!
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #e67e22;">
+                    <span class="step-num">2</span>
+                    <strong>5 УДАРІВ ПО СПИНІ:</strong>
+                    <br>• Покладіть дитину обличчям униз, головою нижче, вздовж свого стегна або передпліччя. Добре підтримуйте голову!
+                    <br>• Основою долоні завдайте до <strong>5 сильних ударів</strong> між лопатками. Після кожного удару швидко перевіряйте, чи не звільнився предмет.
+
+                    <div class="step-illustration">
+                        <svg viewBox="0 0 200 100" width="100%" height="80" style="margin-top: 10px;">
+                            <path d="M 20,80 Q 100,60 180,80" stroke="#7f8c8d" stroke-width="4" fill="none" />
+                            <path d="M 40,35 Q 100,45 160,75" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round" />
+                            <circle cx="160" cy="75" r="10" fill="#ffffff" />
+                            <path d="M 80,10 L 80,30 M 80,30 L 75,25 M 80,30 L 85,25" stroke="#e67e22" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <text x="95" y="23" fill="#e67e22" font-size="12" font-weight="bold">Удар основою долоні</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ЯКЩО ЦЕ НЕ ДОПОМОГЛО: ПОШТОВХИ</strong>:<br>
+                    • <strong>До 1 року (немовля):</strong> Переверніть дитину на спину (голова нижче). <strong>5 поштовхів у грудну клітку</strong> в середину грудини. <em>Без натискань на живіт!</em><br>
+                    • <strong>Від 1 року (дитина):</strong> <strong>5 поштовхів у живіт (прийом Геймліха)</strong>. Станьте позаду дитини, покладіть кулак між пупком і грудиною і різко потягніть досередини і догори.
+
+                    <div class="step-illustration">
+                        <svg viewBox="0 0 200 100" width="100%" height="80" style="margin-top: 10px;">
+                            <path d="M 60,90 Q 60,30 110,30 Q 140,30 140,90" stroke="#7f8c8d" stroke-width="3" fill="none" stroke-dasharray="4" />
+                            <path d="M 90,90 L 90,40 Q 110,20 120,40 L 120,90" stroke="#ffffff" stroke-width="5" fill="none" />
+                            <circle cx="105" cy="25" r="10" fill="#ffffff" />
+                            <circle cx="105" cy="55" r="7" fill="#e74c3c" />
+                            <path d="M 125,55 Q 95,50 95,35 M 95,35 L 90,40 M 95,35 L 100,40" stroke="#e74c3c" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <text x="5" y="58" fill="#e74c3c" font-size="11" font-weight="bold">Досередини та догори</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ВИКЛИЧТЕ 112 ТА СЛР:</strong>
+                    <br>Предмет все ще застряг, і дитина <strong>втрачає свідомість</strong>? Покладіть її рівно на землю, телефонуйте <strong>112</strong> (на гучний зв'язок) і негайно починайте дитячу <strong>СЛР</strong> (почніть з 5 рятувальних вдихів!).
+                </div>`,
+
+        content_verschlucken_learn: `
+                <h1>🔬 Що варто знати: обструкція дихальних шляхів</h1>
+                <p>"Оральна фаза" описує етап розвитку, коли немовлята та малюки (приблизно до 2 років) активно досліджують світ ротом. Усе, що вони можуть схопити, рано чи пізно опиняється в роті.</p>
+
+                <h3>Незавершений розвиток надгортанника</h3>
+                <p>Стороннє тіло в дихальних шляхах серйозно перекриває доступ кисню. Оскільки надгортанник - клапан, що закриває трахею під час ковтання - у немовлят ще не повністю розвинений, дрібні предмети дуже легко потрапляють у трахею. Найвужче місце трахеї дитини також анатомічно розташоване інакше, ніж у дорослих, тому такі предмети, як деталі Лего чи кульки, застряють там особливо швидко.</p>
+
+                <h3>Чому не можна робити поштовхи в живіт (прийом Геймліха) немовлятам до 1 року?</h3>
+                <p>У немовлят внутрішні органи у верхній частині живота ще не захищені грудною кліткою. Поштовхи в живіт тут можуть спричинити небезпечну для життя внутрішню кровотечу. Натомість завдайте 5 сильних ударів основою долоні між лопатками, а якщо це не допомагає - повільні, сильні поштовхи в нижню третину грудини. Важливо: ніколи не трясіть дитину при цьому, оскільки це може спричинити незворотне пошкодження мозку!</p>
+
+                <div class="source-box" style="margin-top: 20px; padding: 10px; background: #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <strong>Педіатричні рекомендації:</strong><br>
+                    <a href="https://www.kinderaerzte-im-netz.de/erste-hilfe/sofortmassnahmen/verschluckte-gegenstaende/" target="_blank">🔗 Kinderärzte im Netz - проковтнуті сторонні предмети (нім.)</a>
+                </div>
+
+                <div class="product-box">
+                    <strong>🛡️ Рекомендовано з практики:</strong><br>
+                    Щоб бути максимально готовими до найгіршого випадку блокади дихальних шляхів, ми рекомендуємо оригінальний пристрій для порятунку дихальних шляхів від LifeSaveAir.
+                    <br><br>
+                    🎁 <strong>Ексклюзивна перевага ABC:</strong> Використайте код <strong style="color: #c0392b; font-size: 16px;">ABC10</strong> при оформленні замовлення та отримайте **знижку 10%** на своє замовлення!
+                    <a href="https://www.lifesaveair.com" target="_blank" class="product-link-btn">
+                        🛒 Переглянути LifeSaveAir зі знижкою 10% →
+                    </a>
+                </div>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 5a
+        // (erste Erwachsenen-Runde): Bewusstlosigkeit & Seitenlage,
+        // Reanimation & Defibrillation, Ersticken, Insektenstich im
+        // Mund/Rachen, Elektrounfälle.
+        // =====================================================
+        content_bewusstlosigkeit_erw_panic: `
+                <h1 style="color: #34495e;">😵 НЕВІДКЛАДНА ДОПОМОГА: НЕПРИТОМНІСТЬ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛЮДИНИ Й ПОТРУСІТЬ ЇЇ:</strong> Голосно звертайтеся до людини ("Ви мене чуєте?") і енергійно потрусіть її за обидва плечі. Немає реакції? Голосно кличте на допомогу.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПЕРЕВІРТЕ ДИХАННЯ (макс. 10 сек.):</strong> Обережно закиньте голову назад (підніміть підборіддя, відхиліть чоло) і дивіться, слухайте та відчувайте дихання щокою/вухом над її ротом і носом.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ВИРІШІТЬ:</strong><br>
+                    • Дихає <strong>нормально</strong> → Одразу покладіть у <strong>стабільне бокове положення</strong> (крок 4).<br>
+                    • <strong>Не дихає, або дихає ненормально</strong> (наприклад, зі свистом) → Телефонуйте 112 і негайно починайте <strong>СЛР</strong>!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>СТАБІЛЬНЕ БОКОВЕ ПОЛОЖЕННЯ:</strong><br>
+                    • Станьте на коліна поруч із людиною, зігніть ближню до вас руку і покладіть її біля голови.<br>
+                    • Перенесіть дальню руку через грудну клітку і притисніть тильну сторону долоні до ближньої щоки, утримуючи її там.<br>
+                    • Візьміть дальню ногу за коліно і обережно потягніть людину до себе на бік.<br>
+                    • Злегка закиньте голову назад і відкрийте рот, щоб рідина могла витікати. Накрийте людину і продовжуйте стежити за диханням, поки не прибуде допомога.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    Не забудьте <strong>телефонувати 112</strong>, щойно ситуація стане зрозумілою.
+                </div>`,
+
+        content_bewusstlosigkeit_erw_learn: `
+                <h1>🔬 Що варто знати: непритомність</h1>
+                <p>Коли людина непритомна, захисні рефлекси організму вимикаються, а м'язи повністю розслабляються. Через це язик може запасти назад і перекрити дихальні шляхи. Оскільки кашльовий рефлекс також відсутній, слина, блювотні маси чи кров можуть безперешкодно потрапити в дихальні шляхи і спричинити поперхування.</p>
+
+                <h3>Можливі причини</h3>
+                <p>Непритомність може мати багато причин: серйозні травми голови, тепловий удар, судомні напади, сильна кровотеча, а особливо у дорослих - гострі стани, такі як інсульт, інфаркт міокарда чи порушення серцевого ритму.</p>
+
+                <h3>Чому перевірка дихання настільки важлива</h3>
+                <p>Щойно ви помітили, що людина не реагує, не рухається, і очі залишаються закритими, першим ділом потрібно перевірити її дихання. Непритомну людину, яка все ще дихає нормально, ніколи не можна залишати на спині - вона може задихнутися, коли язик перекриє дихальні шляхи. Саме тому її кладуть у стабільне бокове положення. Якщо людина не дихає, або дихає лише нерегулярно (наприклад, з окремими "хапаючими" вдихами), критично важливо негайно почати реанімаційні заходи.</p>`,
+
+        content_reanimation_erw_panic: `
+                <h1 style="color: #c0392b;">🫀 НЕВІДКЛАДНА ДОПОМОГА: СЛР</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Людина не реагує, і не дихає або дихає ненормально? Дійте негайно!</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ЗАКЛИЧТЕ НА ДОПОМОГУ:</strong> Голосно кличте на допомогу. Телефонуйте 112 (увімкніть гучний зв'язок!). Якщо поруч є ще хтось, попросіть його одразу принести дефібрилятор (АЗД), якщо він десь поблизу.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>НАТИСКАННЯ НА ГРУДНУ КЛІТКУ:</strong><br>
+                    • Покладіть людину на тверду поверхню, оголіть грудну клітку.<br>
+                    • Покладіть основу долоні на нижню половину грудини, іншу руку зверху, пальці переплетені.<br>
+                    • Прямими руками натискайте на глибину <strong>5-6 см</strong>, з частотою <strong>100-120 натискань за хвилину</strong>. Давайте грудній клітці повністю піднятися після кожного натискання.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЧЕРГУЙТЕ З РЯТУВАЛЬНИМИ ВДИХАМИ:</strong> Після 30 натискань на грудну клітку: закиньте голову назад, затисніть ніс, зробіть звичайний вдих і рівномірно вдувайте повітря в рот приблизно 1 секунду, поки грудна клітка не підніметься. Зробіть два вдихи, потім знову 30 натискань. Продовжуйте в ритмі <strong>30 : 2</strong>.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ВИКОРИСТОВУЙТЕ АЗД (ДЕФІБРИЛЯТОР), ЩОЙНО ВІН БУДЕ ДОСТУПНИЙ:</strong> Увімкніть його і слідуйте голосовим підказкам. Приклейте електроди на оголену грудну клітку, як показано. <strong>Ніхто не повинен торкатися людини під час аналізу або нанесення розряду!</strong> Між аналізами продовжуйте натискання на грудну клітку/вдихи протягом 2 хвилин.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ПРОДОВЖУЙТЕ</strong>, поки не прибудуть рятувальники, або людина не покаже ознак життя (наприклад, самостійне дихання, кашель, рух) - тоді покладіть її в стабільне бокове положення і продовжуйте стежити за диханням.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button class="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        🔊 Почати задавач темпу (110 уд./хв)
+                    </button>
+                </div>`,
+
+        content_reanimation_erw_learn: `
+                <h1>🔬 Що варто знати: СЛР</h1>
+                <p>При зупинці серця людина втрачає свідомість протягом кількох секунд і перестає реагувати на голос чи дотик. Дихання зупиняється або стає нерегулярним майже одночасно. У дорослих найчастіша причина - звужена чи заблокована коронарна артерія, тобто інфаркт міокарда. Але сильна кровотеча, ураження електричним струмом чи важке отруєння також можуть настільки послабити кровообіг, що серце зупиняється.</p>
+
+                <h3>Чому швидкість настільки важлива</h3>
+                <p>Якщо мозок залишається без кисню навіть на кілька хвилин, виникають незворотні пошкодження. Саме тому важлива кожна секунда - і саме тому поєднання натискань на грудну клітку та рятувальних вдихів настільки важливе: натискання підтримують певний кровообіг, а вдихи забезпечують кров киснем.</p>
+
+                <h3>Дефібрилятор (АЗД)</h3>
+                <p>Автоматичний зовнішній дефібрилятор голосом супроводжує кожен крок і сам визначає, чи потрібен розряд - як випадковий свідок, ви справді не можете зробити щось неправильно. Що швидше АЗД використовується при зупинці серця, то кращі шанси на виживання.</p>
+
+                <h3>Діти та немовлята</h3>
+                <p>У них реанімація виконується дещо інакше: спочатку роблять п'ять рятувальних вдихів, і лише потім натискання на грудну клітку. Деталі можна знайти в розділі "СЛР" у категорії "Немовля та дитина".</p>`,
+
+        content_ersticken_erw_panic: `
+                <h1 style="color: #e67e22;">🫁 НЕВІДКЛАДНА ДОПОМОГА: ПОПЕРХУВАННЯ / РИЗИК ЗАДУХИ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>РОЗПІЗНАЙТЕ ЦЕ:</strong> Сильний кашель, можливо свистячі звуки при диханні, труднощі з ковтанням, синюшний колір шкіри, паніка через неможливість дихати.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПОКИ ЛЮДИНА ЩЕ МОЖЕ КАШЛЯТИ:</strong> Активно підбадьорюйте людину сильно кашляти - це найефективніший спосіб самостійно позбутися предмета. Телефонуйте 112.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>ЯКЩО СТАЄ ГІРШЕ - УДАРИ ПО СПИНІ:</strong> Попросіть людину нахилити верхню частину тіла добре вперед. Основою долоні завдайте до <strong>5 сильних ударів</strong> між лопатками. Після кожного удару перевіряйте, чи не звільнився предмет.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ОСТАННІЙ ЗАСІБ - ПОШТОВХИ В ЖИВІТ:</strong> Якщо це не допомагає, станьте позаду людини і обхопіть обома руками її верхню частину живота. Покладіть кулак між пупком і нижньою частиною грудини, обхопіть його іншою рукою і різко потягніть <strong>досередини і догори до 5 разів</strong>.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ЧЕРГУЙТЕ:</strong> Продовжуйте чергувати удари по спині та поштовхи в живіт (до 5 кожного разу), поки предмет не звільниться або не прибудуть рятувальники.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>ЯКЩО ЛЮДИНА ВТРАЧАЄ СВІДОМІСТЬ:</strong> Негайно покладіть її на землю і починайте <strong>СЛР</strong>.
+                </div>`,
+
+        content_ersticken_erw_learn: `
+                <h1>🔬 Що варто знати: поперхування стороннім предметом</h1>
+                <p>Чи потрапив проковтнутий шматок їжі в трахею чи в стравохід, часто спочатку не зрозуміло - головне швидко зреагувати. Поки людина ще може дихати, говорити чи кашляти, її власний кашель - найбезпечніший спосіб позбутися предмета.</p>
+
+                <h3>Чому поштовхи в живіт - лише останній засіб</h3>
+                <p>Удари по спині та поштовхи в живіт (також відомі як прийом Геймліха) використовуються лише тоді, коли самого кашлю вже недостатньо і ситуація погіршується - наприклад, коли повітря взагалі перестає проходити. Різке, раптове стискання верхньої частини живота може спричинити травму, але виправдане в цій невідкладній ситуації через гострий ризик задухи.</p>`,
+
+        content_insektenstich_mund_erw_panic: `
+                <h1 style="color: #c0392b;">🐝 НЕВІДКЛАДНА ДОПОМОГА: УКУС КОМАХИ В РОТ/ГОРЛО</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>НЕГАЙНО ТЕЛЕФОНУЙТЕ 112</strong> - укус у рот чи горло може дуже швидко стати небезпечним.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗБЕРІГАЙТЕ СПОКІЙ:</strong> У такій ситуації люди часто панікують. Розмовляйте з ними спокійно і впевнено.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ОХОЛОДЖУЙТЕ:</strong> Дайте людині смоктати морозиво на паличці або лід, щоб сповільнити набряк у горлі. Також охолоджуйте шию ззовні холодним компресом.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>АВАРІЙНИЙ НАБІР?</strong> Якщо у людини відома алергія, запитайте про автоін'єктор адреналіну (ручку), який вона може мати при собі, і допоможіть їй ним скористатися (введіть різко в зовнішню частину стегна, утримуйте 5-10 секунд).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>ЯКЩО ДИХАННЯ ЗУПИНЯЄТЬСЯ:</strong> Негайно починайте рятувальне дихання/СЛР і продовжуйте, поки не прибудуть рятувальники.
+                </div>`,
+
+        content_insektenstich_mund_erw_learn: `
+                <h1>🔬 Що варто знати: укус комахи в рот чи горло</h1>
+                <p>Якщо комаха - наприклад, оса - випадково потрапляє в рот під час їжі чи пиття на свіжому повітрі влітку, укус у чутливе горло може мати серйозні наслідки. Слизова оболонка чи язик набрякають від отрути комахи, а дихальні шляхи звужуються - виникає реальний ризик задухи. У людей з алергією додатково є ризик анафілактичного шоку.</p>
+
+                <h3>Типові тривожні ознаки</h3>
+                <p>Сильний біль у місці укусу, наростаючий набряк у роті чи на язиці, а також зростаючі труднощі з диханням із синюшним кольором шкіри - тривожні ознаки, що вимагають негайних дій.</p>
+
+                <h3>Профілактика</h3>
+                <p>Будьте пильні під час їжі та пиття на свіжому повітрі в теплу погоду і розгляньте можливість користуватися соломинкою. Кожен, хто має відому алергію на отруту комах, повинен носити з собою аварійний набір, узгоджений з лікарем.</p>`,
+
+        content_elektrounfall_erw_panic: `
+                <h1 style="color: #3498db;">⚡ НЕВІДКЛАДНА ДОПОМОГА: УРАЖЕННЯ ЕЛЕКТРИЧНИМ СТРУМОМ</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Спочатку захистіть себе - ніколи не контактуйте з електрикою самі!</p>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ВИМКНІТЬ СТРУМ:</strong> Витягніть вилку з розетки або вимкніть прилад. Якщо це неможливо, вимкніть головний запобіжник. Ніколи не торкайтеся людини безпосередньо, поки вона ще контактує зі струмом!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЯКЩО ЦЕ НЕМОЖЛИВО:</strong> Відсувайте людину від джерела струму лише за допомогою непровідних предметів (сухий одяг, дерев'яна палиця, ковдра). Будьте особливо обережні у вологих приміщеннях.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ПІСЛЯ РЯТУВАННЯ:</strong> Негайно перевірте реакцію та дихання. Телефонуйте 112.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ЗА ПОТРЕБИ:</strong> Негайно починайте СЛР - АЗД часто особливо рятує життя при ураженнях електричним струмом. Лікуйте опіки лише після завершення рятувальних заходів, і зігрівайте людину.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ПРИ ВИСОКІЙ НАПРУЗІ (наприклад, лінії електропередач, залізнична контактна мережа, підстанції):</strong> Тримайтеся на відстані щонайменше <strong>20 метрів</strong> - електрика може "перестрибнути" через проміжок! Негайно телефонуйте 112, повідомивши "аварія з високою напругою" та точне місцезнаходження. Рятувальні роботи можуть проводити лише пожежна служба/спеціалізовані бригади.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Навіть якщо людина знову почувається добре: <strong>завжди зверніться до лікаря для огляду</strong>, оскільки порушення серцевого ритму можуть проявитися із затримкою.
+                </div>`,
+
+        content_elektrounfall_erw_learn: `
+                <h1>🔬 Що варто знати: ураження електричним струмом</h1>
+                <p>Наскільки небезпечне ураження електричним струмом, залежить від сили струму, напруги і тривалості дії. Навіть короткочасний контакт з електрикою може спричинити задишку, прискорене серцебиття, стиснення в грудях і неспокій - ці симптоми зазвичай минають самі. Однак при сильнішому струмі є ризик опіків у місцях входу і виходу струму, а також серйозних проблем із серцем, аж до зупинки серця.</p>
+
+                <h3>Чому серце в такій небезпеці</h3>
+                <p>Оскільки серце регулює власний ритм за допомогою власних електричних імпульсів, навіть короткочасний зовнішній електричний вплив може повністю порушити цю систему - це призводить до так званої фібриляції шлуночків, коли серце більше не може ефективно качати кров. Може постраждати і мозок: можливі непритомність, судоми та зупинка дихання.</p>
+
+                <h3>Профілактика</h3>
+                <p>Більшість ушкоджень електричним струмом трапляються через недбале поводження з електроприладами, неналежний ремонт або ігнорування попереджувальних знаків. Регулярна перевірка електроприладів кваліфікованим фахівцем значно знижує ризик.</p>`,
+
+        // ---- Batch 5b (Themen Erwachsene, Teil 2/7): Schock, Schwere
+        // allergische Reaktion, Zahnverletzung, Nasenbluten, Zeckenstich. ----
+        content_schock_erw_panic: `
+                <h1 style="color: #34495e;">🆘 НЕВІДКЛАДНА ДОПОМОГА: ШОК</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112.</strong>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗАЛИШАЙТЕСЯ ПОРУЧ:</strong> Залишайтеся з людиною, заспокоюйте її, не залишайте саму.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗІГРІВАЙТЕ:</strong> Накрийте людину термопокривалом або ковдрою - також підкладіть під тіло, щоб запобігти втраті тепла в землю.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>ПОКЛАДІТЬ РІВНО:</strong> Покладіть людину рівно на спину. Ми навмисно не піднімаємо ноги - при серцевій недостатності, інфаркті чи ураженні клапанів це може спричинити набряк легень, і як випадковий свідок ви зазвичай не можете точно виключити такий стан.<br>
+                    <strong>ВИНЯТОК:</strong> Якщо є труднощі з диханням або симптоми з боку грудної клітки/серця, натомість трохи підніміть верхню частину тіла.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Продовжуйте уважно стежити за станом і диханням, поки не прибудуть рятувальники.
+                </div>`,
+
+        content_schock_erw_learn: `
+                <h1>🔬 Що варто знати: шок</h1>
+                <p>"Шок" - загальний термін для серйозного порушення кровообігу, при якому клітини організму більше не отримують достатньо кисню. Що довше це триває, то швидше погіршується стан людини.</p>
+
+                <h3>Можливі причини</h3>
+                <p>Значна крововтрата - чи то із зовнішньої рани, чи внутрішньої травми - може призвести до шоку, так само як і сильна втрата рідини через блювання, діарею чи рясне потовиділення. Раптовий переляк, страх чи біль також можуть спричинити так званий колапс через збій нервової регуляції судин. Отруєння та алергічні реакції - серед інших можливих причин.</p>
+
+                <h3>Типові ознаки</h3>
+                <p>Постраждалі виглядають блідими, неспокійними і тривожними, тремтять, відчувають слабкість і часто вже не можуть стояти. Їхня шкіра холодна і липка на дотик, а пульс слабкий і частий.</p>`,
+
+        content_allergie_erw_panic: `
+                <h1 style="color: #c0392b;">🤧 НЕВІДКЛАДНА ДОПОМОГА: ВАЖКА АЛЕРГІЧНА РЕАКЦІЯ</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112</strong> - якомога швидше.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПРИПИНІТЬ ДІЮ ТРИГЕРА, якщо можливо:</strong> наприклад, видаліть жало комахи і охолодіть місце укусу, або припиніть давати ліки, що спричиняють реакцію.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗАСПОКОЙТЕ Й ЗІГРІВАЙТЕ:</strong> Заспокойте людину, залишайтеся з нею і накрийте ковдрою.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>ЯКЩО ТРУДНОЩІ З ДИХАННЯМ:</strong> Розстібніть тісний одяг, підніміть верхню частину тіла і забезпечте свіже повітря (наприклад, відкрийте вікно).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>АВАРІЙНИЙ НАБІР?</strong> Запитайте про автоін'єктор адреналіну, який людина може мати при собі, і допоможіть їй ним скористатися.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Продовжуйте уважно стежити за станом - якщо людина втрачає свідомість або перестає дихати, негайно починайте <strong>СЛР</strong>.
+                </div>`,
+
+        content_allergie_erw_learn: `
+                <h1>🔬 Що варто знати: важка алергічна реакція</h1>
+                <p>У деяких людей певні речовини - наприклад, отрута комах, певні продукти харчування чи ліки - викликають бурхливу алергічну реакцію організму. Вона може розвинутися за секунди, але іноді може проявитися і з затримкою.</p>
+
+                <h3>Типові ознаки</h3>
+                <p>Часто все починається з поколювання в роті, на язиці чи губах, разом із кропив'янкою і свербежем шкіри. Наростаючі труднощі з диханням через набряк дихальних шляхів - серйозна тривожна ознака. У міру прогресування можуть виникнути блювання, колапс кровообігу і втрата свідомості.</p>
+
+                <h3>Чому аварійний набір настільки важливий</h3>
+                <p>Люди з відомою важкою алергією часто носять із собою аварійний набір з автоін'єктором адреналіну. Ці набори навмисно розроблені так, щоб бути простими у використанні для людей без медичної освіти - введення препарату випадковим свідком може врятувати життя в невідкладній ситуації.</p>`,
+
+        content_zahnverletzung_erw_panic: `
+                <h1 style="color: #8e44ad;">🦷 НЕВІДКЛАДНА ДОПОМОГА: ТРАВМА ЗУБА</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ПРАВИЛЬНО ТРИМАЙТЕ:</strong> Вибитий зуб беріть лише за коронку (білу видиму частину) - ніколи за корінь, де розташовані тендітні клітини, критично важливі для приживлення.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ПРАВИЛЬНО ЗБЕРІГАЙТЕ ЗУБ:</strong> В ідеалі - у контейнері для зберігання зуба (з аптеки). Якщо його немає - у холодному ультрапастеризованому молоці. <strong>Не</strong> зберігайте зуб сухим, не витирайте і не дезінфікуйте його.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> Попросіть людину прикусити чисту серветку або стерильну пов'язку.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>НЕГАЙНО ЗВЕРНІТЬСЯ ДО СТОМАТОЛОГА / ЛІКАРНІ:</strong> Що швидше зуб буде повернуто на місце (в ідеалі протягом 30-60 хвилин), то більше шансів його врятувати. Зверніться до чергової стоматологічної служби.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Навіть <strong>відламаний шматочок зуба</strong> варто зберегти і взяти з собою - його часто можна приєднати назад. Якщо травма сталася разом із падінням на голову, також стежте за ознаками <strong>струсу мозку</strong>.
+                </div>`,
+
+        content_zahnverletzung_erw_learn: `
+                <h1>🔬 Що варто знати: травма зуба</h1>
+                <p>Вибиті чи зламані зуби - одна з найпоширеніших травм при падіннях, у спорті або від удару в обличчя. Наскільки швидко і дбайливо обробляється зуб - саме це визначає, чи вдасться його врятувати.</p>
+
+                <h3>Чому зберігання настільки важливе</h3>
+                <p>На корені зуба розташовані тонкі клітини навколозубної тканини, необхідні для приживлення зуба. Якщо зуб висихає або торкнутися кореня, ці клітини гинуть. Контейнер для зберігання зуба або холодне ультрапастеризоване молоко мають подібний до тканин організму склад і зберігають клітини живими, поки зуб не буде повернуто на місце.</p>
+
+                <h3>Дійте і при розхитаних чи зміщених зубах</h3>
+                <p>Не лише повністю вибиті зуби - сильно розхитані чи зміщені зуби також потребують швидкого стоматологічного лікування, щоб вони могли правильно прижитися назад.</p>`,
+
+        content_nasenbluten_erw_panic: `
+                <h1 style="color: #c0392b;">🩸 НЕВІДКЛАДНА ДОПОМОГА: НОСОВА КРОВОТЕЧА</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>СІДАЙТЕ, ГОЛОВУ ТРОХИ НАХИЛІТЬ УПЕРЕД:</strong> Ніколи не закидайте голову назад - інакше кров стікає в горло і може спричинити нудоту.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗАТИСНІТЬ НІЗДРІ:</strong> Міцно затисніть м'яку частину носа (нижче носової кістки) щонайменше на 5-10 хвилин, дихаючи ротом.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ОХОЛОДЖУЙТЕ:</strong> Прикладіть прохолодну вологу тканину або холодний компрес до задньої частини шиї - це рефлекторно звужує кровоносні судини.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Через 10 хвилин перевірте, чи зупинилася кровотеча. Якщо ні, знову затисніть на ще 10 хвилин.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ</strong>, якщо кровотеча не зупинилася через 20-30 хвилин, дуже сильна, виникла після травми голови, або трапляється часто (наприклад, при прийомі препаратів, що розріджують кров).
+                </div>`,
+
+        content_nasenbluten_erw_learn: `
+                <h1>🔬 Що варто знати: носові кровотечі</h1>
+                <p>Носові кровотечі зазвичай виникають з дрібних поверхневих судин носової перегородки, які можуть розірватися через сухе опалене повітря, сильне сякання носа, колупання в носі чи незначну травму. Високий артеріальний тиск або препарати, що розріджують кров, також можуть підвищувати ймовірність.</p>
+
+                <h3>Чому голову потрібно нахиляти вперед</h3>
+                <p>Якщо голову закинути назад, кров безперешкодно стікає в горло, потрапляє в шлунок і може спричинити там нудоту і блювання. При нахилі голови вперед кров помітно витікає назовні, а затискання ніздрів дозволяє прицільно зупинити кровотечу.</p>`,
+
+        content_zeckenstich_erw_panic: `
+                <h1 style="color: #16a085;">🕷️ НЕВІДКЛАДНА ДОПОМОГА: УКУС КЛІЩА</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ВИДАЛІТЬ КЛІЩА:</strong> За допомогою пінцета для кліщів або спеціальної картки захопіть кліща якомога ближче до його голови/шкіри і витягніть прямо назовні. Не крутіть і не стискайте тіло кліща.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПРОДЕЗІНФІКУЙТЕ МІСЦЕ УКУСУ</strong> і потім ретельно вимийте руки.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗАПИШІТЬ ДАТУ:</strong> Запам'ятайте або сфотографуйте день укусу і місце на тілі - це полегшить у майбутньому оцінку будь-яких змін шкіри.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>СТЕЖТЕ ЗА ЗМІНАМИ:</strong> Протягом наступних днів і тижнів слідкуйте за почервонінням у вигляді кільця, що поширюється навколо місця укусу, а також за симптомами, схожими на грип.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ</strong>, якщо ви помітили висип, що поширюється, гарячку, головний біль чи біль у суглобах/кінцівках, або якщо частини кліща залишилися в шкірі.
+                </div>`,
+
+        content_zeckenstich_erw_learn: `
+                <h1>🔬 Що варто знати: укуси кліщів</h1>
+                <p>Кліщі чатують у траві, кущах та на узліссі і можуть передавати збудників під час живлення кров'ю - переважно бактерії, що спричиняють хворобу Лайма, а в певних зонах ризику - також вірус кліщового енцефаліту.</p>
+
+                <h3>Чому важливо швидко і правильно видалити кліща</h3>
+                <p>Що довше кліщ живиться, то вищий ризик передачі хвороби Лайма. Домашні засоби на кшталт олії, клею чи лаку для нігтів працюють погано і можуть навіть бути небезпечними, оскільки роздратований кліщ може виділити більше слини і збудників у відповідь. Загострений інструмент для видалення кліщів або спеціальна картка - найнадійніший метод.</p>
+
+                <h3>Зони ризику кліщового енцефаліту</h3>
+                <p>Певні регіони (включно з південною Німеччиною) мають підвищений ризик кліщового енцефаліту, проти якого доступна вакцинація. Кожен, хто багато часу проводить на природі в таких регіонах, може отримати медичну консультацію з цього приводу.</p>`,
+
+        // ---- Batch 5c (Themen Erwachsene, Teil 3/7): Wunden &
+        // Wundversorgung, Fremdkörper im Auge, Tierbissverletzung,
+        // Prellung/Zerrung/Verstauchung, Sonnenbrand. ----
+        content_wundversorgung_erw_panic: `
+                <h1 style="color: #2980b9;">🩹 НЕВІДКЛАДНА ДОПОМОГА: ДОГЛЯД ЗА РАНОЮ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ВИМИЙТЕ РУКИ</strong>, якщо можливо, перед обробкою рани.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> При незначній кровотечі обережно притисніть стерильну пов'язку або чисту тканину.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ОЧИСТІТЬ РАНУ:</strong> Промийте чистою водопровідною водою, щоб видалити грубий бруд, наприклад пісок чи скалки.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ЧИСТО ЗАКРИЙТЕ:</strong> Накрийте стерильним пластиром, або пов'язкою і бинтом.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ПЕРЕВІРТЕ ЗАХИСТ ВІД СТОВБНЯКУ:</strong> При глибоких, забруднених ранах (наприклад, від іржі, землі, укусу тварини) перевірте свій статус вакцинації і за сумніву оновіть її.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ</strong> при глибоких, зяючих чи забруднених ранах, ранах на обличчі, або якщо рана запалилася (почервоніння, набряк, тепло, гній).
+                </div>`,
+
+        content_wundversorgung_erw_learn: `
+                <h1>🔬 Що варто знати: догляд за раною</h1>
+                <p>Більшість незначних побутових порізів, саден чи розривів можна добре обробити самостійно. Головне - тримати рану чистою, щоб вона могла загоюватися безперешкодно, і мікроби не змогли закріпитися.</p>
+
+                <h3>Коли потрібна медична допомога</h3>
+                <p>Зяючі рани, які не закриваються самостійно, рани над суглобами, на обличчі чи руках, а також сильно забруднені або глибокі рани повинен оцінити лікар і за потреби накласти шви чи скоби.</p>
+
+                <h3>Ознаки запалення рани</h3>
+                <p>Наростаюче почервоніння, набряк, тепло, пульсуючий біль або гній з рани у дні після травми - тривожні ознаки, що вимагають своєчасної медичної допомоги.</p>`,
+
+        content_fremdkoerper_auge_erw_panic: `
+                <h1 style="color: #2980b9;">👁️ НЕВІДКЛАДНА ДОПОМОГА: СТОРОННЄ ТІЛО В ОЦІ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>НЕ ТЕРІТЬ ОКО:</strong> Ніколи не тріть око - це може заштовхнути предмет глибше або пошкодити рогівку.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПРОМИЙТЕ:</strong> Обережно промийте чистою теплуватою водою або стерильним фізіологічним розчином від носа назовні, утримуючи повіку відкритою пальцями.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ПОДИВІТЬСЯ ПІД ПОВІКОЮ:</strong> Обережно натягніть верхню повіку на нижню - це часто витісняє дрібні частинки, що застрягли під повікою.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    Якщо предмет не звільняється: <strong>вільно накрийте обидва ока</strong> (це зменшує мимовільні рухи очей) і зверніться до окуліста або відділення екстреної допомоги.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>ПРИ ХІМІЧНИХ РЕЧОВИНАХ В ОЦІ АБО ГОСТРИХ, ГЛИБОКО ЗАСТРЯГЛИХ ПРЕДМЕТАХ:</strong> Негайно промивайте великою кількістю чистої води щонайменше 10-15 хвилин. НЕ видаляйте предмет самостійно і телефонуйте 112 або зверніться до очної клініки.
+                </div>`,
+
+        content_fremdkoerper_auge_erw_learn: `
+                <h1>🔬 Що варто знати: стороннє тіло в оці</h1>
+                <p>Пил, вії чи дрібні скалки легко потрапляють в око в повсякденному житті і одразу викликають сильне відчуття стороннього тіла, сльозотечу і почервоніння - рогівка є однією з найчутливіших частин тіла.</p>
+
+                <h3>Чому обережне промивання настільки важливе</h3>
+                <p>Дбайливе промивання зазвичай надійно видаляє вільні частинки, не пошкоджуючи тендітну поверхню ока. Тертя ж, навпаки, може спричинити дрібні подряпини на рогівці або заштовхнути предмет ще глибше.</p>`,
+
+        content_tierbiss_erw_panic: `
+                <h1 style="color: #935116;">🐕 НЕВІДКЛАДНА ДОПОМОГА: УКУС ТВАРИНИ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>РЕТЕЛЬНО ПРОМИЙТЕ:</strong> Одразу промийте рану чистою водою і, за наявності, милом протягом кількох хвилин - рани від укусів мають високе мікробне навантаження.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> За потреби обережно притисніть стерильну пов'язку.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ВІЛЬНО НАКРИЙТЕ</strong> стерильною пов'язкою, не запечатуючи рану щільно.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>ЗАПАМ'ЯТАЙТЕ ТВАРИНУ:</strong> Якщо можливо, запишіть вид тварини, її власника і статус вакцинації - дикі тварини несуть ризик сказу, про що варто повідомити лікаря.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ:</strong> Навіть невеликі рани від укусів завжди повинен оцінити лікар - високий ризик інфікування, може знадобитися ревакцинація від правця.
+                </div>`,
+
+        content_tierbiss_erw_learn: `
+                <h1>🔬 Що варто знати: травми від укусів тварин</h1>
+                <p>Чи то від собаки, кота, чи в рідкісних випадках від дикої тварини: зуби тварин заносять багато бактерій у глибші шари тканини, тому рани від укусів мають значно вищий ризик інфікування, ніж порівнянні порізи.</p>
+
+                <h3>Чому рани не закривають одразу</h3>
+                <p>Укус, закритий занадто рано і щільно, може заблокувати мікроби всередині тканини. Лікарі вирішують залежно від рани, накладати шви чи дати їй загоюватися відкрито під наглядом.</p>`,
+
+        content_gelenkverletzung_erw_panic: `
+                <h1 style="color: #d35400;">🦵 НЕВІДКЛАДНА ДОПОМОГА: ЗАБІЙ, РОЗТЯГНЕННЯ ТА НАДРИВ ЗВ'ЯЗОК</h1>
+                <p style="text-align:center; color:#f1c40f; font-weight:bold; margin-bottom:15px;">Пам'ятка: правило RICE (СПОКІЙ)</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>СПОКІЙ:</strong> Негайно припиніть активність, тримайте уражений суглоб чи частину тіла нерухомо.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ЛІД:</strong> Охолоджуйте приблизно 15-20 хвилин - ніколи прямо на шкіру, завжди загорнутим у тканину.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>КОМПРЕСІЯ:</strong> Накладіть еластичний бинт, щоб обмежити набряк - не забинтовуйте занадто туго.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ПІДНЯТТЯ:</strong> Підніміть уражену частину тіла вище рівня серця - це зменшує набряк і біль.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ</strong> при сильному набряку, видимій деформації, якщо суглоб не витримує навантаження, або якщо симптоми не покращуються через 1-2 дні - потрібно виключити перелом.
+                </div>`,
+
+        content_gelenkverletzung_erw_learn: `
+                <h1>🔬 Що варто знати: забій, розтягнення та надрив зв'язок</h1>
+                <p>Спортивні та побутові травми, такі як підвертання ноги, падіння чи удари, часто призводять до пошкоджень м'язів, зв'язок і суглобів. Правило RICE (спокій, лід, компресія, підняття) - перевірений, легкий для запам'ятовування перший крок.</p>
+
+                <h3>Забій, розтягнення, надрив зв'язок - у чому різниця?</h3>
+                <p><strong>Забій</strong> виникає, коли тупа сила безпосередньо вражає тканину. <strong>Розтягнення</strong> м'яза відбувається, коли м'яз розтягується понад свій звичайний діапазон. <strong>Надрив зв'язок</strong> трапляється, коли суглоб на короткий час виходить за межі своєї нормальної амплітуди руху, надмірно розтягуючи або частково розриваючи зв'язки.</p>`,
+
+        content_sonnenbrand_erw_panic: `
+                <h1 style="color: #e67e22;">☀️ НЕВІДКЛАДНА ДОПОМОГА: СОНЯЧНИЙ ОПІК</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>ПОДАЛІ ВІД СОНЦЯ:</strong> Одразу відведіть людину в тінь або прохолодне приміщення.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ОХОЛОДЖУЙТЕ:</strong> Обробіть уражену шкіру прохолодними вологими компресами або прохолодним (не крижаним) душем.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ПИЙТЕ ДОСТАТНЬО:</strong> Пийте достатньо води, щоб компенсувати втрату рідини шкірою.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ЗВОЛОЖУЙТЕ:</strong> Після охолодження нанесіть зволожувальний, охолоджувальний лосьйон (наприклад, з алое вера) - жодних жирних кремів на щойно обпечену шкіру.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>ЗВЕРНІТЬСЯ ДО ЛІКАРЯ</strong> при поширених пухирях, гарячці, ознобі, нудоті чи дуже поганому самопочутті - у цьому випадку також варто врахувати тепловий/сонячний удар.
+                </div>`,
+
+        content_sonnenbrand_erw_learn: `
+                <h1>🔬 Що варто знати: сонячний опік</h1>
+                <p>Сонячний опік - це по суті опік шкіри, спричинений УФ-випромінюванням. Залежно від тяжкості, він варіюється від легкого почервоніння до болісних пухирів.</p>
+
+                <h3>Профілактика - найкращий захист</h3>
+                <p>Достатня кількість сонцезахисного крему, захисний одяг, головний убір і уникання яскравого полуденного сонця значно знижують ризик. Повторні важкі сонячні опіки підвищують довгостроковий ризик раку шкіри.</p>`,
+
+        // ---- Batch 5d (Themen Erwachsene, Teil 4/7): Kopfverletzung,
+        // Starke Blutung, Amputationsverletzung, Bauch- &
+        // Brustkorbverletzung, Knochenbruch. ----
+        content_kopfverletzung_erw_panic: `
+                <h1 style="color: #34495e;">🤕 НЕВІДКЛАДНА ДОПОМОГА: ТРАВМА ГОЛОВИ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>СПОКІЙ:</strong> Посадіть або покладіть людину, уникайте подальшого навантаження.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ОХОЛОДЖУЙТЕ:</strong> При гулі чи набряку прикладіть холодний компрес, загорнутий у тканину.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ПЕРЕВІРТЕ НА ТРИВОЖНІ ОЗНАКИ:</strong> Позначте все, що стосується людини:
+                    <div style="margin-top: 12px; text-align: left; font-weight: normal;">
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Втрата свідомості (навіть короткочасна)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Сплутаність свідомості, дезорієнтація, або раптова зміна поведінки</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Судомний напад</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Слабкість, оніміння, або труднощі з мовленням чи зором</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Повторне блювання або сильний, наростаючий головний біль</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Виділення рідини або крові з носа чи вух</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Відкрита рана голови</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:0;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Постраждала дитина/немовля, і ви не впевнені</span>
+                        </label>
+                    </div>
+                    <button onclick="kopfverletzungAuswerten()" style="margin-top:14px; background-color:#f1c40f; color:#2c0e0e; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                        Перевірити
+                    </button>
+                    <div id="kopf-warnzeichen-ergebnis" style="margin-top:12px;"></div>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Навіть якщо спочатку все здається нормальним: спостерігайте за людиною щонайменше 24 години після сильного удару в голову, і негайно телефонуйте 112, якщо з'являться будь-які нові тривожні ознаки. Для дітей/немовлят, у разі сумніву завжди звертайтеся до (дитячого) відділення екстреної допомоги або викликайте невідкладного лікаря, оскільки вони часто не можуть чітко описати симптоми.
+                </div>`,
+        content_kopfverletzung_erw_learn: `
+                <h1>🔬 Що варто знати: травма голови та струс мозку</h1>
+                <p>Удар або падіння на голову може тимчасово порушити роботу мозку - струс мозку. Типові ознаки - короткочасне запаморочення, нудота чи головний біль, які зазвичай минають протягом кількох днів.</p>
+
+                <h3>Чому важливий період спостереження</h3>
+                <p>Деякі крововиливи всередині голови розвиваються із затримкою і можуть проявитися лише через кілька годин після травми. Саме тому за людиною потрібно спостерігати щонайменше 24 години після сильного удару в голову, негайно звертаючись за медичною допомогою, якщо стан погіршується.</p>`,
+
+        content_starke_blutung_erw_panic: `
+                <h1 style="color: #c0392b;">💥 НЕВІДКЛАДНА ДОПОМОГА: СИЛЬНА КРОВОТЕЧА</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ОДРАЗУ ПРИТИСНІТЬ:</strong> Сильно натискайте безпосередньо на рану рукою (за можливості - через рукавички чи тканину).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>НАКЛАДІТЬ ТИСНУЧУ ПОВ'ЯЗКУ:</strong> Покладіть на рану стерильну пов'язку, потім закріпіть її бинтом і щільною подушечкою (наприклад, скрученою пов'язкою) - не перетискайте кровообіг.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ПІДНІМІТЬ:</strong> Якщо можливо, підніміть частину тіла з кровотечею вище рівня серця.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112</strong> одразу при фонтануючій кровотечі або кровотечі, яку не вдається зупинити.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    Якщо кровотечу на руці чи нозі не вдається зупинити, незважаючи на тисну пов'язку, як останній засіб накладіть джгут (руками або спеціальним пристроєм) ближче до тіла від рани - лише при небезпечній для життя кровотечі.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Слідкуйте за <strong>ознаками шоку</strong> (блідість, холодний піт, неспокій) і надавайте людині відповідну допомогу.
+                </div>`,
+        content_starke_blutung_erw_learn: `
+                <h1>🔬 Що варто знати: сильна кровотеча</h1>
+                <p>Значна крововтрата може стати небезпечною для життя протягом кількох хвилин, оскільки система кровообігу колапсує. Сильний, прямий тиск на рану - найшвидший і найефективніший перший крок, щоб сповільнити чи зупинити кровотечу.</p>
+
+                <h3>Чому тиск - понад усе</h3>
+                <p>Тиснуча пов'язка стискає пошкоджені судини і підтримує власне згортання крові організму. Джгут використовують лише у виняткових випадках, оскільки він перекриває кровопостачання всієї кінцівки.</p>`,
+
+        content_amputationsverletzung_erw_panic: `
+                <h1 style="color: #922b21;">✂️ НЕВІДКЛАДНА ДОПОМОГА: АМПУТАЦІЙНА ТРАВМА</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ЗУПИНІТЬ КРОВОТЕЧУ:</strong> Накрийте куксу стерильними пов'язками і сильно притисніть; за потреби додайте тисну пов'язку.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112</strong> одразу.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ЗБЕРЕЖІТЬ АМПУТОВАНУ ЧАСТИНУ:</strong> Загорніть її в стерильну або чисту пов'язку, покладіть у водонепроникний пластиковий пакет, потім помістіть цей пакет у другий контейнер, наповнений крижаною водою.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>Ніколи</strong> не кладіть ампутовану частину безпосередньо на лід чи у воду - охолоджуйте лише опосередковано (метод "пакет у пакеті").
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>ПЕРЕДАЙТЕ:</strong> Віддайте охолоджену ампутовану частину бригаді швидкої допомоги - реплантація часто можлива навіть через кілька годин.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Доглядайте за постраждалим, слідкуйте за ознаками шоку, зігрівайте його і заспокоюйте, поки не прибуде швидка допомога.
+                </div>`,
+        content_amputationsverletzung_erw_learn: `
+                <h1>🔬 Що варто знати: ампутаційна травма</h1>
+                <p>Аварії з технікою, інструментами чи в дорожньому русі можуть відірвати пальці рук, ніг чи більші частини тіла. Перша допомога значною мірою впливає на те, чи вдасться пізніше пришити частину назад.</p>
+
+                <h3>Чому опосередковане охолодження настільки важливе</h3>
+                <p>Прямий контакт з льодом чи водою додатково пошкоджує ампутовану тканину (обмороження, набряк). Якщо частину зберігати сухою, упакованою стерильно і охолоджувати лише опосередковано через другий, охолоджений льодом контейнер, тканина залишається придатною для реплантації набагато довше.</p>`,
+
+        content_bauch_brustverletzung_erw_panic: `
+                <h1 style="color: #7d3c98;">🩻 НЕВІДКЛАДНА ДОПОМОГА: ТРАВМА ЖИВОТА ТА ГРУДНОЇ КЛІТКИ</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112</strong> одразу.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ПОЗИЦІОНУВАННЯ:</strong> При травмі живота розташуйте людину із зігнутими колінами, щоб розслабити черевну стінку. При труднощах з диханням через травму грудної клітки підніміть верхню частину тіла.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>ВІДКРИТА РАНА ЖИВОТА:</strong> Ніколи не вправляйте органи, що випали, назад - вільно накрийте їх стерильними вологими пов'язками.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>ПРОНИКАЮЧІ ПРЕДМЕТИ:</strong> Ніколи не витягуйте їх - вони можуть перешкоджати кровотечі. Лише обкладіть і зафіксуйте навколо них у формі кільця за допомогою перев'язувального матеріалу.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    При відкритій рані грудної клітки з чутним "хлюпаючим" звуком: вільно накрийте рану повітронепроникним матеріалом, приклеєним з трьох сторін, щоб повітря могло виходити, але не заходити назад.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Продовжуйте стежити за диханням і свідомістю. Якщо людина втрачає свідомість і не дихає нормально, негайно починайте СЛР.
+                </div>`,
+        content_bauch_brustverletzung_erw_learn: `
+                <h1>🔬 Що варто знати: травма живота та грудної клітки</h1>
+                <p>Тупі або відкриті травми живота і грудної клітки - від падінь, дорожніх аварій чи колотих ран - можуть вражати внутрішні органи, великі судини чи легені, і їх завжди слід розглядати як потенційно небезпечні для життя.</p>
+
+                <h3>Чому проникаючі предмети не видаляють</h3>
+                <p>Предмет, що залишається на місці, може механічно перекривати пошкоджені судини. Його видалення може спричинити масивну, неконтрольовану кровотечу. Саме тому його лише обкладають у формі кільця і фіксують на місці для транспортування.</p>`,
+
+        content_knochenbruch_erw_panic: `
+                <h1 style="color: #34495e;">🦴 НЕВІДКЛАДНА ДОПОМОГА: ПЕРЕЛОМ КІСТКИ</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>НЕРУХОМІСТЬ:</strong> Припиніть рухати пошкоджену частину тіла, і нехай людина уникає будь-яких рухів.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>НЕ ВПРАВЛЯЙТЕ САМОСТІЙНО:</strong> Ніколи не намагайтеся самостійно випрямити деформацію - лише розташуйте чи підтримайте кінцівку так, як завдає найменше болю.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ОБКЛАДІТЬ І ОХОЛОДІТЬ:</strong> Обережно обкладіть пошкоджену ділянку м'яким матеріалом і, якщо можливо, охолодіть її, не натискаючи.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>ТЕЛЕФОНУЙТЕ 112</strong>, особливо якщо ви підозрюєте перелом тазу чи хребта, відкритий перелом, або якщо біль дуже сильний.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>ПІДОЗРА НА ПЕРЕЛОМ ХРЕБТА</strong> (наприклад, після падіння з висоти, аварії при пірнанні чи дорожньо-транспортної пригоди): не рухайте і не саджайте людину, якщо це не абсолютно необхідно - зафіксуйте голову і хребет у тому положенні, в якому людину знайшли, поки не прибуде професійна допомога.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>ВІДКРИТИЙ ПЕРЕЛОМ</strong> (видно кістку): вільно накрийте рану стерильною пов'язкою, не натискаючи на кістку, і ніколи не намагайтеся вправити її назад.
+                </div>`,
+        content_knochenbruch_erw_learn: `
+                <h1>🔬 Що варто знати: перелом кістки</h1>
+                <p>Типові ознаки перелому - набряк, видима деформація, незвичайна рухливість у місці, де немає суглоба, і гострий, локалізований біль. Переломи ребер, тазу і хребта також належать сюди, але потребують особливо обережного поводження.</p>
+
+                <h3>Чому при підозрі на перелом хребта потрібна особлива обережність</h3>
+                <p>Непотрібний рух хребта може, у найгіршому випадку, пошкодити спинний мозок і спричинити стійкий параліч. Саме тому людину максимально фіксують у тому положенні, в якому її знайшли, зводячи рух до мінімуму, поки не прибуде навчений рятувальний персонал.</p>`
     }
 };
 
@@ -2697,7 +4720,12 @@ function applyTranslations() {
     });
 
     const label = document.getElementById('lang-toggle-label');
-    if (label) label.textContent = currentLang === 'de' ? 'EN' : 'DE';
+    if (label) label.textContent = LANG_LABELS[currentLang] || currentLang.toUpperCase();
+
+    // Warnhinweis für die noch nicht gegengeprüfte ukrainische Übersetzung
+    // (siehe Absprache mit Johannes) - nur in "uk" sichtbar, sonst versteckt.
+    const ukBanner = document.getElementById('uk-unreviewed-banner');
+    if (ukBanner) ukBanner.style.display = (currentLang === 'uk') ? 'block' : 'none';
 
     // Quiz-Kachel auf der Startseite: nur auf Deutsch anzeigen (siehe renderTopics
     // in script.js für die gleiche Logik bei der Kachel im Baby & Kind-Grid).
@@ -2727,7 +4755,9 @@ function applyTranslations() {
 }
 
 function toggleLanguage() {
-    currentLang = currentLang === 'de' ? 'en' : 'de';
+    // Zyklisch DE -> EN -> UA -> DE ...
+    const idx = LANG_CYCLE.indexOf(currentLang);
+    currentLang = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
     localStorage.setItem(LANG_STORAGE_KEY, currentLang);
     applyTranslations();
 }

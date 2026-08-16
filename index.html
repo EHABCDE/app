@@ -24,13 +24,22 @@
             </button>
         </div>
 
-        <!-- Sprachumschalter -->
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" title="Language / Sprache" style="background:#fff; border:1px solid #cbd5e1; border-radius:20px; padding:6px 12px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-left:8px;">
-            🌐 <span id="lang-toggle-label">EN</span>
+        <!-- Sprachumschalter: zyklisch DE -> EN -> UA -> DE (siehe toggleLanguage in lang.js) -->
+        <button id="lang-toggle-btn" onclick="toggleLanguage()" title="Language / Sprache / Мова" style="background:#fff; border:1px solid #cbd5e1; border-radius:20px; padding:6px 12px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-left:8px;">
+            🌐 <span id="lang-toggle-label">DE</span>
         </button>
 
         <!-- Kleines Logo im Header -->
         <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToCategoryChooser()" style="cursor: pointer;">
+    </div>
+
+    <!-- Warnhinweis für die noch nicht gegengeprüfte ukrainische Übersetzung.
+         Standardmäßig versteckt, wird von applyTranslations() (lang.js) ein-
+         geblendet, solange currentLang === 'uk' ist. Bleibt sichtbar, bis die
+         Übersetzung von Muttersprachlern geprüft wurde (siehe Absprache mit
+         Johannes) - dann diesen Block entfernen bzw. dauerhaft ausblenden. -->
+    <div id="uk-unreviewed-banner" style="display:none; max-width:600px; margin:10px auto 0 auto; padding:10px 14px; background:#fff7ed; border:1px solid #f97316; border-radius:10px; color:#7c2d12; font-size:13px; line-height:1.5; text-align:center;">
+        ⚠️ Переклад ще не перевірений носієм мови — можливі неточності. У разі сумніву завжди телефонуйте 112.
     </div>
 
     <!-- Hauptinhalt der App -->
@@ -105,8 +114,8 @@
         <section id="screen-start" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
-            <h1 id="main-title-kind">👶 Baby &amp; Kind</h1>
-            <p id="main-subtitle-kind">Wähle eine Situation aus:</p>
+            <h1 id="main-title-kind" data-i18n="mainTitleKind">👶 Baby &amp; Kind</h1>
+            <p id="main-subtitle-kind" data-i18n="chooseSituation">Wähle eine Situation aus:</p>
 
             <!-- Prominenter Präventions-Banner -->
             <button onclick="showScreen('screen-pravention')" class="promo-banner">
@@ -151,8 +160,8 @@
         <section id="screen-erwachsene" class="app-screen screen-hidden">
             <button class="back-btn" onclick="goToCategoryChooser()"><span data-i18n="backToChooser">⬅ Zurück zur Auswahl</span></button>
 
-            <h1 id="main-title-erwachsene">🧑 Erwachsene</h1>
-            <p id="main-subtitle-erwachsene">Wähle eine Situation aus:</p>
+            <h1 id="main-title-erwachsene" data-i18n="mainTitleErwachsene">🧑 Erwachsene</h1>
+            <p id="main-subtitle-erwachsene" data-i18n="chooseSituation">Wähle eine Situation aus:</p>
 
             <!-- Suche -->
             <div style="margin-bottom: 20px;">
