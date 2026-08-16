@@ -53,34 +53,46 @@ function findeGiftnotruf(bundesland) {
     return null;
 }
 
+// Merkt sich das zuletzt ermittelte Bundesland (bzw. null bei unbekanntem
+// Standort), damit aktualisierePoisonCenterUI() nach einem Sprachwechsel
+// erneut mit den gleichen Daten aufgerufen werden kann (siehe applyTranslations
+// in lang.js) - sonst würde ein Sprachwechsel die schon ermittelte Giftnotruf-
+// Zentrale wieder auf den "wird ermittelt..."-Platzhalter zurücksetzen.
+let poisonUiWurdeInitialisiert = false;
+let letztesErmitteltesBundesland = null;
+
 // Aktualisiert alle Stellen in der App, an denen die zum Standort passende
 // Giftnotrufzentrale angezeigt wird (Vergiftungs-Notfallscreen + Notruf-
 // nummern-Übersicht). Fällt bei unbekanntem Standort auf die bundesweit
 // erreichbare Berliner Zentrale zurück, statt eine falsche/stehen-
 // gebliebene Nummer anzuzeigen.
 function aktualisierePoisonCenterUI(bundesland) {
+    poisonUiWurdeInitialisiert = true;
+    letztesErmitteltesBundesland = bundesland;
+
     const zentrale = findeGiftnotruf(bundesland) || GIFTNOTRUF_FALLBACK;
     const istExakt = !!findeGiftnotruf(bundesland);
 
     const poisonDisplay = document.getElementById('poison-center-display');
     if (poisonDisplay) {
+        const label = istExakt ? t('poisonCenterLabelExact') : t('poisonCenterLabelFallback');
         poisonDisplay.innerHTML = `
-            📞 Zuständige Zentrale${istExakt ? '' : ' (bundesweit)'}: <strong>${zentrale.ort}</strong><br>
-            <a href="tel:${zentrale.tel}" style="color:#eafaf1; font-weight:bold; font-size:18px; text-decoration:underline;">${zentrale.anzeige} anrufen</a>
+            ${label} <strong>${zentrale.ort}</strong><br>
+            <a href="tel:${zentrale.tel}" style="color:#eafaf1; font-weight:bold; font-size:18px; text-decoration:underline;">${t('poisonCallLinkText').replace('{nummer}', zentrale.anzeige)}</a>
         `;
     }
 
     const poisonLocationInfo = document.getElementById('poison-location-info');
     if (poisonLocationInfo) {
         poisonLocationInfo.innerHTML = istExakt
-            ? `📍 <em>Für ${bundesland} zuständig: Giftnotruf ${zentrale.ort}</em>`
-            : `📍 <em>Standort unbekannt – bundesweit erreichbare Zentrale ${zentrale.ort}</em>`;
+            ? t('poisonLocationExact').replace('{bundesland}', bundesland).replace('{ort}', zentrale.ort)
+            : t('poisonLocationFallback').replace('{ort}', zentrale.ort);
     }
 
     const poisonCallBtn = document.getElementById('poison-call-btn');
     if (poisonCallBtn) {
         poisonCallBtn.setAttribute('href', `tel:${zentrale.tel}`);
-        poisonCallBtn.innerHTML = `📞 Giftnotruf ${zentrale.ort} anrufen (${zentrale.anzeige})`;
+        poisonCallBtn.innerHTML = t('poisonCallBtnText').replace('{ort}', zentrale.ort).replace('{nummer}', zentrale.anzeige);
     }
 }
 
@@ -205,7 +217,13 @@ function renderTopics(topicList) {
     if (!grid) return;
     grid.innerHTML = '';
 
-    topicList.forEach(topic => {
+    // Das Wissens-Quiz gibt es bisher nur auf Deutsch (der geplante Kurs, auf den
+    // die Ergebnis-Seite verweist, wird vorerst nicht auf Englisch angeboten) -
+    // deshalb blenden wir die Kachel im Englischen aus, statt halbfertigen
+    // Inhalt zu zeigen.
+    const sichtbareTopics = topicList.filter(topic => !(topic.id === 'wissensquiz' && currentLang !== 'de'));
+
+    sichtbareTopics.forEach(topic => {
         const btn = document.createElement('button');
         btn.className = topic.isSpecial ? 'topic-card special-card' : 'topic-card';
         if (topic.isSpecial) {
@@ -755,7 +773,7 @@ function toggleMetronome() {
     if (metronomeInterval) {
         clearInterval(metronomeInterval);
         metronomeInterval = null;
-        btns.forEach(btn => btn.innerHTML = '🔊 Taktgeber starten (110 BPM)');
+        btns.forEach(btn => btn.innerHTML = t('metronomeStart'));
     } else {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         metronomeInterval = setInterval(() => {
@@ -774,7 +792,7 @@ function toggleMetronome() {
             osc.start();
             osc.stop(audioCtx.currentTime + 0.08);
         }, (60 / 110) * 1000);
-        btns.forEach(btn => btn.innerHTML = '⏹️ Taktgeber stoppen');
+        btns.forEach(btn => btn.innerHTML = t('metronomeStop'));
     }
 }
 
@@ -832,21 +850,13 @@ function kindSturzAuswerten() {
 
     if (anzahlWarnzeichen > 0) {
         if (ergebnisDiv) {
-            ergebnisDiv.innerHTML = `
-                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
-                    🚨 Mindestens ein Warnzeichen erkannt. Jetzt sofort <strong>112</strong> wählen oder in die Klinik fahren!
-                </div>
-            `;
+            ergebnisDiv.innerHTML = t('kindSturzWarnzeichenGefunden');
         }
         if (notrufBar) notrufBar.style.display = 'block';
         if (checkBar) checkBar.style.display = 'none';
     } else {
         if (ergebnisDiv) {
-            ergebnisDiv.innerHTML = `
-                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
-                    ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem für 48 Stunden genau beobachten (siehe Schritt 4) und bei Verschlechterung sofort 112 wählen.
-                </div>
-            `;
+            ergebnisDiv.innerHTML = t('kindSturzKeineWarnzeichen');
         }
         if (notrufBar) notrufBar.style.display = 'none';
         if (checkBar) checkBar.style.display = 'block';

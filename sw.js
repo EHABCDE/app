@@ -1,5 +1,5 @@
-// WICHTIG: Version auf v27 erhöht, um das Update bei allen Nutzern zu erzwingen!
-const CACHE_NAME = 'eh-abc-v27';
+// WICHTIG: Version auf v30 erhöht, um das Update bei allen Nutzern zu erzwingen!
+const CACHE_NAME = 'eh-abc-v30';
 const ASSETS = [
   './',
   './index.html',
