@@ -2002,6 +2002,57 @@
             </div>
         </section>
 
+        <!-- BILDSCHIRM: WISSENS-QUIZ ("Teste dein Wissen" / "Quiz rund ums Kind") -->
+        <section id="screen-wissensquiz" class="app-screen screen-hidden">
+            <button class="back-btn" onclick="goToStart()"><span data-i18n="back">⬅ Zurück</span></button>
+
+            <div id="wq-container">
+                <!-- Fragen-Ansicht -->
+                <div id="wq-question-view">
+                    <div class="wq-progress-row">
+                        <div class="wq-progress-text">Frage <span id="wq-current-num">1</span> / 10</div>
+                        <div class="wq-score-text">🏆 <span id="wq-score-display">0</span> Punkte</div>
+                    </div>
+                    <div class="wq-timer-bar-outer">
+                        <div id="wq-timer-bar" class="wq-timer-bar-inner"></div>
+                    </div>
+                    <div id="wq-question-text" class="wq-question-text"></div>
+
+                    <div id="wq-answers-mc" class="wq-answers-mc"></div>
+                    <div id="wq-answers-tf" class="wq-answers-tf">
+                        <button id="wq-tf-yes" class="wq-tf-btn wq-tf-yes">✅ Richtig</button>
+                        <button id="wq-tf-no" class="wq-tf-btn wq-tf-no">❌ Falsch</button>
+                    </div>
+                </div>
+
+                <!-- Feedback-Ansicht (nach jeder Frage) -->
+                <div id="wq-feedback-view" style="display:none;">
+                    <div id="wq-feedback-icon" class="wq-feedback-icon"></div>
+                    <div id="wq-feedback-points" class="wq-feedback-points"></div>
+                    <div id="wq-feedback-explain" class="wq-feedback-explain"></div>
+                    <button class="wq-next-btn" onclick="wqNextQuestion()">Weiter ➡️</button>
+                </div>
+
+                <!-- Ergebnis-Ansicht (am Ende der Runde) -->
+                <div id="wq-results-view" style="display:none;">
+                    <h1 style="text-align:center; color:#6c3483;">🎉 Runde geschafft!</h1>
+                    <div id="wq-results-tier" class="wq-results-tier"></div>
+                    <div id="wq-results-tier-text" class="wq-results-tier-text"></div>
+                    <div id="wq-results-score" class="wq-results-score"></div>
+                    <div id="wq-results-correct" class="wq-results-correct"></div>
+
+                    <div class="wq-course-hint">
+                        📚 Noch mehr lernen? Der ausführliche Erste-Hilfe-Kurs für Baby &amp; Kind kommt bald!
+                        <br>
+                        <a href="#" class="wq-course-btn" onclick="return false;">Jetzt vormerken (bald verfügbar)</a>
+                    </div>
+
+                    <button class="wq-restart-btn" onclick="wqStart()">🔄 Nochmal spielen</button>
+                    <button class="back-btn" onclick="goToStart()" style="width:100%; text-align:center; margin-top:10px;">⬅ Zurück zur Startseite</button>
+                </div>
+            </div>
+        </section>
+
         <!-- BILDSCHIRM: NOTFALL ODER NICHT? (3-A-REGEL) -->
         <section id="screen-notfallcheck" class="app-screen screen-hidden">
             <button class="back-btn" onclick="resetNotfallCheck(); goToStart();"><span data-i18n="back">⬅ Zurück</span></button>

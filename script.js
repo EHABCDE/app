@@ -93,6 +93,8 @@ function aktualisierePoisonCenterUI(bundesland) {
 // "isSpecial"-Einträge wie Feedback, Notrufnummern etc.) zeigen gar keine
 // der beiden Leisten.
 const topics = [
+    // NEU: Wissens-Quiz (steht bewusst ganz vorne)
+    { id: 'wissensquiz', title: '🧠 Quiz rund ums Kind', category: 'Quiz', isSpecial: true, specialBg: '#f3e8fd', specialBorder: '#8e44ad', specialColor: '#6c3483' },
     // NEU: Der Notfall-Check
     { id: 'notfallcheck', title: '❓ Notfall oder nicht?', category: 'Check', isSpecial: true, specialBg: '#fef9e7', specialBorder: '#f39c12', specialColor: '#d35400' },
 
@@ -289,6 +291,10 @@ function showScreen(screenId) {
 
     if (screenId === 'screen-notfallsteckbrief') {
         nsInitScreen();
+    }
+
+    if (screenId === 'screen-wissensquiz') {
+        wqStart();
     }
 }
 
@@ -1547,4 +1553,269 @@ function resetRiskCheck() {
     document.getElementById('quiz-step-2').classList.remove('screen-hidden');
     document.getElementById('quiz-step-2').classList.add('screen-active');
     window.scrollTo(0, 0);
+}
+
+// =========================================================
+// WISSENS-QUIZ ("Teste dein Wissen" / "Quiz rund ums Kind")
+// Kahoot-artiges Multiple-Choice/Wahr-Falsch-Quiz.
+// Alle Fragen basieren auf den Inhalten der Baby-&-Kind-Themen
+// dieser App. WICHTIG: Bitte fachlich von Johannes gegenprüfen,
+// bevor das Quiz live geht (automatisch generierter Erstentwurf).
+// Namenskonvention "wq" (Wissens-Quiz), um Kollisionen mit dem
+// bestehenden "Notfall oder nicht?"-Check (IDs "quiz-*") zu vermeiden.
+// =========================================================
+
+const WQ_ROUND_SIZE = 10;
+const WQ_TIME_LIMIT_SEC = 20;
+
+const wqQuestions = [
+    // --- Reanimation ---
+    { type: 'mc', topic: 'Reanimation', q: 'Ihr findet ein Kind, das nicht reagiert und nicht normal atmet. Was ist der allererste Schritt?', options: ['Kind sofort auf einen harten Untergrund legen', 'Erst den Notruf wählen', 'Kind hochheben und schütteln', 'Auf die Seite drehen und abwarten'], correct: 0, explain: 'Zuerst auf einen harten Boden legen – nur so wirkt die Herzdruckmassage richtig.' },
+    { type: 'tf', topic: 'Reanimation', q: 'Bei einem Baby unter 1 Jahr wird der Kopf bei der Reanimation stark überstreckt, genau wie bei einem Erwachsenen.', correct: false, explain: 'Beim Baby bleibt der Kopf in Neutralposition. Erst ab 1 Jahr wird er vorsichtig überstreckt.' },
+    { type: 'mc', topic: 'Reanimation', q: 'Wie lautet das Verhältnis von Herzdruckmassage zu Beatmung bei der Kinder-Reanimation (nach den 5 initialen Beatmungen)?', options: ['15 : 2', '30 : 2', '5 : 1', '10 : 2'], correct: 1, explain: 'Nach 5 initialen Beatmungen wird im Wechsel 30 Mal gedrückt und 2 Mal beatmet.' },
+    { type: 'tf', topic: 'Reanimation', q: 'Bei der Reanimation eines Kindes sollte man zuerst den Notruf wählen, bevor man mit Beatmung und Herzdruckmassage beginnt.', correct: false, explain: 'Erst 5 initiale Beatmungen und 1 Minute reanimieren, danach den Notruf 112 wählen (Lautsprecher an).' },
+
+    // --- Plötzlicher Kindstod ---
+    { type: 'mc', topic: 'Plötzlicher Kindstod', q: 'Beim Verdacht auf plötzlichen Kindstod: Wie viele initiale Beatmungen werden zuerst gegeben?', options: ['2', '5', '10', '30'], correct: 1, explain: 'Zuerst 5 initiale Beatmungen über Mund und Nase.' },
+    { type: 'tf', topic: 'Plötzlicher Kindstod', q: 'Ist man im Stress, ist ein Verhältnis von 15:2 genauso in Ordnung wie 30:2 – Hauptsache man tut etwas.', correct: true, explain: 'Genau richtig – wichtig ist, dass überhaupt reanimiert wird.' },
+
+    // --- Fieberkrampf ---
+    { type: 'mc', topic: 'Fieberkrampf', q: 'Ein Kind hat einen Fieberkrampf. Was solltest du NICHT tun?', options: ['Harte Gegenstände wegräumen', 'Kopf weich polstern', 'Einen Löffel oder Beißring in den Mund stecken', 'Nach dem Krampf in die stabile Seitenlage bringen'], correct: 2, explain: 'Niemals etwas in den Mund stecken – Erstickungsgefahr! Auch den Mund nicht gewaltsam öffnen.' },
+    { type: 'tf', topic: 'Fieberkrampf', q: 'Bei jedem Fieberkrampf muss man sofort den Notruf 112 wählen, egal wie kurz er war.', correct: false, explain: 'Notruf ist z. B. Pflicht beim ersten Fieberkrampf im Leben des Kindes, wenn er länger als 5 Minuten dauert, oder das Kind danach nicht richtig zu sich kommt.' },
+    { type: 'mc', topic: 'Fieberkrampf', q: 'Wohin bringt man das Kind nach einem Fieberkrampf, sobald das Zucken aufgehört hat?', options: ['Rückenlage mit erhöhten Beinen', 'Stabile Seitenlage', 'Bauchlage ohne Kopfstütze', 'Aufrecht hinsetzen'], correct: 1, explain: 'Stabile Seitenlage, damit Speichel abfließen kann und die Atemwege frei bleiben.' },
+
+    // --- Insektenstich im Mund ---
+    { type: 'tf', topic: 'Insektenstich', q: 'Ein Insektenstich im Mund oder Rachen ist bei Kindern grundsätzlich harmlos und braucht keinen Notruf.', correct: false, explain: 'Ein Stich im Mund/Rachen/Hals ist IMMER ein Fall für den Notruf 112 – die Atemwege können zuschwellen.' },
+    { type: 'mc', topic: 'Insektenstich', q: 'Was hilft bei einem Stich im Mund, die Schwellung zu bremsen?', options: ['Warmes Wasser trinken', 'Eiswürfel lutschen bzw. eiskaltes Wasser', 'Flach hinlegen', 'Den Mund weit offenhalten'], correct: 1, explain: 'Kühlen von innen (Eiswürfel/eiskaltes Wasser) und außen bremst die Schwellung.' },
+    { type: 'tf', topic: 'Insektenstich', q: 'Bei einem Insektenstich im Mund sollte man das Kind unbedingt aufrecht hinsetzen.', correct: true, explain: 'Aufrecht sitzen erleichtert das Atmen bei zuschwellenden Atemwegen.' },
+
+    // --- Insektenstich allgemein ---
+    { type: 'mc', topic: 'Insektenstich allgemein', q: 'Ab wann sollte man bei einem "normalen" Insektenstich (nicht im Mund) den Notruf wählen?', options: ['Nie', 'Nur bei Schmerzen', 'Bei Atemnot, pfeifender Atmung oder Ausschlag am ganzen Körper', 'Nur wenn der Stachel sichtbar ist'], correct: 2, explain: 'Atemnot, pfeifende Atmung, Heiserkeit oder Ausschlag am ganzen Körper sind Alarmzeichen für den Notruf 112.' },
+
+    // --- Knopfzellen/Magnete ---
+    { type: 'mc', topic: 'Knopfzellen', q: 'Ein Kind (über 1 Jahr) hat vor Kurzem vermutlich eine Knopfzellenbatterie verschluckt. Was ist die richtige Erste Hilfe?', options: ['Erbrechen auslösen', 'Nichts essen/trinken lassen und abwarten', '1–2 Teelöffel flüssigen Honig geben und in die Klinik fahren', 'Abwarten, ob Symptome auftreten'], correct: 2, explain: 'Honig legt einen Schutzfilm um die Batterie und verlangsamt die Reaktion – trotzdem sofort in die Klinik!' },
+    { type: 'tf', topic: 'Knopfzellen', q: 'Erbrechen auslösen hilft dabei, eine verschluckte Batterie schneller loszuwerden.', correct: false, explain: 'Erbrechen ist verboten – die Magensäure würde beim Rückfluss die Speiseröhre zusätzlich verätzen.' },
+    { type: 'tf', topic: 'Magnete', q: 'Hat ein Kind zwei Magnete (oder einen Magneten plus ein Metallteil) verschluckt, ist das ein akuter OP-Notfall.', correct: true, explain: 'Die Magnete können sich im Darm gegenseitig anziehen und die Darmwand durchlöchern.' },
+
+    // --- Verbrennung ---
+    { type: 'mc', topic: 'Verbrennung', q: 'Wie lange sollte eine kleine Verbrennung mit handwarmem Wasser gekühlt werden?', options: ['Mindestens 10 Minuten', 'Maximal 2 Minuten', 'Gar nicht kühlen', 'Bis der Schmerz komplett weg ist'], correct: 1, explain: 'Maximal 2 Minuten und nur kleine Stellen – sonst droht Unterkühlung, besonders bei Babys.' },
+    { type: 'tf', topic: 'Verbrennung', q: 'Man sollte eine Verbrennung mit Eiswasser kühlen, das kühlt am schnellsten.', correct: false, explain: 'Niemals Eiswasser oder Kühlakkus – nur handwarmes Wasser mit ca. 15–20°C.' },
+    { type: 'mc', topic: 'Verbrennung', q: 'Was ist bei einer Brandwunde absolut verboten?', options: ['Steril abdecken', 'Hausmittel wie Mehl oder Zahnpasta auftragen', 'Zum Kinderarzt gehen', 'Kleidung ausziehen'], correct: 1, explain: 'Keine Hausmittel wie Mehl, Öl, Zahnpasta oder Puder – die verschlimmern die Wunde nur.' },
+    { type: 'tf', topic: 'Verbrennung', q: 'Kleidung, die bereits fest an der verbrannten Haut klebt, sollte man vorsichtig, aber zügig abreißen.', correct: false, explain: 'Festklebende Kleidung auf keinen Fall gewaltsam abreißen!' },
+
+    // --- Pseudokrupp ---
+    { type: 'mc', topic: 'Pseudokrupp', q: 'Was hilft bei einem Pseudokrupp-Anfall am schnellsten gegen die Atemnot?', options: ['Warme, trockene Luft', 'Kalte, feuchte Luft (z. B. am offenen Fenster)', 'Das Kind zum Schreien bringen', 'Flach hinlegen'], correct: 1, explain: 'Kalte, feuchte Luft lässt die Schleimhäute im Kehlkopf blitzschnell abschwellen.' },
+    { type: 'tf', topic: 'Pseudokrupp', q: 'Bei Pseudokrupp sollte man das Kind beruhigen, weil Weinen oder Schreien die Atemnot verschlimmern kann.', correct: true, explain: 'Durch Schreien schwillt der Kehlkopf durch den Druck noch weiter zu.' },
+
+    // --- Vergiftung ---
+    { type: 'tf', topic: 'Vergiftung', q: 'Bei Vergiftungsverdacht darf man dem Kind zur Verdünnung immer Milch zu trinken geben.', correct: false, explain: 'Milch ist bei manchen Giften verboten, da sie die Aufnahme im Darm beschleunigen kann.' },
+    { type: 'mc', topic: 'Vergiftung', q: 'Ein Kind hat Spülmittel getrunken. Warum ist Wassertrinken hier besonders gefährlich?', options: ['Ist gar nicht gefährlich', 'Das Mittel schäumt dann im Magen, Schaum kann in die Lunge geraten', 'Wasser verstärkt den Geschmack', 'Wasser löst die Giftstoffe schneller'], correct: 1, explain: 'Das bringt das Mittel im Magen zum Schäumen – der Schaum kann eingeatmet werden (Erstickungsgefahr).' },
+    { type: 'mc', topic: 'Vergiftung', q: 'Ist das Kind bei einer Vergiftung bewusstlos oder hat schwere Atemnot, wählt man...', options: ['Den Giftnotruf', 'Sofort den Notruf 112', 'Den Kinderarzt am nächsten Tag', 'Erstmal abwarten'], correct: 1, explain: 'Bei Bewusstlosigkeit oder schwerer Atemnot immer sofort die 112.' },
+
+    // --- Sturz auf den Kopf ---
+    { type: 'tf', topic: 'Sturz auf den Kopf', q: 'Auch wenn ein Kind nach einem Sturz auf den Kopf direkt wieder fit wirkt, sollte man es die nächsten 48 Stunden genau beobachten.', correct: true, explain: 'Auffälligkeiten können auch erst mit Verzögerung auftreten – daher 48 Stunden im Blick behalten.' },
+    { type: 'mc', topic: 'Sturz auf den Kopf', q: 'Welches Anzeichen spricht NICHT für eine mögliche Gehirnerschütterung nach einem Sturz?', options: ['Kurze Bewusstlosigkeit direkt nach dem Sturz', 'Wiederholtes Erbrechen', 'Normales Spielverhalten ohne Auffälligkeiten', 'Ungleich große Pupillen'], correct: 2, explain: 'Normales, unauffälliges Verhalten spricht gerade NICHT für eine Gehirnerschütterung.' },
+    { type: 'tf', topic: 'Sturz auf den Kopf', q: 'Eine Beule nach einem Sturz sollte man mit einem Kühlakku direkt auf der nackten Haut kühlen.', correct: false, explain: 'Kühlakku immer in ein Tuch wickeln, niemals direkt auf die Haut.' },
+
+    // --- Stromunfälle ---
+    { type: 'mc', topic: 'Stromunfälle', q: 'Ein Kind hat einen Stromschlag bekommen und klebt noch am Gerät. Was zuerst?', options: ['Kind sofort wegziehen', 'Stromkreis trennen (Stecker ziehen/Sicherung raus)', 'Wasser über das Kind gießen', 'Erst den Notruf wählen'], correct: 1, explain: 'Eigenschutz zuerst! Erst den Stromkreis trennen, sonst gefährdest du dich selbst.' },
+    { type: 'tf', topic: 'Stromunfälle', q: 'Auch wenn das Kind nach einem Stromunfall wieder völlig fit wirkt, muss es trotzdem ins Krankenhaus.', correct: true, explain: 'Strom kann noch Stunden später gefährliche Herzrhythmusstörungen auslösen – 24h Überwachung nötig.' },
+
+    // --- Ertrinken ---
+    { type: 'mc', topic: 'Ertrinken', q: 'Ein Kind wurde bewusstlos aus dem Wasser gerettet und atmet nicht. Was zuerst?', options: ['Sofort Notruf 112 wählen und warten', '5 initiale Beatmungen, dann 1 Minute reanimieren, danach (wenn allein) Notruf', 'Abwarten, ob es von selbst wieder atmet', 'Kind kräftig schütteln'], correct: 1, explain: 'Erst 5 initiale Beatmungen + 1 Minute Reanimation, dann (wenn du allein bist) den Notruf wählen.' },
+    { type: 'tf', topic: 'Ertrinken', q: 'Jedes Kind, das reanimiert wurde oder länger unter Wasser war, muss auch dann in die Klinik, wenn es danach wieder fit wirkt.', correct: true, explain: 'Es drohen verzögerte Lungenprobleme – daher immer ärztlich abklären lassen.' },
+
+    // --- Verschlucken ---
+    { type: 'mc', topic: 'Verschlucken', q: 'Ein Kind verschluckt sich, hustet aber noch kräftig. Was tust du?', options: ['Sofort Rückenschläge geben', 'Nur beruhigen und zum Weiterhusten animieren, nicht eingreifen', 'Heimlich-Manöver anwenden', 'Finger in den Mund stecken und suchen'], correct: 1, explain: 'Solange kräftig gehustet wird, ist das der wirksamste Weg, den Fremdkörper selbst zu lösen.' },
+    { type: 'tf', topic: 'Verschlucken', q: 'Bei einem Säugling unter 1 Jahr wird beim Verschlucken der Heimlich-Griff (Oberbauchdruckstöße) angewendet.', correct: false, explain: 'Bei Säuglingen NIE der Heimlich-Griff – stattdessen 5 Brustdruckstöße in Rückenlage.' },
+    { type: 'mc', topic: 'Verschlucken', q: 'Wie viele Rückenschläge gibt man am Stück, bevor man prüft, ob der Fremdkörper gelöst ist?', options: ['1', 'Bis zu 5', '10', '20'], correct: 1, explain: 'Bis zu 5 kräftige Schläge zwischen die Schulterblätter, dann prüfen.' },
+
+    // --- Allgemeine Basics ---
+    { type: 'mc', topic: 'Notruf', q: 'Welche Nummer wählst du bei einem lebensbedrohlichen Notfall in Deutschland?', options: ['110', '112', '116 117', '19222'], correct: 1, explain: 'Die 112 ist der europaweite Notruf für Rettungsdienst und Feuerwehr.' },
+    { type: 'mc', topic: 'Notruf', q: 'Wofür ist die Nummer 116 117 gedacht?', options: ['Für akute Lebensgefahr', 'Für den ärztlichen Bereitschaftsdienst außerhalb der Sprechzeiten', 'Für die Polizei', 'Für den Giftnotruf'], correct: 1, explain: '116 117 ist der ärztliche Bereitschaftsdienst für nicht lebensbedrohliche Fälle nachts/am Wochenende.' },
+    { type: 'tf', topic: 'Notruf', q: 'Beim Absetzen eines Notrufs sollte man auflegen, sobald man Ort und Notfall genannt hat.', correct: false, explain: 'Immer warten, bis die Leitstelle das Gespräch beendet – es können noch Rückfragen kommen.' },
+    { type: 'mc', topic: 'Notruf', q: 'Was gehört NICHT zu den klassischen "W-Fragen" beim Notruf?', options: ['Wo ist es passiert?', 'Was ist passiert?', 'Wie viele Verletzte?', 'Wie war das Wetter?'], correct: 3, explain: 'Das Wetter gehört nicht zu den W-Fragen beim Notruf.' },
+    { type: 'tf', topic: 'Giftnotruf', q: 'Der Giftnotruf ist deutschlandweit einheitlich über eine einzige Telefonnummer erreichbar.', correct: false, explain: 'Die Giftnotrufzentrale ist je nach Bundesland unterschiedlich – die App zeigt dir automatisch die passende an.' },
+    { type: 'tf', topic: 'Verbandkasten', q: 'Ein Verbandkasten im Haushalt sollte regelmäßig auf abgelaufene Inhalte kontrolliert werden.', correct: true, explain: 'Pflaster & Co. verlieren mit der Zeit ihre Wirkung bzw. Sterilität – deshalb regelmäßig checken.' },
+    { type: 'mc', topic: 'Stabile Seitenlage', q: 'Für wen ist die stabile Seitenlage grundsätzlich gedacht?', options: ['Bewusstlose Personen, die noch normal atmen', 'Personen mit Herzstillstand', 'Personen bei vollem Bewusstsein', 'Nur für Erwachsene, nie für Kinder'], correct: 0, explain: 'Die stabile Seitenlage ist für Bewusstlose MIT normaler Atmung gedacht.' },
+    { type: 'tf', topic: 'Stabile Seitenlage', q: 'Bei einem bewusstlosen Kind, das NICHT normal atmet, bringt man es zuerst in die stabile Seitenlage statt sofort die Herzdruckmassage zu beginnen.', correct: false, explain: 'Ohne normale Atmung sofort mit der Herzdruckmassage beginnen! Die stabile Seitenlage ist nur bei normaler Atmung richtig.' },
+    { type: 'mc', topic: 'Allergie-Notfall', q: 'Wann sollte bei einem Kind mit bekannter schwerer Allergie der Adrenalin-Autoinjektor (Pen) angewendet werden?', options: ['Nie ohne Arzt', 'Sofort bei ersten Anzeichen eines schweren allergischen Notfalls', 'Nur wenn die Eltern es erlauben', 'Erst nach Rücksprache mit dem Notruf'], correct: 1, explain: 'Bei ersten Anzeichen eines schweren allergischen Notfalls sofort anwenden – zählt jede Sekunde.' },
+    { type: 'tf', topic: 'Allgemein', q: '"Erste Hilfe ABC" ersetzt den Notruf 112 und einen Arztbesuch.', correct: false, explain: 'Die App ist nur eine Gedächtnisstütze – bei echten Notfällen zählt immer zuerst der Notruf 112!' }
+];
+
+let wqRound = [];
+let wqIndex = 0;
+let wqScore = 0;
+let wqCorrectCount = 0;
+let wqQuestionStartTime = 0;
+let wqTimeoutId = null;
+let wqCurrentAnswered = false;
+
+function wqShuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// Startet eine neue Quizrunde mit 10 zufälligen Fragen aus dem Pool.
+function wqStart() {
+    const pool = wqShuffle(wqQuestions).slice(0, WQ_ROUND_SIZE);
+    // Bei Multiple-Choice-Fragen die Reihenfolge der Antworten zufällig mischen,
+    // damit die richtige Antwort nicht immer an derselben Stelle steht.
+    wqRound = pool.map(q => {
+        if (q.type !== 'mc') return q;
+        const order = wqShuffle(q.options.map((_, i) => i));
+        return {
+            ...q,
+            options: order.map(i => q.options[i]),
+            correct: order.indexOf(q.correct)
+        };
+    });
+
+    wqIndex = 0;
+    wqScore = 0;
+    wqCorrectCount = 0;
+
+    document.getElementById('wq-results-view').style.display = 'none';
+    document.getElementById('wq-feedback-view').style.display = 'none';
+    document.getElementById('wq-question-view').style.display = 'block';
+
+    wqRenderQuestion();
+}
+
+function wqRenderQuestion() {
+    const q = wqRound[wqIndex];
+    wqCurrentAnswered = false;
+
+    document.getElementById('wq-current-num').textContent = wqIndex + 1;
+    document.getElementById('wq-score-display').textContent = wqScore;
+    document.getElementById('wq-question-text').textContent = q.q;
+
+    const mcContainer = document.getElementById('wq-answers-mc');
+    const tfContainer = document.getElementById('wq-answers-tf');
+    mcContainer.innerHTML = '';
+
+    if (q.type === 'mc') {
+        mcContainer.style.display = 'grid';
+        tfContainer.style.display = 'none';
+        const colors = ['wq-opt-a', 'wq-opt-b', 'wq-opt-c', 'wq-opt-d'];
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = `wq-answer-btn ${colors[i] || ''}`;
+            btn.textContent = opt;
+            btn.onclick = () => wqSelectAnswer(i === q.correct, btn);
+            mcContainer.appendChild(btn);
+        });
+    } else {
+        mcContainer.style.display = 'none';
+        tfContainer.style.display = 'flex';
+        const yesBtn = document.getElementById('wq-tf-yes');
+        const noBtn = document.getElementById('wq-tf-no');
+        // Buttons von der vorherigen Ja/Nein-Frage zurücksetzen (Status + Markierungen)
+        [yesBtn, noBtn].forEach((btn) => {
+            btn.disabled = false;
+            btn.classList.remove('wq-correct', 'wq-wrong');
+        });
+        yesBtn.onclick = () => wqSelectAnswer(q.correct === true, yesBtn);
+        noBtn.onclick = () => wqSelectAnswer(q.correct === false, noBtn);
+    }
+
+    wqStartTimer();
+}
+
+function wqStartTimer() {
+    const bar = document.getElementById('wq-timer-bar');
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    // Reflow erzwingen, damit die Transition danach sauber startet
+    void bar.offsetWidth;
+    bar.style.transition = `width ${WQ_TIME_LIMIT_SEC}s linear`;
+    bar.style.width = '0%';
+
+    wqQuestionStartTime = Date.now();
+    clearTimeout(wqTimeoutId);
+    wqTimeoutId = setTimeout(() => {
+        if (!wqCurrentAnswered) wqSelectAnswer(false, null);
+    }, WQ_TIME_LIMIT_SEC * 1000);
+}
+
+function wqSelectAnswer(isCorrect, clickedBtn) {
+    if (wqCurrentAnswered) return;
+    wqCurrentAnswered = true;
+    clearTimeout(wqTimeoutId);
+
+    document.getElementById('wq-timer-bar').style.transition = 'none';
+
+    const elapsedSec = (Date.now() - wqQuestionStartTime) / 1000;
+    const remainingRatio = Math.max(0, 1 - elapsedSec / WQ_TIME_LIMIT_SEC);
+    const points = isCorrect ? Math.round(500 + 500 * remainingRatio) : 0;
+
+    wqScore += points;
+    if (isCorrect) wqCorrectCount++;
+
+    // Buttons optisch sperren + richtige/falsche Antwort markieren
+    const q = wqRound[wqIndex];
+    if (q.type === 'mc') {
+        const buttons = document.querySelectorAll('#wq-answers-mc .wq-answer-btn');
+        buttons.forEach((b, i) => {
+            b.disabled = true;
+            if (i === q.correct) b.classList.add('wq-correct');
+            else if (b === clickedBtn) b.classList.add('wq-wrong');
+        });
+    } else {
+        document.getElementById('wq-tf-yes').disabled = true;
+        document.getElementById('wq-tf-no').disabled = true;
+        const correctBtn = q.correct === true ? document.getElementById('wq-tf-yes') : document.getElementById('wq-tf-no');
+        correctBtn.classList.add('wq-correct');
+        if (clickedBtn && clickedBtn !== correctBtn) clickedBtn.classList.add('wq-wrong');
+    }
+
+    setTimeout(() => wqShowFeedback(isCorrect, points, q.explain), 600);
+}
+
+function wqShowFeedback(isCorrect, points, explain) {
+    document.getElementById('wq-question-view').style.display = 'none';
+    document.getElementById('wq-feedback-view').style.display = 'block';
+
+    const icon = document.getElementById('wq-feedback-icon');
+    icon.textContent = isCorrect ? '✅' : '❌';
+    icon.className = 'wq-feedback-icon ' + (isCorrect ? 'wq-feedback-correct' : 'wq-feedback-wrong');
+
+    document.getElementById('wq-feedback-points').textContent = isCorrect ? `+${points} Punkte` : 'Leider falsch';
+    document.getElementById('wq-feedback-explain').textContent = explain;
+}
+
+function wqNextQuestion() {
+    wqIndex++;
+    document.getElementById('wq-feedback-view').style.display = 'none';
+
+    if (wqIndex < wqRound.length) {
+        document.getElementById('wq-question-view').style.display = 'block';
+        wqRenderQuestion();
+    } else {
+        wqShowResults();
+    }
+}
+
+function wqGetTier(correctCount) {
+    if (correctCount >= 9) return { label: 'Profi', emoji: '🟢', color: '#27ae60', text: 'Wow, richtig stark! Du kennst dich schon richtig gut aus.' };
+    if (correctCount >= 6) return { label: 'Fortgeschritten', emoji: '🟡', color: '#f39c12', text: 'Schon ziemlich gut! Mit ein bisschen mehr Übung wird das ein Profi-Ergebnis.' };
+    if (correctCount >= 3) return { label: 'Einsteiger', emoji: '🟠', color: '#e67e22', text: 'Ein guter Anfang – da geht aber sicher noch mehr!' };
+    return { label: 'Noob', emoji: '🔴', color: '#e74c3c', text: 'Kein Grund zur Sorge, das lässt sich lernen – am besten gleich nochmal probieren!' };
+}
+
+function wqShowResults() {
+    document.getElementById('wq-question-view').style.display = 'none';
+    document.getElementById('wq-feedback-view').style.display = 'none';
+    document.getElementById('wq-results-view').style.display = 'block';
+
+    const tier = wqGetTier(wqCorrectCount);
+    const tierEl = document.getElementById('wq-results-tier');
+    tierEl.innerHTML = `${tier.emoji} <span style="color:${tier.color}">${tier.label}</span>`;
+    document.getElementById('wq-results-tier-text').textContent = tier.text;
+    document.getElementById('wq-results-score').textContent = `${wqScore} Punkte`;
+    document.getElementById('wq-results-correct').textContent = `${wqCorrectCount} von ${wqRound.length} richtig beantwortet`;
 }
