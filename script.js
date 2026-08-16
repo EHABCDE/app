@@ -812,11 +812,7 @@ function kopfverletzungAuswerten() {
 
     if (anzahlWarnzeichen > 0) {
         if (ergebnisDiv) {
-            ergebnisDiv.innerHTML = `
-                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
-                    🚨 Mindestens ein Warnzeichen erkannt. Jetzt sofort <strong>112</strong> wählen!
-                </div>
-            `;
+            ergebnisDiv.innerHTML = t('kopfWarnzeichenGefunden');
         }
         // Überschreibt für diesen Screen die themenbasierte Voreinstellung:
         // die Warnzeichen sagen "echter Notfall", also Notruf-Leiste zeigen.
@@ -824,11 +820,7 @@ function kopfverletzungAuswerten() {
         if (checkBar) checkBar.style.display = 'none';
     } else {
         if (ergebnisDiv) {
-            ergebnisDiv.innerHTML = `
-                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
-                    ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem mindestens 24 Stunden weiter beobachten und bei Verschlechterung sofort 112 wählen.
-                </div>
-            `;
+            ergebnisDiv.innerHTML = t('kopfKeineWarnzeichen');
         }
         if (notrufBar) notrufBar.style.display = 'none';
         if (checkBar) checkBar.style.display = 'block';

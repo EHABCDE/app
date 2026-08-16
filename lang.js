@@ -42,6 +42,17 @@ const TRANSLATIONS = {
         kindSturzKeineWarnzeichen: `
                 <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
                     ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem für 48 Stunden genau beobachten (siehe Schritt 4) und bei Verschlechterung sofort 112 wählen.
+                </div>`,
+
+        // Ergebnis des interaktiven Warnzeichen-Checks (Kopfverletzung, Erwachsene).
+        // Wird per JS (kopfverletzungAuswerten) gesetzt, nicht aus dem HTML übernommen.
+        kopfWarnzeichenGefunden: `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 Mindestens ein Warnzeichen erkannt. Jetzt sofort <strong>112</strong> wählen!
+                </div>`,
+        kopfKeineWarnzeichen: `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ Aktuell keine akuten Warnzeichen erkannt. Trotzdem mindestens 24 Stunden weiter beobachten und bei Verschlechterung sofort 112 wählen.
                 </div>`
     }, // alle weiteren Keys werden beim Start automatisch aus dem HTML befüllt
     en: {
@@ -184,6 +195,16 @@ const TRANSLATIONS = {
         kindSturzKeineWarnzeichen: `
                 <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
                     ✅ No acute warning signs right now. Still watch closely for 48 hours (see step 4), and call 112 straight away if things get worse.
+                </div>`,
+
+        // Result of the interactive warning-sign check (head injury, adult)
+        kopfWarnzeichenGefunden: `
+                <div style="background:#78281f; border-left:5px solid #c0392b; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    🚨 At least one warning sign found. Call <strong>112</strong> now!
+                </div>`,
+        kopfKeineWarnzeichen: `
+                <div style="background:#1e8449; border-left:5px solid #27ae60; border-radius:8px; padding:12px; color:#ffffff; font-weight:bold; text-align:left;">
+                    ✅ No acute warning signs right now. Still keep watching for at least 24 hours, and call 112 straight away if things get worse.
                 </div>`,
 
         // =====================================================
@@ -935,7 +956,1314 @@ const TRANSLATIONS = {
                     <a href="https://www.lifesaveair.com" target="_blank" class="product-link-btn">
                         🛒 View LifeSaveAir with 10% off →
                     </a>
-                </div>`
+                </div>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 4
+        // (erste Erwachsenen-Runde): Bewusstlosigkeit & Seitenlage,
+        // Reanimation & Defibrillation, Ersticken, Insektenstich im
+        // Mund/Rachen, Elektrounfälle.
+        // =====================================================
+
+        content_bewusstlosigkeit_erw_panic: `
+                <h1 style="color: #34495e;">😵 EMERGENCY: UNCONSCIOUSNESS</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>TALK TO THEM &amp; SHAKE THEM:</strong> Speak to the person loudly ("Can you hear me?") and shake them firmly by both shoulders. No response? Shout loudly for help.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>CHECK BREATHING (max. 10 sec.):</strong> Carefully tilt the head back (lift the chin, push the forehead back) and look, listen and feel for breathing with your cheek/ear over their mouth and nose.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>DECIDE:</strong><br>
+                    • Breathing <strong>normally</strong> → Put them in the <strong>recovery position</strong> straight away (step 4).<br>
+                    • <strong>Not breathing, or not breathing normally</strong> (e.g. gasping) → Call 112 and start <strong>CPR</strong> immediately!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>RECOVERY POSITION:</strong><br>
+                    • Kneel beside the person, bend the arm nearest you and place it beside their head.<br>
+                    • Bring the far arm across the chest and place the back of their hand against their near cheek, holding it there.<br>
+                    • Grab the far leg at the knee and gently pull the person towards you onto their side.<br>
+                    • Tilt the head back slightly and open the mouth so fluid can drain. Cover them and keep checking their breathing until help arrives.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    Don't forget to <strong>call 112</strong> as soon as the situation is clear.
+                </div>`,
+
+        content_bewusstlosigkeit_erw_learn: `
+                <h1>🔬 Background: Unconsciousness</h1>
+                <p>When someone is unconscious, the body's protective reflexes switch off and the muscles go completely limp. This can let the tongue fall back and block the airway. Because the cough reflex is also gone, saliva, vomit or blood can get into the airway unhindered and cause choking.</p>
+
+                <h3>Possible causes</h3>
+                <p>Unconsciousness can have many triggers: serious head injuries, heatstroke, seizures, severe bleeding, and - especially in adults - acute conditions like stroke, heart attack or heart rhythm problems.</p>
+
+                <h3>Why checking breathing matters so much</h3>
+                <p>As soon as you notice someone isn't responding, isn't moving, and their eyes stay closed, the first thing to do is check their breathing. An unconscious person who's still breathing normally must never be left on their back - they could choke as the tongue blocks the airway. That's why you put them in the recovery position. If the person isn't breathing, or is only breathing irregularly (e.g. occasional "gasping" breaths), immediate action with resuscitation is critical.</p>`,
+
+        content_reanimation_erw_panic: `
+                <h1 style="color: #c0392b;">🫀 EMERGENCY: CPR</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Person not responding, and not breathing or not breathing normally? Act immediately!</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>GET HELP:</strong> Shout loudly for help. Call 112 (put it on speaker!). If someone else is there, have them fetch a defibrillator (AED) straight away if one is nearby.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CHEST COMPRESSIONS:</strong><br>
+                    • Lay the person on a hard surface, expose the chest.<br>
+                    • Place the heel of your hand on the lower half of the breastbone, your other hand on top, fingers interlocked.<br>
+                    • With straight arms, press down <strong>5–6 cm deep</strong>, at a rate of <strong>100–120 compressions/minute</strong>. Let the chest come back up fully after each compression.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>ALTERNATE WITH RESCUE BREATHS:</strong> After 30 chest compressions: tilt the head back, pinch the nose shut, take a normal breath and blow steadily into the mouth for about 1 second, until the chest rises. Give two breaths, then another 30 compressions. Keep going in a rhythm of <strong>30 : 2</strong>.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>USE THE AED (DEFIBRILLATOR) AS SOON AS IT'S AVAILABLE:</strong> Switch it on and follow the voice prompts. Stick the pads onto the bare chest as shown. <strong>Nobody may touch the person during analysis or when the shock is delivered!</strong> Between analyses, keep doing chest compressions/breaths for 2 minutes at a time.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>KEEP GOING</strong> until paramedics take over, or the person shows signs of life (e.g. breathing on their own, coughing, moving) - then put them in the recovery position and keep watching their breathing.
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+                    <button class="metronome-btn" onclick="toggleMetronome()" style="background-color: #e74c3c; color: white; border: 2px solid #ffffff; padding: 15px 25px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        🔊 Start pacer (110 BPM)
+                    </button>
+                </div>`,
+
+        content_reanimation_erw_learn: `
+                <h1>🔬 Background: CPR</h1>
+                <p>In cardiac arrest, the person loses consciousness within seconds and stops responding to voice or touch. Breathing stops or becomes irregular at almost the same time. In adults, the most common cause is a narrowed or blocked coronary artery - in other words, a heart attack. But severe bleeding, electrical accidents or serious poisoning can also weaken the circulation so much that the heart stops.</p>
+
+                <h3>Why speed matters so much</h3>
+                <p>If the brain goes without oxygen for even a few minutes, permanent damage occurs. That's why every second counts - and why the combination of chest compressions and rescue breaths matters so much: compressions keep some circulation going, while the breaths supply the blood with oxygen.</p>
+
+                <h3>The defibrillator (AED)</h3>
+                <p>An automated external defibrillator talks you through every step by voice and works out on its own whether a shock is needed - as a bystander, you really can't get it wrong. The faster an AED is used in cardiac arrest, the better the chances of survival.</p>
+
+                <h3>Children and babies</h3>
+                <p>Resuscitation works a little differently for them: it starts with five rescue breaths first, and only then chest compressions. You'll find the details under "CPR" in the Baby &amp; Child section.</p>`,
+
+        content_ersticken_erw_panic: `
+                <h1 style="color: #e67e22;">🫁 EMERGENCY: CHOKING / RISK OF SUFFOCATION</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RECOGNISE IT:</strong> Forceful coughing, possibly wheezing breath sounds, trouble swallowing, bluish skin colour, panic about not being able to breathe.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>AS LONG AS THEY CAN STILL COUGH:</strong> Actively encourage the person to cough hard - that's the most effective way for them to clear the object themselves. Call 112.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>IF IT GETS WORSE - BACK BLOWS:</strong> Have the person lean their upper body well forward. Using the heel of your hand, give up to <strong>5 firm blows</strong> between the shoulder blades. After each blow, check if the object has come loose.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>LAST RESORT - ABDOMINAL THRUSTS:</strong> If that doesn't help, stand behind the person and wrap both arms around their upper abdomen. Place a fist between the navel and the bottom of the breastbone, grasp it with your other hand, and pull sharply <strong>inward and upward up to 5 times</strong>.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>KEEP ALTERNATING:</strong> Continue alternating back blows and abdominal thrusts (up to 5 each) until the object comes loose or paramedics arrive.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>IF THE PERSON BECOMES UNCONSCIOUS:</strong> Lay them on the ground immediately and start <strong>CPR</strong>.
+                </div>`,
+
+        content_ersticken_erw_learn: `
+                <h1>🔬 Background: Choking on a Foreign Object</h1>
+                <p>Whether a swallowed piece of food has gone down the windpipe or the food pipe often isn't obvious at first - what matters is reacting fast. As long as the person can still breathe, speak or cough, their own cough is the safest way to clear the object.</p>
+
+                <h3>Why abdominal thrusts are only the last resort</h3>
+                <p>Back blows and abdominal thrusts (also known as the Heimlich manoeuvre) are only used once coughing alone no longer helps and the situation is getting worse - for example, once no air is moving at all. The forceful, sudden compression of the upper abdomen can cause injury, but is justified in this emergency because there's an acute risk of suffocation.</p>`,
+
+        content_insektenstich_mund_erw_panic: `
+                <h1 style="color: #c0392b;">🐝 EMERGENCY: INSECT STING IN THE MOUTH/THROAT</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>CALL 112 IMMEDIATELY</strong> - a sting in the mouth or throat can turn dangerous very quickly.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STAY CALM:</strong> People often panic in this situation. Speak to them calmly and firmly.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COOL IT:</strong> Have them suck on an ice lolly or ice cubes to slow the swelling in the throat. Also cool the neck from the outside with a cold pack or cold compresses.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>EMERGENCY KIT?</strong> If they have a known allergy, ask about an adrenaline auto-injector (pen) they might be carrying, and help them use it (push it straight into the outer thigh, hold for 5–10 seconds).
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>IF BREATHING STOPS:</strong> Start rescue breathing/CPR immediately and keep going until paramedics arrive.
+                </div>`,
+
+        content_insektenstich_mund_erw_learn: `
+                <h1>🔬 Background: Insect Sting in the Mouth or Throat</h1>
+                <p>If an insect - a wasp, say - accidentally ends up in someone's mouth while eating or drinking outdoors in summer, a sting in the sensitive throat can have serious consequences. The lining or the tongue swells from the insect venom, and the airway narrows - there's a real risk of suffocation. For people with allergies, there's the added risk of anaphylactic shock.</p>
+
+                <h3>Typical warning signs</h3>
+                <p>Severe pain at the sting site, growing swelling in the mouth or on the tongue, and increasing difficulty breathing with a bluish skin colour are warning signs that call for immediate action.</p>
+
+                <h3>Prevention</h3>
+                <p>Stay alert while eating and drinking outdoors in warm weather, and consider using a straw. Anyone with a known insect venom allergy should carry an emergency kit, as agreed with their doctor.</p>`,
+
+        content_elektrounfall_erw_panic: `
+                <h1 style="color: #3498db;">⚡ EMERGENCY: ELECTRICAL ACCIDENT</h1>
+                <p style="color: #e74c3c; font-weight: bold; text-align: center; margin-bottom: 15px;">⚠️ Protect yourself first - never come into contact with the electricity yourself!</p>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>CUT THE POWER:</strong> Pull the plug or switch the device off. If that's not possible, switch off the main fuse. Never touch the person directly while they're still in contact with the power!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>IF THAT'S NOT POSSIBLE:</strong> Only pull the person away from the power source using non-conductive objects (dry clothing, a wooden stick, a blanket). Be especially careful in damp rooms.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>AFTER THE RESCUE:</strong> Check responsiveness and breathing immediately. Call 112.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>IF NEEDED:</strong> Start CPR immediately - an AED is often especially life-saving in electrical accidents. Treat burns only after life-saving measures are done, and keep the person warm.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>FOR HIGH VOLTAGE (e.g. overhead power lines, railway power, substations):</strong> Keep at least <strong>20 metres away</strong> - electricity can arc across a gap! Call 112 immediately, mentioning "high-voltage accident" and giving an exact location. Only the fire brigade/specialist teams may carry out the rescue.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Even if the person feels fine again: <strong>always get them checked by a doctor</strong>, since heart rhythm problems can appear with a delay.
+                </div>`,
+
+        content_elektrounfall_erw_learn: `
+                <h1>🔬 Background: Electrical Accidents</h1>
+                <p>How dangerous an electrical accident is depends on the current, the voltage, and how long it lasted. Even brief exposure to electricity can cause shortness of breath, a racing heart, chest tightness and restlessness - these symptoms usually settle again on their own. With stronger current, though, there's a risk of burns where the current entered and left the body, as well as serious heart problems, up to and including cardiac arrest.</p>
+
+                <h3>Why the heart is so at risk</h3>
+                <p>Because the heart controls its own rhythm using its own electrical impulses, even brief outside electrical exposure can throw this system into chaos - leading to what's called ventricular fibrillation, where the heart can no longer pump effectively. The brain can be affected too: unconsciousness, seizures and stopped breathing are all possible.</p>
+
+                <h3>Prevention</h3>
+                <p>Most electrical accidents happen through careless use of electrical devices, improper repairs, or ignoring warning signs. Having electrical devices checked regularly by a qualified professional significantly lowers the risk.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 5:
+        // Schock, Schwere allergische Reaktion, Zahnverletzung,
+        // Nasenbluten, Zeckenstich.
+        // =====================================================
+
+        content_schock_erw_panic: `
+                <h1 style="color: #34495e;">🆘 EMERGENCY: SHOCK</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>CALL 112.</strong>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STAY WITH THEM:</strong> Stay with the person, keep them calm, don't leave them alone.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>KEEP THEM WARM:</strong> Cover them with a survival blanket or blanket - underneath their body too, to stop them losing heat to the ground.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>LAY THEM FLAT:</strong> Lay the person flat on their back. We deliberately don't raise the legs - in heart failure, a heart attack or valve disease, this can trigger fluid on the lungs, and as a bystander you usually can't rule that out for certain.<br>
+                    <strong>EXCEPTION:</strong> If they have difficulty breathing or chest/heart symptoms, raise the upper body slightly instead.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Keep watching their condition and breathing closely until paramedics arrive.
+                </div>`,
+
+        content_schock_erw_learn: `
+                <h1>🔬 Background: Shock</h1>
+                <p>"Shock" is the general term for a serious problem with the circulation, where body cells no longer get enough oxygen. The longer this goes on, the faster the person's condition gets worse.</p>
+
+                <h3>Possible causes</h3>
+                <p>Significant blood loss - whether from an external wound or an internal injury - can lead to shock, as can severe fluid loss from vomiting, diarrhoea or heavy sweating. Sudden fright, fear or pain can also trigger a so-called collapse through a nervous-system misfire affecting the blood vessels. Poisoning and allergic reactions are among the other possible triggers.</p>
+
+                <h3>Typical signs</h3>
+                <p>Affected people look pale, restless and anxious, tremble, feel weak, and often can no longer stand. Their skin feels cold and clammy, and their pulse is weak and fast.</p>`,
+
+        content_allergie_erw_panic: `
+                <h1 style="color: #c0392b;">🤧 EMERGENCY: SEVERE ALLERGIC REACTION</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>CALL 112</strong> - as fast as possible.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STOP THE TRIGGER, if possible:</strong> e.g. remove an insect stinger and cool the sting site, or stop giving a medication that's causing the reaction.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>REASSURE &amp; KEEP WARM:</strong> Reassure the person, stay with them, and cover them with a blanket.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>IF SHORT OF BREATH:</strong> Loosen tight clothing, raise the upper body, and get them fresh air (e.g. open a window).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>EMERGENCY KIT?</strong> Ask about an adrenaline auto-injector they might be carrying, and help them use it.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Keep watching their condition closely - if they become unconscious or stop breathing, start <strong>CPR</strong> immediately.
+                </div>`,
+
+        content_allergie_erw_learn: `
+                <h1>🔬 Background: Severe Allergic Reaction</h1>
+                <p>In some people, certain substances - such as insect venom, particular foods, or medications - trigger a violent allergic reaction in the body. This can develop within seconds, but can sometimes also appear with a delay.</p>
+
+                <h3>Typical signs</h3>
+                <p>It often starts with a tingling in the mouth, on the tongue or lips, along with hives and itchy skin. Growing difficulty breathing as the airway swells is a serious warning sign. As it progresses, vomiting, circulatory collapse and unconsciousness can follow.</p>
+
+                <h3>Why the emergency kit matters so much</h3>
+                <p>People with a known severe allergy often carry an emergency kit with an adrenaline auto-injector. These kits are deliberately designed to be simple for non-medical people to use - a bystander giving it can save a life in an emergency.</p>`,
+
+        content_zahnverletzung_erw_panic: `
+                <h1 style="color: #8e44ad;">🦷 EMERGENCY: DENTAL INJURY</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>HOLD IT CORRECTLY:</strong> Only pick up a knocked-out tooth by the crown (the white, visible part) - never by the root, where the delicate cells that are crucial for reattachment are located.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>STORE THE TOOTH PROPERLY:</strong> Ideally in a tooth-preservation box (from a pharmacy). Otherwise, in cold UHT milk. Do <strong>not</strong> store the tooth dry, wipe it, or disinfect it.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>STOP THE BLEEDING:</strong> Have them bite down on a clean tissue or a sterile dressing.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>GO TO A DENTIST / HOSPITAL IMMEDIATELY:</strong> The faster the tooth is put back in (ideally within 30–60 minutes), the better the chance of saving it. Contact the emergency dental service.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Even a <strong>broken-off piece of tooth</strong> should be kept and brought along - it can often be reattached. If the injury happened along with a fall on the head, also watch for signs of a <strong>concussion</strong>.
+                </div>`,
+
+        content_zahnverletzung_erw_learn: `
+                <h1>🔬 Background: Dental Injury</h1>
+                <p>Knocked-out or broken teeth are among the most common injuries from falls, sport, or a blow to the face. How quickly and gently the tooth is treated is what decides whether it can be saved.</p>
+
+                <h3>Why storage matters so much</h3>
+                <p>Fine cells of the tooth's supporting tissue sit on the root, and they're needed for the tooth to reattach. If the tooth dries out or the root is touched, these cells die. A tooth-preservation box or cold UHT milk has a similar composition to the body's own tissue and keeps the cells alive until the tooth can be put back in.</p>
+
+                <h3>Act on loose or shifted teeth too</h3>
+                <p>Not just completely knocked-out teeth - badly loosened or shifted teeth also need prompt dental treatment so they can heal back into place properly.</p>`,
+
+        content_nasenbluten_erw_panic: `
+                <h1 style="color: #c0392b;">🩸 EMERGENCY: NOSEBLEED</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>SIT DOWN, HEAD TILTED SLIGHTLY FORWARD:</strong> Never tip the head back - otherwise blood runs down the throat and can cause nausea.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>PINCH THE NOSTRILS SHUT:</strong> Firmly pinch the soft part of the nose (below the nasal bone) for at least 5–10 minutes, breathing through the mouth.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COOL IT:</strong> Place a cool, damp cloth or a cold pack on the back of the neck - this narrows the blood vessels by reflex.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    After 10 minutes, check whether the bleeding has stopped. If not, apply the pressure again for another 10 minutes.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>SEE A DOCTOR</strong> if the bleeding hasn't stopped after 20–30 minutes, is very heavy, follows a head injury, or happens often (e.g. on blood thinners).
+                </div>`,
+
+        content_nasenbluten_erw_learn: `
+                <h1>🔬 Background: Nosebleeds</h1>
+                <p>Nosebleeds usually come from small, surface-level vessels in the nasal septum, which can tear from things like dry heated air, blowing your nose hard, nose-picking, or a minor injury. High blood pressure or blood-thinning medication can also make them more likely.</p>
+
+                <h3>Why the head should tilt forward</h3>
+                <p>If the head tips back, blood runs unhindered down the throat, reaches the stomach, and can cause nausea and vomiting there. With the head tilted forward, the blood visibly drains outward, and pinching the nostrils can target the bleeding directly to stop it.</p>`,
+
+        content_zeckenstich_erw_panic: `
+                <h1 style="color: #16a085;">🕷️ EMERGENCY: TICK BITE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>REMOVE THE TICK:</strong> Using tick tweezers or a tick card, grip it as close to the tick's head/skin as possible and pull it straight out. Don't twist, and don't squeeze the tick's body.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>DISINFECT THE BITE SITE</strong> and then wash your hands thoroughly.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>NOTE THE DATE:</strong> Remember or photograph the day of the bite and the spot on the body - this makes it easier later to judge any skin changes.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>WATCH FOR CHANGES:</strong> Over the following days and weeks, watch for a spreading, ring-shaped redness around the bite site, as well as flu-like symptoms.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>SEE A DOCTOR</strong> if you notice a spreading rash, fever, headache or joint/limb pain, or if parts of the tick are still stuck in the skin.
+                </div>`,
+
+        content_zeckenstich_erw_learn: `
+                <h1>🔬 Background: Tick Bites</h1>
+                <p>Ticks lurk in grass, bushes and at the edge of woodland, and can transmit pathogens while feeding on blood - mainly Lyme disease bacteria, and in certain risk areas, also the TBE virus.</p>
+
+                <h3>Why removing it quickly and correctly matters</h3>
+                <p>The longer a tick feeds, the higher the risk of Lyme disease transmission. Home remedies like oil, glue or nail polish don't work well and can even be risky, since an irritated tick may release more saliva and pathogens as a result. A pointed tick removal tool or card is the most reliable method.</p>
+
+                <h3>TBE risk areas</h3>
+                <p>Certain regions (including southern Germany) have an increased TBE risk, against which vaccination is available. Anyone who spends a lot of time outdoors in such areas can get medical advice on this.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 6:
+        // Wunden & Wundversorgung, Fremdkörper im Auge, Tierbissverletzung,
+        // Prellung/Zerrung/Verstauchung, Sonnenbrand.
+        // =====================================================
+
+        content_wundversorgung_erw_panic: `
+                <h1 style="color: #2980b9;">🩹 EMERGENCY: WOUND CARE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>CLEAN YOUR HANDS</strong>, if possible, before treating the wound.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STOP THE BLEEDING:</strong> For light bleeding, apply gentle pressure with a sterile dressing or a clean cloth.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>CLEAN THE WOUND:</strong> Rinse with clear tap water to remove coarse dirt like sand or splinters.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>COVER IT CLEANLY:</strong> Cover with a sterile adhesive dressing, or a dressing and bandage.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>CHECK TETANUS PROTECTION:</strong> For deep, dirty wounds (e.g. from rust, soil, an animal bite), check your own vaccination status and get it topped up if in doubt.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>SEE A DOCTOR</strong> for deep, gaping or dirty wounds, wounds on the face, or if a wound becomes infected (redness, swelling, warmth, pus).
+                </div>`,
+
+        content_wundversorgung_erw_learn: `
+                <h1>🔬 Background: Wound Care</h1>
+                <p>Most minor everyday cuts, grazes or lacerations can be treated well yourself. The main thing is keeping the wound clean so it can heal undisturbed and germs don't take hold.</p>
+
+                <h3>When you need medical help</h3>
+                <p>Gaping wounds that won't close on their own, wounds over joints, on the face or hands, and heavily dirty or deep wounds should be assessed by a doctor and stitched or clipped if needed.</p>
+
+                <h3>Signs of a wound infection</h3>
+                <p>Increasing redness, swelling, warmth, throbbing pain or pus coming from the wound in the days after the injury are warning signs that call for prompt medical attention.</p>`,
+
+        content_fremdkoerper_auge_erw_panic: `
+                <h1 style="color: #2980b9;">👁️ EMERGENCY: FOREIGN OBJECT IN THE EYE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>DON'T RUB IT:</strong> Never rub the eye - this can push the object in deeper or injure the cornea.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>RINSE IT:</strong> Gently rinse with clean, lukewarm water or sterile saline solution from the nose side outward, holding the eyelid open with your fingers.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>LOOK UNDER THE LID:</strong> Carefully pull the upper lid over the lower lid - this often dislodges small particles trapped under the lid.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    If the object won't come loose: <strong>loosely cover both eyes</strong> (this reduces involuntary eye movement) and see an eye doctor or emergency department.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>FOR CHEMICALS IN THE EYE OR SHARP, DEEPLY EMBEDDED OBJECTS:</strong> Rinse immediately with plenty of clear water for at least 10–15 minutes. Do NOT remove the object yourself, and call 112 or contact an eye clinic.
+                </div>`,
+
+        content_fremdkoerper_auge_erw_learn: `
+                <h1>🔬 Background: Foreign Object in the Eye</h1>
+                <p>Dust, eyelashes or small splinters get into the eye easily in everyday life and immediately cause a strong foreign-body sensation, watering and redness - the cornea is one of the most sensitive parts of the body.</p>
+
+                <h3>Why careful rinsing matters so much</h3>
+                <p>Gentle rinsing usually removes loose particles reliably without injuring the delicate eye surface. Rubbing, on the other hand, can cause small scratches on the cornea or push the object in even deeper.</p>`,
+
+        content_tierbiss_erw_panic: `
+                <h1 style="color: #935116;">🐕 EMERGENCY: ANIMAL BITE INJURY</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RINSE THOROUGHLY:</strong> Rinse the wound with clear water and, if available, soap for several minutes straight away - bite wounds carry a heavy germ load.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>STOP THE BLEEDING:</strong> If needed, apply gentle pressure with a sterile dressing.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COVER LOOSELY</strong> with a sterile dressing, without sealing the wound tightly.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>NOTE THE ANIMAL:</strong> If possible, note the type of animal, its owner and vaccination status - wild animals carry a rabies risk that should be mentioned to the doctor.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>SEE A DOCTOR:</strong> Even small bite wounds should always be assessed by a doctor - high infection risk, and a tetanus booster may be needed.
+                </div>`,
+
+        content_tierbiss_erw_learn: `
+                <h1>🔬 Background: Animal Bite Injuries</h1>
+                <p>Whether from a dog, a cat, or in rare cases a wild animal: animal teeth carry many bacteria into deeper tissue layers, which is why bite wounds carry a significantly higher infection risk than comparable cuts.</p>
+
+                <h3>Why wounds aren't closed straight away</h3>
+                <p>A bite that's closed too early and too tightly can trap germs in the tissue. Doctors decide, depending on the wound, whether to stitch it or let it heal open under observation.</p>`,
+
+        content_gelenkverletzung_erw_panic: `
+                <h1 style="color: #d35400;">🦵 EMERGENCY: BRUISE, STRAIN &amp; SPRAIN</h1>
+                <p style="text-align:center; color:#f1c40f; font-weight:bold; margin-bottom:15px;">Memory aid: the RICE rule</p>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>REST:</strong> Stop the activity immediately, keep the affected joint or body part still.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>ICE:</strong> Cool for about 15–20 minutes - never directly on the skin, always wrapped in a cloth.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COMPRESSION:</strong> Apply an elastic bandage to limit swelling - don't wrap it too tightly.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>ELEVATION:</strong> Raise the affected body part above heart level - this reduces swelling and pain.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>SEE A DOCTOR</strong> for severe swelling, a visible deformity, if the joint can't bear weight, or if symptoms don't improve after 1–2 days - a fracture needs to be ruled out.
+                </div>`,
+
+        content_gelenkverletzung_erw_learn: `
+                <h1>🔬 Background: Bruises, Strains &amp; Sprains</h1>
+                <p>Sport and everyday accidents like twisting an ankle, falls or knocks often lead to injuries of muscles, ligaments and joints. The RICE rule (Rest, Ice, Compression, Elevation) is a well-established, easy-to-remember first step.</p>
+
+                <h3>Bruise, strain, sprain - what's the difference?</h3>
+                <p>A <strong>bruise</strong> happens when blunt force hits the tissue directly. A <strong>strain</strong> occurs when a muscle is stretched beyond its normal range. A <strong>sprain</strong> happens when a joint is briefly pushed beyond its normal range of motion, overstretching or partially tearing the ligaments.</p>`,
+
+        content_sonnenbrand_erw_panic: `
+                <h1 style="color: #e67e22;">☀️ EMERGENCY: SUNBURN</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>OUT OF THE SUN:</strong> Get the person into the shade or a cool room straight away.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>COOL IT:</strong> Treat the affected skin with cool, damp compresses or a cool (not ice-cold) shower.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>DRINK PLENTY:</strong> Drink enough water to make up for the fluid the skin has lost.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>MOISTURISE:</strong> After cooling, apply a moisturising, cooling lotion (e.g. with aloe vera) - no greasy creams on freshly burnt skin.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    <strong>SEE A DOCTOR</strong> for widespread blistering, fever, chills, nausea or feeling very unwell - also consider heat exhaustion/heatstroke in that case.
+                </div>`,
+
+        content_sonnenbrand_erw_learn: `
+                <h1>🔬 Background: Sunburn</h1>
+                <p>Sunburn is essentially a burn to the skin caused by UV radiation. Depending on severity, it ranges from mild redness to painful blistering.</p>
+
+                <h3>Prevention is the best protection</h3>
+                <p>Enough sunscreen, protective clothing, a hat, and avoiding the strong midday sun significantly lower the risk. Repeated, severe sunburns increase the long-term risk of skin cancer.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 4:
+        // Kopfverletzung, Starke Blutung, Amputationsverletzung,
+        // Bauch- & Brustkorbverletzung, Knochenbruch.
+        // Ton: englischer Rettungssanitäter erklärt es kurz & einfach.
+        // =====================================================
+        content_kopfverletzung_erw_panic: `
+                <h1 style="color: #34495e;">🤕 EMERGENCY: HEAD INJURY</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>REST:</strong> Have the person sit or lie down and avoid further exertion.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>COOL IT:</strong> For a bump or swelling, apply a cold pack wrapped in a cloth.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>CHECK FOR WARNING SIGNS:</strong> Tick anything that applies to the person:
+                    <div style="margin-top: 12px; text-align: left; font-weight: normal;">
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Loss of consciousness (even briefly)</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Confusion, disorientation, or a sudden change in behaviour</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Seizure</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Weakness, numbness, or trouble speaking or seeing</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Repeated vomiting or severe, worsening headache</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Fluid or blood coming from the nose or ears</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:9px;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>Open head wound</span>
+                        </label>
+                        <label style="display:flex; gap:8px; align-items:flex-start; margin-bottom:0;">
+                            <input type="checkbox" class="kopf-warnzeichen-check" style="margin-top:3px; width:auto;">
+                            <span>The person is a child/infant and you're unsure</span>
+                        </label>
+                    </div>
+                    <button onclick="kopfverletzungAuswerten()" style="margin-top:14px; background-color:#f1c40f; color:#2c0e0e; border:none; padding:12px 20px; border-radius:25px; font-weight:bold; width:100%; cursor:pointer; font-size:15px;">
+                        Check
+                    </button>
+                    <div id="kopf-warnzeichen-ergebnis" style="margin-top:12px;"></div>
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Even if things seem fine at first: watch the person for at least 24 hours after a hard knock to the head, and call 112 straight away if any new warning signs appear. For children/infants, when in doubt always go to a (paediatric) A&E or call an emergency doctor, since they often can't describe symptoms clearly.
+                </div>`,
+        content_kopfverletzung_erw_learn: `
+                <h1>🔬 Background: Head Injury & Concussion</h1>
+                <p>A blow or fall to the head can briefly disrupt how the brain works - a concussion. Typical signs are brief dizziness, nausea, or headache, which usually improve within a few days.</p>
+
+                <h3>Why the observation period matters</h3>
+                <p>Some bleeding inside the head develops with a delay and may only show up hours after the accident. That's why a person should be watched for at least 24 hours after a hard knock to the head, with medical help sought immediately if things get worse.</p>`,
+
+        content_starke_blutung_erw_panic: `
+                <h1 style="color: #c0392b;">💥 EMERGENCY: SEVERE BLEEDING</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>APPLY PRESSURE IMMEDIATELY:</strong> Press firmly directly on the wound with your hand (gloves or a cloth in between if possible).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>APPLY A PRESSURE BANDAGE:</strong> Place a sterile dressing on the wound, then secure it with a roller bandage and a firm pressure pad (e.g. a rolled-up dressing) - don't cut off circulation.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>RAISE IT:</strong> If possible, raise the bleeding body part above heart level.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>CALL 112</strong> straight away for spurting or bleeding that won't stop.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    If bleeding on an arm or leg can't be stopped despite a pressure bandage, as a last resort apply a tourniquet (by hand or with a tourniquet device) close to the body from the wound - only for life-threatening bleeding.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Watch for <strong>signs of shock</strong> (paleness, cold sweat, restlessness) and care for the person accordingly.
+                </div>`,
+        content_starke_blutung_erw_learn: `
+                <h1>🔬 Background: Severe Bleeding</h1>
+                <p>Significant blood loss can become life-threatening within minutes because the circulatory system collapses. Firm, direct pressure on the wound is the fastest and most effective first step to slow or stop bleeding.</p>
+
+                <h3>Why pressure comes before everything else</h3>
+                <p>A pressure bandage compresses the injured vessels and supports the body's own clotting. A tourniquet is only used in absolute exceptional cases because it cuts off blood flow to the whole limb.</p>`,
+
+        content_amputationsverletzung_erw_panic: `
+                <h1 style="color: #922b21;">✂️ EMERGENCY: AMPUTATION INJURY</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>STOP THE BLEEDING:</strong> Cover the stump with sterile dressings and apply firm pressure; add a pressure bandage if needed.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CALL 112</strong> straight away.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>SAVE THE AMPUTATED PART:</strong> Wrap it in a sterile or clean dressing, place it in a waterproof plastic bag, then place that bag into a second container filled with ice water.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>Never</strong> place the amputated part directly on ice or in water - only cool it indirectly (bag-in-bag method).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>HAND IT OVER:</strong> Give the cooled, amputated part to the ambulance crew - reattachment is often still possible hours later.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Care for the injured person, watch for signs of shock, keep them warm, and reassure them until the ambulance arrives.
+                </div>`,
+        content_amputationsverletzung_erw_learn: `
+                <h1>🔬 Background: Amputation Injury</h1>
+                <p>Accidents with machinery, tools, or in road traffic can sever fingers, toes, or larger body parts. First aid plays a big part in whether the part can later be reattached.</p>
+
+                <h3>Why indirect cooling is essential</h3>
+                <p>Direct contact with ice or water damages the amputated tissue further (frostbite, swelling). If it's kept dry, packed sterile, and only cooled indirectly through a second, ice-cooled container, the tissue stays suitable for reattachment much longer.</p>`,
+
+        content_bauch_brustverletzung_erw_panic: `
+                <h1 style="color: #7d3c98;">🩻 EMERGENCY: ABDOMINAL & CHEST INJURY</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>CALL 112</strong> straight away.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>POSITIONING:</strong> For an abdominal injury, position with knees bent to relax the abdominal wall. For breathing difficulty from a chest injury, raise the upper body.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>OPEN ABDOMINAL WOUND:</strong> Never push protruding organs back in - loosely cover them with sterile, moist dressings.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>IMPALED OBJECTS:</strong> Never pull them out - they may be preventing bleeding. Only pad and stabilise around them in a ring shape using bandaging material.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    For an open chest wound with an audible sucking sound: loosely cover the wound with airtight material taped down on three sides, so air can escape but not re-enter.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Keep monitoring breathing and consciousness. If the person becomes unconscious and isn't breathing normally, start CPR immediately.
+                </div>`,
+        content_bauch_brustverletzung_erw_learn: `
+                <h1>🔬 Background: Abdominal & Chest Injury</h1>
+                <p>Blunt or open injuries to the abdomen and chest - from falls, road accidents, or stab wounds - can affect internal organs, major vessels, or the lungs, and should always be treated as potentially life-threatening.</p>
+
+                <h3>Why impaled objects aren't removed</h3>
+                <p>An object still in place can mechanically seal off injured vessels. Removing it can trigger massive, uncontrollable bleeding. That's why it's only padded in a ring shape and secured in place for transport.</p>`,
+
+        content_knochenbruch_erw_panic: `
+                <h1 style="color: #34495e;">🦴 EMERGENCY: BROKEN BONE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>KEEP STILL:</strong> Stop moving the injured body part and have the person avoid any movement.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>DON'T REALIGN IT YOURSELF:</strong> Never try to straighten a deformity yourself - only position or support it in whatever way hurts least.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>PAD & COOL:</strong> Gently pad the injured area with soft material and, if possible, cool it without pressing on it.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">4</span>
+                    <strong>CALL 112</strong>, especially if you suspect a pelvic or spinal fracture, an open fracture, or if there's severe pain.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>SUSPECTED SPINAL FRACTURE</strong> (e.g. after a fall from height, diving accident, or road accident): do not move or sit the person up unless absolutely necessary - stabilise the head and spine in the position found until professional help arrives.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>OPEN FRACTURE</strong> (bone visible): loosely cover the wound with a sterile dressing without pressing on the bone, and never try to push it back into place.
+                </div>`,
+        content_knochenbruch_erw_learn: `
+                <h1>🔬 Background: Broken Bone</h1>
+                <p>Typical signs of a fracture are swelling, visible deformity, unusual movement at a point where there's no joint, and sharp, pinpoint pain. Rib, pelvic, and spinal fractures also count, but need extra-careful handling.</p>
+
+                <h3>Why extra caution applies for a suspected spinal fracture</h3>
+                <p>Unnecessary movement of the spine can, in the worst case, damage the spinal cord and cause permanent paralysis. That's why the person is stabilised as far as possible in the position they were found, with movement kept to a minimum until trained rescue staff take over.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 5:
+        // Hitzschlag & Sonnenstich, Unterkühlung & Erfrierung,
+        // Verbrennung & Verbrühung, Vergiftung, Verätzung.
+        // Ton: englischer Rettungssanitäter erklärt es kurz & einfach.
+        // =====================================================
+        content_hitzschlag_erw_panic: `
+                <h1 style="color: #e74c3c;">🥵 EMERGENCY: HEATSTROKE & HEAT EXHAUSTION</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RECOGNISE IT:</strong> Heat exhaustion from sun - bright red, hot head, stiff neck, headache, nausea after sun exposure to the head. Heatstroke - very high body temperature, hot skin, confusion up to unconsciousness: life-threatening!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>OUT OF THE HEAT:</strong> Move to a cool, shaded, or air-conditioned area straight away.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COOL THEM DOWN:</strong> Loosen or open clothing, spray with lukewarm water or apply damp cloths - especially cool the neck, armpits, and groin.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>POSITIONING:</strong> For heat exhaustion, raise the head and upper body slightly. If consciousness is impaired: recovery position.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Only offer small sips of water if the person is fully conscious.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>CALL 112</strong> straight away for heatstroke (very high temperature, impaired consciousness) - untreated it can be life-threatening!
+                </div>`,
+        content_hitzschlag_erw_learn: `
+                <h1>🔬 Background: Heatstroke & Heat Exhaustion</h1>
+                <p>Heat exhaustion from the sun happens from direct, prolonged sun exposure to the bare head and irritates the meninges - core body temperature usually stays normal. Heatstroke, on the other hand, is overheating of the whole body where the body's own temperature regulation fails, and it's an acute emergency.</p>
+
+                <h3>Groups at higher risk</h3>
+                <p>Young children, older people, and anyone physically active in great heat are at increased risk. Drinking enough, wearing a hat, and avoiding the strong midday sun are effective prevention.</p>`,
+
+        content_unterkuehlung_erw_panic: `
+                <h1 style="color: #2980b9;">🥶 EMERGENCY: HYPOTHERMIA & FROSTBITE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>OUT OF THE COLD:</strong> Get the person out of cold and wet conditions, replace wet clothing with dry.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>WARM SLOWLY:</strong> Wrap in blankets (including a survival blanket, gold side inward). Only offer warm, sugary drinks if the person is fully conscious.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>NO ALCOHOL, NO DIRECT HEAT:</strong> No hot shower and no heating pad for severe hypothermia - this can trigger a dangerous circulatory shock.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>MOVE GENTLY:</strong> For severe hypothermia, move the person as little and as carefully as possible to avoid triggering an abnormal heart rhythm.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>FROSTBITTEN BODY PARTS:</strong> Don't rub them, warm slowly and gently (e.g. against your own body warmth), don't pour hot water over them.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>CALL 112</strong> for severe hypothermia (confusion, muscle stiffness, impaired consciousness) or extensive frostbite.
+                </div>`,
+        content_unterkuehlung_erw_learn: `
+                <h1>🔬 Background: Hypothermia & Frostbite</h1>
+                <p>When core body temperature drops below 35°C, it's called hypothermia. At first the body shivers to generate heat; later this protective mechanism fades, movements become uncoordinated, and consciousness becomes impaired.</p>
+
+                <h3>"Rescue collapse" - why gentle movement matters</h3>
+                <p>In severe hypothermia, cold, acidic blood from the limbs can rush toward the heart with sudden movement or rapid warming and trigger dangerous heart rhythm problems there. That's why severely hypothermic people are helped as gently as possible.</p>`,
+
+        content_verbrennung_erw_panic: `
+                <h1 style="color: #e67e22;">🔥 EMERGENCY: BURNS & SCALDS</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>STOP THE CAUSE:</strong> Put out flames, move away from the heat source, carefully remove hot or soaked clothing - unless it's stuck to the skin.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>COOL IT:</strong> Cool the affected area straight away with lukewarm/cool (not ice-cold) water for 10-20 minutes - no ice cubes directly on the skin.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>COVER STERILE:</strong> After cooling, loosely cover with a sterile, germ-free dressing.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>DON'T POP BLISTERS:</strong> Never burst burn blisters yourself - risk of infection.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>CALL 112</strong> for large-area burns (bigger than the person's own palm), burns to the face, hands, joints, or genitals - for children and older people, always get help generously.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    For a large-area burn, stop cooling the whole area (risk of hypothermia) - keep the person warm instead and wait for the ambulance.
+                </div>`,
+        content_verbrennung_erw_learn: `
+                <h1>🔬 Background: Burns & Scalds</h1>
+                <p>Burns are caused by heat, fire, or hot objects, scalds by hot liquids or steam. Both are classified by depth: from superficial redness (1st degree), through painful blisters (2nd degree), to deep, often less painful destruction of all skin layers (3rd degree).</p>
+
+                <h3>Why cooling only helps for a limited time</h3>
+                <p>Cooling eases pain and limits further tissue damage going deeper. But for large-area burns, past a certain point the risk of hypothermia to the whole body outweighs the benefit - fast transport to hospital matters more than further cooling.</p>`,
+
+        content_vergiftung_erw_panic: `
+                <h1 style="color: #6c3483;">🧪 EMERGENCY: POISONING</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>STAY CALM & KEEP EVIDENCE:</strong> If possible, keep the packaging, remains of the substance, or any vomit for later diagnosis.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CONTACT POISON CONTROL</strong> and ask for advice. The number for the responsible poison control centre can also be obtained by calling 112.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>DON'T DO ANYTHING WITHOUT ADVICE:</strong> Don't induce vomiting and don't give milk or charcoal unless explicitly told to - for caustic substances, vomiting can cause additional damage.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>FOR TOXIC FUMES/GASES:</strong> Move the person into fresh air straight away, protect yourself - don't enter a smoke- or gas-filled room yourself.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>CALL 112</strong> for impaired consciousness, breathing difficulty, seizures, or if a large amount or an unclear substance was taken.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    Watch breathing and consciousness; if unconscious but breathing normally, place in the recovery position.
+                </div>`,
+        content_vergiftung_erw_learn: `
+                <h1>🔬 Background: Poisoning</h1>
+                <p>In adults, poisoning often happens from mixed-up or overdosed medication, alcohol, household chemicals, or breathing in toxic gases like carbon monoxide. Symptoms range from nausea to confusion to unconsciousness.</p>
+
+                <h3>Why poison control matters so much</h3>
+                <p>Poison control centres know the effects of thousands of substances and can give targeted advice based on the amount, timing, and type of substance - this often avoids unnecessary panic or helps trigger exactly the right response.</p>`,
+
+        content_veraetzung_erw_panic: `
+                <h1 style="color: #7f8c8d;">⚗️ EMERGENCY: CHEMICAL BURN (SKIN & EYE)</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>STOP THE CONTACT:</strong> Remove contaminated clothing straight away - avoid getting the chemical on your own skin, use gloves if needed.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>RINSE LONG AND WELL:</strong> Rinse the affected skin or eye straight away with plenty of clear, lukewarm water for at least 10-15 minutes. For the eye, rinse from the nose side outward, keeping the eyelids open.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>DON'T NEUTRALISE:</strong> Never try to neutralise acids or alkalis with a counter-substance - the heat this produces can make the injury worse.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>COVER STERILE</strong> after rinsing, loosely with a clean, germ-free dressing.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>CALL 112</strong> for large-area chemical burns, burns to the face/eye, or if the chemical was swallowed. Keep the packaging or safety data sheet ready for the ambulance crew.
+                </div>`,
+        content_veraetzung_erw_learn: `
+                <h1>🔬 Background: Chemical Burns</h1>
+                <p>Acids and alkalis - found in cleaning products, battery acid, or industrial chemicals - destroy skin layers on contact and can cause permanent damage if they get into the eyes.</p>
+
+                <h3>Why rinsing for a long time matters so much</h3>
+                <p>Only long enough rinsing dilutes and fully removes the chemical from the skin or eye. If you stop too soon, the substance keeps acting and the damage keeps getting worse.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 6:
+        // Herzinfarkt, Schlaganfall, Diabetischer Notfall, Sepsis,
+        // Akute Baucherkrankung.
+        // Ton: englischer Rettungssanitäter erklärt es kurz & einfach.
+        // =====================================================
+        content_herzinfarkt_erw_panic: `
+                <h1 style="color: #c0392b;">❤️‍🩹 EMERGENCY: HEART ATTACK</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RECOGNISE IT:</strong> Sudden, severe, often pressing or burning pain behind the breastbone, spreading to the arm, shoulder, back, neck, or jaw - often with anxiety, breathlessness, cold sweat, or nausea. In women the signs can be less typical.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CALL 112 IMMEDIATELY</strong> - for any suspicion, even if symptoms ease off in the meantime.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>POSITIONING:</strong> Reassure the person and help them sit comfortably with the upper body raised, or in a half-sitting position.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>LOOSEN TIGHT CLOTHING</strong> (collar, tie, belt), let fresh air in.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    For a known heart condition: if the person has doctor-prescribed nitro spray or medication, help them take it.
+                </div>
+
+                <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    Keep watching the person's condition - if they become unconscious and stop breathing, start <strong>CPR</strong> immediately.
+                </div>`,
+        content_herzinfarkt_erw_learn: `
+                <h1>🔬 Background: Heart Attack</h1>
+                <p>A heart attack usually happens when a blood clot suddenly blocks a coronary artery, cutting off blood flow to part of the heart muscle. Without treatment, that tissue dies within a short time.</p>
+
+                <h3>Why every minute counts</h3>
+                <p>The faster the blocked vessel is reopened in hospital, the more heart muscle tissue is saved. A heart attack is also one of the most common causes of sudden cardiac arrest, which is why the person needs to be watched closely until the ambulance arrives.</p>`,
+
+        content_schlaganfall_erw_panic: `
+                <h1 style="color: #8e44ad;">🧠 EMERGENCY: STROKE</h1>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">1</span>
+                    <strong>FAST TEST:</strong> <em>Face</em> - ask them to smile: does one side of the mouth droop? <em>Arms</em> - ask them to raise both arms at the same time: does one drift down? <em>Speech</em> - ask them to repeat a sentence: does it sound slurred? <em>Time</em> - act immediately if any of these are present!
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CALL 112 IMMEDIATELY</strong> and give the exact time symptoms started - this is critical for treatment.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>REASSURE & STAY WITH THEM:</strong> Keep the person calm, don't leave them alone, don't give anything to eat or drink (swallowing may be affected).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>POSITIONING:</strong> If the person is responsive, position with the upper body raised. If unconscious but breathing normally: recovery position, lying on the affected (weaker) side.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Keep watching closely and check breathing until the ambulance arrives.
+                </div>`,
+        content_schlaganfall_erw_learn: `
+                <h1>🔬 Background: Stroke</h1>
+                <p>A stroke usually happens when a blood clot blocks a vessel in the brain (much less commonly from bleeding in the brain). The affected brain area loses its blood supply - depending on the region, speech, movement, or other functions can be partly lost.</p>
+
+                <h3>Why the FAST test and timing matter so much</h3>
+                <p>When a vessel is blocked, there's a limited window after symptoms start where medication or a procedure may be able to reopen it. The more precisely the time symptoms started is known, the better doctors can decide which treatment is still possible.</p>`,
+
+        content_diabetes_erw_panic: `
+                <h1 style="color: #b7950b;">🍬 EMERGENCY: DIABETIC EMERGENCY</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RECOGNISE LOW BLOOD SUGAR</strong> (more common, comes on fast): shaking, intense hunger, paleness, sweating, confusion, unusually irritable mood, up to unconsciousness.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>IF THE PERSON IS RESPONSIVE:</strong> Give fast-acting sugar right away (glucose tablets, sugary juice, or cola) - NOT if unconscious or unable to swallow safely!
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    Things usually improve within a few minutes. After that, also offer slow-acting carbohydrates (e.g. bread).
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>RECOGNISE HIGH BLOOD SUGAR</strong> (comes on more slowly): intense thirst, frequent urination, deep, fast breathing, fruity (acetone) smell on the breath, impaired consciousness.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>CALL 112</strong> if unconscious, if things don't improve within a few minutes of giving sugar, or if you suspect high blood sugar.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    If unconscious but breathing normally: recovery position, keep checking breathing, start CPR if breathing stops.
+                </div>`,
+        content_diabetes_erw_learn: `
+                <h1>🔬 Background: Diabetic Emergency</h1>
+                <p>In people with diabetes, blood sugar can swing out of range - either too low (hypoglycaemia) from too much insulin, too little food, or unusual exertion, or too high (hyperglycaemia) from too little insulin or an acute illness.</p>
+
+                <h3>Why sugar is only given if the person is conscious</h3>
+                <p>Low blood sugar usually develops quickly and responds well to giving sugar. But if the person is unconscious or can no longer swallow safely, there's a choking risk - here calling 112 is the right move.</p>`,
+
+        content_sepsis_erw_panic: `
+                <h1 style="color: #922b21;">🦠 EMERGENCY: SEPSIS (BLOOD POISONING)</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>RECOGNISE WARNING SIGNS:</strong> High fever or unusually low body temperature, fast pulse, fast breathing, extreme weakness, confusion, cold or blotchy skin - often following a previous infection or wound.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">2</span>
+                    <strong>CALL 112</strong> - sepsis is an acute, life-threatening emergency where every hour counts.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    Make sure to tell the ambulance crew about any known infection, recent surgery, a wound, or a urinary tract infection beforehand - this speeds up diagnosis.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>POSITIONING:</strong> Keep the person warm and calm, lay them flat or with legs slightly raised if they're not struggling to breathe.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    Keep checking consciousness and breathing until the ambulance arrives.
+                </div>`,
+        content_sepsis_erw_learn: `
+                <h1>🔬 Background: Sepsis</h1>
+                <p>Sepsis happens when the body responds to an infection with an overwhelming reaction throughout the whole circulatory system, damaging its own tissue and organs in the process. It can develop from seemingly harmless infections - such as an infected wound or a urinary tract infection.</p>
+
+                <h3>Why acting fast is so important</h3>
+                <p>As with heart attack and stroke, the rule with sepsis is: the earlier treatment with antibiotics and circulatory support starts, the better the chances of survival. Infants, older people, and those with a weakened immune system are especially at risk.</p>`,
+
+        content_bauchschmerz_erw_panic: `
+                <h1 style="color: #af601a;">🤢 EMERGENCY: ACUTE ABDOMINAL ILLNESS</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>REST:</strong> Have the person lie down with knees bent to relax the abdominal wall.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">2</span>
+                    <strong>DON'T GIVE ANYTHING TO EAT OR DRINK</strong> while the cause is unclear - if surgery is needed, the stomach should ideally be empty.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">3</span>
+                    <strong>NO PAINKILLERS</strong> without medical advice - they can mask symptoms and make diagnosis harder.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    Watch for warning signs: a rock-hard, tense abdomen, severe or worsening pain, fever, vomiting (especially with blood), blood in the stool, or circulatory weakness.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">5</span>
+                    <strong>CALL 112</strong> for sudden, very severe abdominal pain, a hard/tender abdomen, circulatory problems, or fever - otherwise see a doctor promptly.
+                </div>`,
+        content_bauchschmerz_erw_learn: `
+                <h1>🔬 Background: Acute Abdominal Illness</h1>
+                <p>Sudden, severe abdominal pain (the so-called "acute abdomen") can have many causes - from appendicitis to gallstone colic to bowel obstruction. As a first responder you can't determine the exact cause, but the important thing is not to lose time.</p>
+
+                <h3>Why painkillers should be avoided</h3>
+                <p>Painkillers can mask the typical warning signs doctors use to identify the cause. That's why they should only be given in an acute case on medical advice.</p>`,
+
+        // =====================================================
+        // AUSFÜHRLICHE THEMEN-INHALTE (Erwachsene) - Übersetzungs-Batch 7 (letzte):
+        // Asthmaanfall, Krampfanfall.
+        // Ton: englischer Rettungssanitäter erklärt es kurz & einfach.
+        // =====================================================
+        content_asthma_erw_panic: `
+                <h1 style="color: #2471a3;">😮‍💨 EMERGENCY: ASTHMA ATTACK</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>STAY CALM:</strong> Reassure the person - fear and agitation make breathlessness worse.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>FORWARD-LEANING POSITION:</strong> Have them sit upright, arms braced on the thighs or a table edge - this eases the work of the accessory breathing muscles.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">3</span>
+                    <strong>LOOSEN TIGHT CLOTHING</strong> and get fresh, not-too-cold air.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">4</span>
+                    <strong>RESCUE INHALER:</strong> For known asthma, ask about their rescue inhaler and help them use it.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">5</span>
+                    <strong>GUIDE PURSED-LIP BREATHING:</strong> Have them breathe out slowly against slightly pursed lips - this keeps the airways open longer.
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">6</span>
+                    <strong>CALL 112</strong> for severe, worsening breathlessness, bluish lips, exhaustion, or if the rescue inhaler isn't helping.
+                </div>`,
+        content_asthma_erw_learn: `
+                <h1>🔬 Background: Asthma Attack</h1>
+                <p>In an asthma attack, the airways narrow due to muscle spasm, swelling of the lining, and extra mucus production. Breathing out becomes especially difficult, often with an audible wheeze.</p>
+
+                <h3>Why calm and posture help</h3>
+                <p>Sitting upright with braced arms makes it easier for the accessory breathing muscles to work, while pursed-lip breathing creates gentle back-pressure that keeps the airways open on the way out. Stress and panic make the airway narrowing worse, so speaking calmly is an important part of first aid.</p>`,
+
+        content_krampfanfall_erw_panic: `
+                <h1 style="color: #6c3483;">⚡ EMERGENCY: SEIZURE</h1>
+
+                <div class="emergency-step">
+                    <span class="step-num">1</span>
+                    <strong>STAY CALM:</strong> A seizure often looks dramatic, but usually lasts only 1-3 minutes and stops on its own.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">2</span>
+                    <strong>PREVENT INJURY:</strong> Move dangerous objects out of the way, cushion the head with something soft (clothing, a jacket).
+                </div>
+
+                <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
+                    <span class="step-num">3</span>
+                    <strong>DON'T PUT ANYTHING IN THEIR MOUTH</strong> and do NOT hold the person down or try to stop the movements - this can cause injury.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">4</span>
+                    <strong>AFTER THE SEIZURE:</strong> As soon as the jerking stops, place the person in the recovery position and check their breathing.
+                </div>
+
+                <div class="emergency-step" style="background-color: #34495e; border-left-color: #f1c40f;">
+                    <span class="step-num">5</span>
+                    Time how long the seizure lasts.
+                </div>
+
+                <div class="emergency-step">
+                    <span class="step-num">6</span>
+                    <strong>CALL 112</strong> if the seizure lasts longer than 5 minutes, if several seizures happen one after another, if the person got injured, if it's their first known seizure, or if they don't regain consciousness afterwards.
+                </div>`,
+        content_krampfanfall_erw_learn: `
+                <h1>🔬 Background: Seizure</h1>
+                <p>A seizure is caused by sudden, excessive electrical activity in the brain and can show up as jerking of the whole body, but also as quiet "absence" episodes. Known causes include epilepsy, but fever (see febrile seizure in the Baby & Child section), low blood sugar, or head injuries can also trigger seizures.</p>
+
+                <h3>Why you shouldn't hold the person down</h3>
+                <p>Forcibly restraining the jerking movements can cause fractures or muscle injuries. It's more important to make the surroundings safe and protect the head while the seizure passes on its own.</p>`
     }
 };
 
