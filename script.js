@@ -1598,7 +1598,6 @@ const wqQuestions = [
     { type: 'tf', topic: 'Magnete', q: 'Hat ein Kind zwei Magnete (oder einen Magneten plus ein Metallteil) verschluckt, ist das ein akuter OP-Notfall.', correct: true, explain: 'Die Magnete können sich im Darm gegenseitig anziehen und die Darmwand durchlöchern.' },
 
     // --- Verbrennung ---
-    { type: 'mc', topic: 'Verbrennung', q: 'Wie lange sollte eine kleine Verbrennung mit handwarmem Wasser gekühlt werden?', options: ['Mindestens 10 Minuten', 'Maximal 2 Minuten', 'Gar nicht kühlen', 'Bis der Schmerz komplett weg ist'], correct: 1, explain: 'Maximal 2 Minuten und nur kleine Stellen – sonst droht Unterkühlung, besonders bei Babys.' },
     { type: 'tf', topic: 'Verbrennung', q: 'Man sollte eine Verbrennung mit Eiswasser kühlen, das kühlt am schnellsten.', correct: false, explain: 'Niemals Eiswasser oder Kühlakkus – nur handwarmes Wasser mit ca. 15–20°C.' },
     { type: 'mc', topic: 'Verbrennung', q: 'Was ist bei einer Brandwunde absolut verboten?', options: ['Steril abdecken', 'Hausmittel wie Mehl oder Zahnpasta auftragen', 'Zum Kinderarzt gehen', 'Kleidung ausziehen'], correct: 1, explain: 'Keine Hausmittel wie Mehl, Öl, Zahnpasta oder Puder – die verschlimmern die Wunde nur.' },
     { type: 'tf', topic: 'Verbrennung', q: 'Kleidung, die bereits fest an der verbrannten Haut klebt, sollte man vorsichtig, aber zügig abreißen.', correct: false, explain: 'Festklebende Kleidung auf keinen Fall gewaltsam abreißen!' },
@@ -1634,13 +1633,11 @@ const wqQuestions = [
     { type: 'mc', topic: 'Notruf', q: 'Welche Nummer wählst du bei einem lebensbedrohlichen Notfall in Deutschland?', options: ['110', '112', '116 117', '19222'], correct: 1, explain: 'Die 112 ist der europaweite Notruf für Rettungsdienst und Feuerwehr.' },
     { type: 'mc', topic: 'Notruf', q: 'Wofür ist die Nummer 116 117 gedacht?', options: ['Für akute Lebensgefahr', 'Für den ärztlichen Bereitschaftsdienst außerhalb der Sprechzeiten', 'Für die Polizei', 'Für den Giftnotruf'], correct: 1, explain: '116 117 ist der ärztliche Bereitschaftsdienst für nicht lebensbedrohliche Fälle nachts/am Wochenende.' },
     { type: 'tf', topic: 'Notruf', q: 'Beim Absetzen eines Notrufs sollte man auflegen, sobald man Ort und Notfall genannt hat.', correct: false, explain: 'Immer warten, bis die Leitstelle das Gespräch beendet – es können noch Rückfragen kommen.' },
-    { type: 'mc', topic: 'Notruf', q: 'Was gehört NICHT zu den klassischen "W-Fragen" beim Notruf?', options: ['Wo ist es passiert?', 'Was ist passiert?', 'Wie viele Verletzte?', 'Wie war das Wetter?'], correct: 3, explain: 'Das Wetter gehört nicht zu den W-Fragen beim Notruf.' },
     { type: 'tf', topic: 'Giftnotruf', q: 'Der Giftnotruf ist deutschlandweit einheitlich über eine einzige Telefonnummer erreichbar.', correct: false, explain: 'Die Giftnotrufzentrale ist je nach Bundesland unterschiedlich – die App zeigt dir automatisch die passende an.' },
     { type: 'tf', topic: 'Verbandkasten', q: 'Ein Verbandkasten im Haushalt sollte regelmäßig auf abgelaufene Inhalte kontrolliert werden.', correct: true, explain: 'Pflaster & Co. verlieren mit der Zeit ihre Wirkung bzw. Sterilität – deshalb regelmäßig checken.' },
     { type: 'mc', topic: 'Stabile Seitenlage', q: 'Für wen ist die stabile Seitenlage grundsätzlich gedacht?', options: ['Bewusstlose Personen, die noch normal atmen', 'Personen mit Herzstillstand', 'Personen bei vollem Bewusstsein', 'Nur für Erwachsene, nie für Kinder'], correct: 0, explain: 'Die stabile Seitenlage ist für Bewusstlose MIT normaler Atmung gedacht.' },
     { type: 'tf', topic: 'Stabile Seitenlage', q: 'Bei einem bewusstlosen Kind, das NICHT normal atmet, bringt man es zuerst in die stabile Seitenlage statt sofort die Herzdruckmassage zu beginnen.', correct: false, explain: 'Ohne normale Atmung sofort mit der Herzdruckmassage beginnen! Die stabile Seitenlage ist nur bei normaler Atmung richtig.' },
-    { type: 'mc', topic: 'Allergie-Notfall', q: 'Wann sollte bei einem Kind mit bekannter schwerer Allergie der Adrenalin-Autoinjektor (Pen) angewendet werden?', options: ['Nie ohne Arzt', 'Sofort bei ersten Anzeichen eines schweren allergischen Notfalls', 'Nur wenn die Eltern es erlauben', 'Erst nach Rücksprache mit dem Notruf'], correct: 1, explain: 'Bei ersten Anzeichen eines schweren allergischen Notfalls sofort anwenden – zählt jede Sekunde.' },
-    { type: 'tf', topic: 'Allgemein', q: '"Erste Hilfe ABC" ersetzt den Notruf 112 und einen Arztbesuch.', correct: false, explain: 'Die App ist nur eine Gedächtnisstütze – bei echten Notfällen zählt immer zuerst der Notruf 112!' }
+    { type: 'mc', topic: 'Allergie-Notfall', q: 'Wann sollte bei einem Kind mit bekannter schwerer Allergie der Adrenalin-Autoinjektor (Pen) angewendet werden?', options: ['Nie ohne Arzt', 'Sofort bei ersten Anzeichen eines schweren allergischen Notfalls', 'Nur wenn die Eltern es erlauben', 'Erst nach Rücksprache mit dem Notruf'], correct: 1, explain: 'Bei ersten Anzeichen eines schweren allergischen Notfalls sofort anwenden – zählt jede Sekunde.' }
 ];
 
 let wqRound = [];
@@ -1773,7 +1770,9 @@ function wqSelectAnswer(isCorrect, clickedBtn) {
         if (clickedBtn && clickedBtn !== correctBtn) clickedBtn.classList.add('wq-wrong');
     }
 
-    setTimeout(() => wqShowFeedback(isCorrect, points, q.explain), 600);
+    // Kurze Pause, damit man die grün/rot markierte Antwort noch bewusst sehen kann,
+    // bevor zur Punkte-/Erklärungs-Ansicht gewechselt wird (Feedback: 600ms war zu knapp zum Lesen).
+    setTimeout(() => wqShowFeedback(isCorrect, points, q.explain), 1800);
 }
 
 function wqShowFeedback(isCorrect, points, explain) {

@@ -499,6 +499,35 @@ main.mode-learn .panic-content {
     color: #64748b;
 }
 
+/* --- SPIELE-KACHEL: WISSENS-QUIZ AUF DER STARTSEITE --- */
+.quiz-home-tile {
+    position: relative;
+    background: linear-gradient(135deg, #f3e8fd 0%, #ffffff 100%);
+    border-color: #8e44ad;
+    color: #6c3483;
+    overflow: visible;
+}
+
+.quiz-home-subtitle {
+    font-weight: 400;
+    font-size: 13px;
+    color: #8e5fa8;
+}
+
+.quiz-home-badge {
+    position: absolute;
+    top: -9px;
+    right: 12px;
+    background-color: #8e44ad;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 9px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(142, 68, 173, 0.35);
+}
+
 .lage-card {
     border-radius: 12px;
     padding: 16px;

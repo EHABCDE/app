@@ -67,6 +67,16 @@
                 <span class="lage-tile-text" data-i18n="nsTileTitle">Notfall-Steckbrief</span>
             </button>
 
+            <!-- Spiele-Kachel: Wissens-Quiz direkt von der Startseite aus spielbar -->
+            <button class="lage-tile quiz-home-tile" onclick="showScreen('screen-wissensquiz')">
+                <span class="quiz-home-badge">NEU</span>
+                <span class="lage-tile-icon">🧠</span>
+                <span class="lage-tile-text">
+                    <span>Quiz rund ums Kind</span>
+                    <span class="quiz-home-subtitle">Teste dein Wissen – 10 Fragen, ca. 2 Minuten</span>
+                </span>
+            </button>
+
             <!-- Saisonale Hinweise: Status-Kachel (Pollen/UV/Grippewelle) -->
             <button id="lage-status-tile" class="lage-tile lage-tile-neutral" onclick="showScreen('screen-aktuelle-lage')" style="display: none;">
                 <span class="lage-tile-icon" id="lage-tile-icon">📍</span>
@@ -2044,7 +2054,7 @@
                     <div class="wq-course-hint">
                         📚 Noch mehr lernen? Der ausführliche Erste-Hilfe-Kurs für Baby &amp; Kind kommt bald!
                         <br>
-                        <a href="#" class="wq-course-btn" onclick="return false;">Jetzt vormerken (bald verfügbar)</a>
+                        <a href="https://www.erste-hilfe-abc.de/rund-ums-baby/e-learning-baby" class="wq-course-btn" target="_blank" rel="noopener">Jetzt unverbindlich vormerken</a>
                     </div>
 
                     <button class="wq-restart-btn" onclick="wqStart()">🔄 Nochmal spielen</button>
