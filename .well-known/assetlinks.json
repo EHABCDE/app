@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "de.erstehilfeabc.notfallapp",
+        "sha256_cert_fingerprints": ["A1:95:DB:D0:73:73:2F:CD:4D:0A:8C:32:0D:2F:91:1D:7C:82:BB:16:E2:86:AE:AA:C1:18:01:9D:00:65:8C:22"]
+      }
+    }]
