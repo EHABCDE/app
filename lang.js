@@ -218,6 +218,7 @@ const TRANSLATIONS = {
         feedbackBtn: 'Feedback & suggestions',
         privacyLink: 'Privacy',
         imprintLink: 'Legal notice',
+        sourcesLink: 'Sources',
 
         // Themen-Kachel-Titel (Baby & Kind)
         topic_notfallcheck: '❓ Emergency or not?',
@@ -2823,6 +2824,7 @@ const TRANSLATIONS = {
         feedbackBtn: 'Відгук та пропозиції',
         privacyLink: 'Конфіденційність',
         imprintLink: 'Вихідні дані',
+        sourcesLink: 'Джерела',
 
         // Назви плиток тем (немовлята та діти)
         topic_notfallcheck: '❓ Невідкладний випадок чи ні?',
