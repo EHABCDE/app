@@ -208,7 +208,27 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAdultTopics(adultTopics);
     initGeoLocation();
     aktualisiereGlobaleNotfallLeisten();
+
+    // Ersten Verlaufseintrag setzen, damit gleich beim ersten Zurück-Schritt
+    // (Android-Geste bzw. Browser-Zurück-Button) etwas zum Zurückgehen zur
+    // Verfügung steht, statt dass die App sofort verlassen wird.
+    history.replaceState({ screenId: currentScreenId }, '', '#' + currentScreenId);
+
+    // Tatsächliche Höhe der oben fixierten Kopfzeile messen und als CSS-Variable
+    // bereitstellen, damit der "Zurück"-Button (siehe style.css, .back-btn)
+    // beim Scrollen passgenau direkt darunter schweben kann, statt mit ihr zu
+    // überlappen oder aus dem sichtbaren Bereich zu scrollen.
+    aktualisiereHeaderHoehe();
+    window.addEventListener('resize', aktualisiereHeaderHoehe);
+    window.addEventListener('orientationchange', aktualisiereHeaderHoehe);
 });
+
+function aktualisiereHeaderHoehe() {
+    const header = document.getElementById('mode-switcher-container');
+    if (header) {
+        document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    }
+}
 
 // Rendert die Themen-Buttons auf der Startseite
 function renderTopics(topicList) {
@@ -276,6 +296,12 @@ function filterAdultTopics() {
 let currentCategory = 'kind';
 let currentScreenId = 'screen-category';
 
+// Wird kurzzeitig auf true gesetzt, während showScreen() als Reaktion auf ein
+// popstate-Ereignis (Zurück-Geste/-Button) aufgerufen wird - verhindert, dass
+// dabei ein neuer Verlaufseintrag gepusht wird (siehe Ende von showScreen()
+// und der popstate-Listener weiter unten).
+let isPopStateNavigation = false;
+
 function showScreen(screenId) {
     if (screenId === 'screen-start') {
         currentCategory = 'kind';
@@ -331,7 +357,26 @@ function showScreen(screenId) {
     if (screenId === 'screen-notfallcheck_erw') resetNotfallCheckErw();
     if (screenId === 'screen-kopfverletzung_erw') resetKopfverletzungCheck();
     if (screenId === 'screen-stuerze') resetKindSturzCheck();
+
+    // Browser-/App-Verlauf pflegen: jeder Bildschirmwechsel bekommt einen
+    // eigenen Verlaufseintrag, damit die Zurück-Geste auf Android (innerhalb
+    // der als TWA verpackten App) bzw. der Zurück-Button im Browser zum vorher
+    // gezeigten Screen zurückführt, statt die App direkt zu verlassen bzw.
+    // wirkungslos zu bleiben. Bei Navigation DURCH popstate (siehe Listener
+    // unten) hier nichts erneut pushen, sonst entsteht eine Endlosschleife.
+    if (!isPopStateNavigation) {
+        history.pushState({ screenId: screenId }, '', '#' + screenId);
+    }
+    isPopStateNavigation = false;
 }
+
+// Reagiert auf die Android-Zurück-Geste (bzw. Browser-Zurück-Button): zeigt
+// den zuvor besuchten Screen wieder an, statt dass die App verlassen wird.
+window.addEventListener('popstate', (event) => {
+    const zielScreen = (event.state && event.state.screenId) || 'screen-category';
+    isPopStateNavigation = true;
+    showScreen(zielScreen);
+});
 
 // =========================================================
 // 🩹 VERBANDKASTEN-CHECK (lokale Speicherung + Push-Erinnerung)

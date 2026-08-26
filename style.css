@@ -354,6 +354,14 @@ main.mode-learn .panic-content {
     cursor: pointer;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* Bleibt beim Scrollen sichtbar ("schwebt" mit) statt aus dem Bildschirm zu
+       verschwinden - positioniert sich direkt unter der oben fixierten
+       Kopfzeile (#mode-switcher-container). Deren tatsächliche Höhe wird per
+       JS in --header-height geschrieben (siehe aktualisiereHeaderHoehe() in
+       script.js), damit es auf jedem Gerät exakt passt und nichts überlappt. */
+    position: sticky;
+    top: calc(var(--header-height, 64px) + 10px);
+    z-index: 900;
 }
 
 .back-btn:active {
