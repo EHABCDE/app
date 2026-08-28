@@ -223,6 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('orientationchange', aktualisiereHeaderHoehe);
 });
 
+// Blendet die "Bewerte uns im Play Store"-Karte auf dem Feedback-Screen nur
+// auf Android-Geräten ein - eine Play-Store-Bewertung ergibt auf iOS oder am
+// Desktop keinen Sinn und würde dort nur verwirren (die Karte ist per Inline-
+// Style standardmäßig ausgeblendet, siehe index.html/lang.js content_feedback).
+function aktualisiereBewertungsHinweis() {
+    const karte = document.getElementById('rate-us-card');
+    if (!karte) return;
+    const istAndroid = /Android/i.test(navigator.userAgent);
+    karte.style.display = istAndroid ? 'block' : 'none';
+}
+
 function aktualisiereHeaderHoehe() {
     const header = document.getElementById('mode-switcher-container');
     if (header) {
@@ -357,6 +368,7 @@ function showScreen(screenId) {
     if (screenId === 'screen-notfallcheck_erw') resetNotfallCheckErw();
     if (screenId === 'screen-kopfverletzung_erw') resetKopfverletzungCheck();
     if (screenId === 'screen-stuerze') resetKindSturzCheck();
+    if (screenId === 'screen-feedback') aktualisiereBewertungsHinweis();
 
     // Browser-/App-Verlauf pflegen: jeder Bildschirmwechsel bekommt einen
     // eigenen Verlaufseintrag, damit die Zurück-Geste auf Android (innerhalb

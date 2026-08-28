@@ -1899,6 +1899,18 @@
                 <h1 style="color: #2980b9;">💬 Feedback &amp; Unterstützung</h1>
                 <p>Deine Rückmeldung hilft uns, diese App für alle Nutzer:innen noch besser und sicherer zu machen!</p>
 
+                <!-- Bewertungs-Hinweis: standardmäßig ausgeblendet, wird nur auf Android
+                     eingeblendet (siehe aktualisiereBewertungsHinweis() in script.js) -
+                     eine Play-Store-Bewertung ergibt auf iOS/Desktop-Web keinen Sinn. -->
+                <div id="rate-us-card" style="display:none; background: #fffbeb; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #fbbf24; margin-bottom: 20px; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">⭐ Gefällt dir die App?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">Wenn dir die App schon geholfen hat oder du sie einfach gut findest: Eine kurze Bewertung im Play Store hilft anderen, sie zu finden – und dauert nur eine Minute!</p>
+
+                    <a href="https://play.google.com/store/apps/details?id=de.erstehilfeabc.notfallapp" target="_blank" rel="noopener" style="display: block; background-color: #f59e0b; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        ⭐ Jetzt im Play Store bewerten
+                    </a>
+                </div>
+
                 <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
                     <h3 style="margin-top: 0;">🐛 Etwas funktioniert nicht?</h3>
                     <p style="font-size: 14px; line-height: 1.5;">Ein Button reagiert nicht, ein Bild wird nicht geladen oder eine Ansicht sieht komisch aus? Sag mir kurz Bescheid, damit ich es sofort reparieren kann.</p>

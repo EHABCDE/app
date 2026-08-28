@@ -2632,6 +2632,15 @@ const TRANSLATIONS = {
                 <h1 style="color: #2980b9;">💬 Feedback &amp; Support</h1>
                 <p>Your feedback helps us make this app even better and safer for everyone!</p>
 
+                <div id="rate-us-card" style="display:none; background: #fffbeb; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #fbbf24; margin-bottom: 20px; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">⭐ Enjoying the app?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">If the app has already helped you, or you just think it's great: a quick rating on the Play Store helps others find it too – it only takes a minute!</p>
+
+                    <a href="https://play.google.com/store/apps/details?id=de.erstehilfeabc.notfallapp" target="_blank" rel="noopener" style="display: block; background-color: #f59e0b; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        ⭐ Rate us on the Play Store
+                    </a>
+                </div>
+
                 <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
                     <h3 style="margin-top: 0;">🐛 Something not working?</h3>
                     <p style="font-size: 14px; line-height: 1.5;">A button not responding, an image not loading, or a screen looking off? Let me know briefly so I can fix it right away.</p>
@@ -5206,6 +5215,15 @@ const TRANSLATIONS = {
                 <h1 style="color: #2980b9;">💬 Зворотний зв'язок і підтримка</h1>
                 <p>Ваш відгук допомагає нам зробити цей додаток ще кращим і безпечнішим для всіх!</p>
 
+                <div id="rate-us-card" style="display:none; background: #fffbeb; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #fbbf24; margin-bottom: 20px; color: #2c3e50;">
+                    <h3 style="margin-top: 0;">⭐ Подобається додаток?</h3>
+                    <p style="font-size: 14px; line-height: 1.5;">Якщо додаток вам вже допоміг або просто подобається: коротка оцінка в Play Store допоможе іншим його знайти – це займе лише хвилину!</p>
+
+                    <a href="https://play.google.com/store/apps/details?id=de.erstehilfeabc.notfallapp" target="_blank" rel="noopener" style="display: block; background-color: #f59e0b; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 25px; font-weight: bold; font-size: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;">
+                        ⭐ Оцінити в Play Store
+                    </a>
+                </div>
+
                 <div style="background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; margin-bottom: 20px; color: #2c3e50;">
                     <h3 style="margin-top: 0;">🐛 Щось не працює?</h3>
                     <p style="font-size: 14px; line-height: 1.5;">Кнопка не реагує, зображення не завантажується, чи екран виглядає не так? Повідомте мені коротко, щоб я міг це швидко виправити.</p>
@@ -5380,6 +5398,13 @@ function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem(LANG_STORAGE_KEY, currentLang);
     applyTranslations();
+
+    // applyTranslations() ersetzt bei data-i18n-html-Blöcken (z. B. den
+    // Feedback-Screen) das komplette innerHTML - dabei würde die per JS
+    // ein-/ausgeblendete "Bewerte uns"-Karte auf ihren HTML-Standardzustand
+    // (versteckt) zurückfallen. Direkt danach erneut anwenden, falls der
+    // Sprachwechsel mitten auf dem Feedback-Screen passiert (siehe script.js).
+    if (typeof aktualisiereBewertungsHinweis === 'function') aktualisiereBewertungsHinweis();
 }
 
 function initI18n() {
