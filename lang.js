@@ -135,6 +135,7 @@ const TRANSLATIONS = {
         backToChooser: '⬅ Back to selection',
         emergencyBtn: 'EMERGENCY',
         emergencyBtnBackToLearn: 'Back to learn mode',
+        seniorModeBtn: 'Large & high-contrast',
         appTitle: 'Erste Hilfe ABC',
         categorySubtitle: 'Who do you need help for?',
         categoryChild: 'Baby & Child',
@@ -1164,30 +1165,42 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">1</span>
-                    <strong>GET HELP:</strong> Shout loudly for help. Call 112 (put it on speaker!). If someone else is there, have them fetch a defibrillator (AED) straight away if one is nearby.
+                    <div class="step-body">
+                        <div class="step-core">Shout for help, call 112 (put it on speaker).</div>
+                        <div class="step-detail">If someone else is there: have them fetch an AED if one is nearby.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
                     <span class="step-num">2</span>
-                    <strong>CHEST COMPRESSIONS:</strong><br>
-                    • Lay the person on a hard surface, expose the chest.<br>
-                    • Place the heel of your hand on the lower half of the breastbone, your other hand on top, fingers interlocked.<br>
-                    • With straight arms, press down <strong>5–6 cm deep</strong>, at a rate of <strong>100–120 compressions/minute</strong>. Let the chest come back up fully after each compression.
+                    <div class="step-body">
+                        <div class="step-core">Press as deep as you can – 100–120 times/minute.</div>
+                        <div class="step-detail">Hard surface, chest exposed. Heel of your hand on the lower breastbone, other hand on top, arms straight. You'll feel the resistance rise once the heart is compressed enough. Let the chest come back up fully after each compression.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">3</span>
-                    <strong>ALTERNATE WITH RESCUE BREATHS:</strong> After 30 chest compressions: tilt the head back, pinch the nose shut, take a normal breath and blow steadily into the mouth for about 1 second, until the chest rises. Give two breaths, then another 30 compressions. Keep going in a rhythm of <strong>30 : 2</strong>.
+                    <div class="step-body">
+                        <div class="step-core">After 30 compressions: give 2 breaths.</div>
+                        <div class="step-detail">Tilt the head back, pinch the nose shut, take a normal breath and blow steadily into the mouth for about 1 second, until the chest rises. Then another 30 compressions. Rhythm <strong>30 : 2</strong>.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
-                    <strong>USE THE AED (DEFIBRILLATOR) AS SOON AS IT'S AVAILABLE:</strong> Switch it on and follow the voice prompts. Stick the pads onto the bare chest as shown. <strong>Nobody may touch the person during analysis or when the shock is delivered!</strong> Between analyses, keep doing chest compressions/breaths for 2 minutes at a time.
+                    <div class="step-body">
+                        <div class="step-core">AED as soon as it's available: switch on &amp; follow the prompts.</div>
+                        <div class="step-detail">Stick the pads onto the bare chest as shown. <strong>Nobody may touch the person during analysis or the shock!</strong> Keep going 30:2 in between, until the next analysis (about every 2 minutes).</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    <strong>KEEP GOING</strong> until paramedics take over, or the person shows signs of life (e.g. breathing on their own, coughing, moving) - then put them in the recovery position and keep watching their breathing.
+                    <div class="step-body">
+                        <div class="step-core">Keep going until paramedics take over or signs of life appear.</div>
+                        <div class="step-detail">Breathing normally again, coughing or moving: put them in the recovery position and keep watching their breathing.</div>
+                    </div>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
@@ -2750,6 +2763,7 @@ const TRANSLATIONS = {
         backToChooser: '⬅ Назад до вибору',
         emergencyBtn: 'НЕВІДКЛАДНА ДОПОМОГА',
         emergencyBtnBackToLearn: 'Повернутися до навчального режиму',
+        seniorModeBtn: 'Великий шрифт і контраст',
         appTitle: 'Erste Hilfe ABC',
         categorySubtitle: 'Кому потрібна допомога?',
         categoryChild: 'Немовля та дитина',
@@ -3986,30 +4000,42 @@ const TRANSLATIONS = {
 
                 <div class="emergency-step">
                     <span class="step-num">1</span>
-                    <strong>ЗАКЛИЧТЕ НА ДОПОМОГУ:</strong> Голосно кличте на допомогу. Телефонуйте 112 (увімкніть гучний зв'язок!). Якщо поруч є ще хтось, попросіть його одразу принести дефібрилятор (АЗД), якщо він десь поблизу.
+                    <div class="step-body">
+                        <div class="step-core">Голосно кличте на допомогу, телефонуйте 112 (гучний зв'язок).</div>
+                        <div class="step-detail">Якщо є хтось поруч: нехай принесе АЗД, якщо він десь неподалік.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
                     <span class="step-num">2</span>
-                    <strong>НАТИСКАННЯ НА ГРУДНУ КЛІТКУ:</strong><br>
-                    • Покладіть людину на тверду поверхню, оголіть грудну клітку.<br>
-                    • Покладіть основу долоні на нижню половину грудини, іншу руку зверху, пальці переплетені.<br>
-                    • Прямими руками натискайте на глибину <strong>5-6 см</strong>, з частотою <strong>100-120 натискань за хвилину</strong>. Давайте грудній клітці повністю піднятися після кожного натискання.
+                    <div class="step-body">
+                        <div class="step-core">Натискайте максимально глибоко – 100–120 разів/хвилину.</div>
+                        <div class="step-detail">Тверда поверхня, оголена грудна клітка. Основа долоні на нижній половині грудини, інша рука зверху, руки прямі. Опір помітно зростає, коли серце достатньо стиснуте. Після кожного натискання давайте грудній клітці повністю піднятися.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">3</span>
-                    <strong>ЧЕРГУЙТЕ З РЯТУВАЛЬНИМИ ВДИХАМИ:</strong> Після 30 натискань на грудну клітку: закиньте голову назад, затисніть ніс, зробіть звичайний вдих і рівномірно вдувайте повітря в рот приблизно 1 секунду, поки грудна клітка не підніметься. Зробіть два вдихи, потім знову 30 натискань. Продовжуйте в ритмі <strong>30 : 2</strong>.
+                    <div class="step-body">
+                        <div class="step-core">Після 30 натискань: 2 вдихи.</div>
+                        <div class="step-detail">Закиньте голову назад, затисніть ніс, зробіть звичайний вдих і вдувайте повітря в рот близько 1 секунди, поки грудна клітка не підніметься. Потім знову 30 натискань. Ритм <strong>30 : 2</strong>.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
-                    <strong>ВИКОРИСТОВУЙТЕ АЗД (ДЕФІБРИЛЯТОР), ЩОЙНО ВІН БУДЕ ДОСТУПНИЙ:</strong> Увімкніть його і слідуйте голосовим підказкам. Приклейте електроди на оголену грудну клітку, як показано. <strong>Ніхто не повинен торкатися людини під час аналізу або нанесення розряду!</strong> Між аналізами продовжуйте натискання на грудну клітку/вдихи протягом 2 хвилин.
+                    <div class="step-body">
+                        <div class="step-core">АЗД, щойно доступний: увімкніть і слідуйте підказкам.</div>
+                        <div class="step-detail">Приклейте електроди на оголену грудну клітку, як показано. <strong>Під час аналізу або розряду ніхто не повинен торкатися людини!</strong> Між аналізами продовжуйте в ритмі 30:2 (аналіз приблизно кожні 2 хвилини).</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    <strong>ПРОДОВЖУЙТЕ</strong>, поки не прибуде швидка допомога, або людина не покаже ознак життя (наприклад, самостійне дихання, кашель, рух) - тоді покладіть її в стабільне бокове положення і продовжуйте стежити за диханням.
+                    <div class="step-body">
+                        <div class="step-core">Продовжуйте, поки не прибуде швидка або не з'являться ознаки життя.</div>
+                        <div class="step-detail">Людина знову дихає, кашляє або рухається: покладіть у стабільне бокове положення і стежте за диханням.</div>
+                    </div>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">

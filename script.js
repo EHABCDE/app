@@ -204,6 +204,7 @@ const adultTopics = [
 // Start-Funktion beim Laden
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof initI18n === 'function') initI18n();
+    initSeniorMode();
     renderTopics(topics);
     renderAdultTopics(adultTopics);
     initGeoLocation();
@@ -236,9 +237,15 @@ function aktualisiereBewertungsHinweis() {
 
 function aktualisiereHeaderHoehe() {
     const header = document.getElementById('mode-switcher-container');
+    const accessibilityBar = document.getElementById('accessibility-bar');
     if (header) {
         document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
     }
+    // --header-total-height berücksichtigt zusätzlich die (ebenfalls fixiert
+    // angedockte) Senioren-Modus-Leiste, damit der "Zurück"-Button (siehe
+    // .back-btn in style.css) direkt darunter schwebt statt sie zu überlappen.
+    const gesamtHoehe = (header ? header.offsetHeight : 0) + (accessibilityBar ? accessibilityBar.offsetHeight : 0);
+    document.documentElement.style.setProperty('--header-total-height', gesamtHoehe + 'px');
 }
 
 // Rendert die Themen-Buttons auf der Startseite
@@ -851,6 +858,36 @@ function toggleEmergencyMode() {
     }
 
     aktualisiereGlobaleNotfallLeisten();
+}
+
+// --- SENIOREN-MODUS (größere Schrift & mehr Kontrast, siehe style.css) ---
+// Wird geräteweit per localStorage gemerkt (wie die Sprachauswahl über
+// LANG_STORAGE_KEY in lang.js), damit die Einstellung auch nach dem
+// Schließen der App erhalten bleibt.
+const SENIOR_MODE_STORAGE_KEY = 'eh_abc_senior_mode';
+
+function toggleSeniorMode() {
+    const istAktiv = document.body.classList.toggle('senior-mode');
+    localStorage.setItem(SENIOR_MODE_STORAGE_KEY, istAktiv ? '1' : '0');
+    aktualisiereSeniorModeButton(istAktiv);
+    // Kopfzeilenhöhe kann sich durch die größeren Buttons ändern - den
+    // "Zurück"-Button (siehe .back-btn in style.css) entsprechend nachziehen.
+    aktualisiereHeaderHoehe();
+}
+
+function aktualisiereSeniorModeButton(istAktiv) {
+    const btn = document.getElementById('senior-mode-toggle-btn');
+    if (!btn) return;
+    btn.classList.toggle('is-active', istAktiv);
+    btn.setAttribute('aria-pressed', istAktiv ? 'true' : 'false');
+}
+
+// Beim Start die zuletzt gespeicherte Einstellung übernehmen (siehe Aufruf
+// in DOMContentLoaded weiter unten).
+function initSeniorMode() {
+    const istAktiv = localStorage.getItem(SENIOR_MODE_STORAGE_KEY) === '1';
+    document.body.classList.toggle('senior-mode', istAktiv);
+    aktualisiereSeniorModeButton(istAktiv);
 }
 
 // Metronom für Reanimation (Lautstärke maximiert & schrillerer Ton für Kurse)

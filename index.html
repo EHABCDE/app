@@ -35,6 +35,16 @@
         <img src="logo.jpg" alt="Erste Hilfe ABC Logo" class="header-logo" onclick="goToCategoryChooser()" style="cursor: pointer;">
     </div>
 
+    <!-- Eigene schmale Leiste für den Senioren-Modus (siehe toggleSeniorMode() in
+         script.js): bewusst NICHT in #mode-switcher-container, weil dort auf
+         schmalen Handy-Breiten kein Platz mehr neben dem absolut zentrierten
+         NOTFALL-Button ist, ohne dass sich Elemente überlappen. -->
+    <div id="accessibility-bar">
+        <button id="senior-mode-toggle-btn" class="senior-toggle-btn" onclick="toggleSeniorMode()" aria-pressed="false" title="Seniorenmodus: größere Schrift &amp; mehr Kontrast">
+            🔎 <span data-i18n="seniorModeBtn">Groß &amp; kontrastreich</span>
+        </button>
+    </div>
+
     <!-- Warnhinweis für die noch nicht gegengeprüfte ukrainische Übersetzung.
          Standardmäßig versteckt, wird von applyTranslations() (lang.js) ein-
          geblendet, solange currentLang === 'uk' ist. Bleibt sichtbar, bis die
@@ -261,30 +271,42 @@
 
                 <div class="emergency-step">
                     <span class="step-num">1</span>
-                    <strong>HILFE HOLEN:</strong> Laut um Hilfe rufen. Notruf 112 wählen (Lautsprecher an!). Ist eine zweite Person da, soll sie sofort ein Defibrillationsgerät (AED) holen, falls in der Nähe eines vorhanden ist.
+                    <div class="step-body">
+                        <div class="step-core">Laut um Hilfe rufen, 112 wählen (Lautsprecher an).</div>
+                        <div class="step-detail">Ist jemand da: AED holen lassen, falls in der Nähe eines vorhanden ist.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #78281f; border-color: #c0392b;">
                     <span class="step-num">2</span>
-                    <strong>HERZDRUCKMASSAGE:</strong><br>
-                    • Person auf harten Untergrund legen, Oberkörper freimachen.<br>
-                    • Handballen auf die untere Hälfte des Brustbeins setzen, zweite Hand darüber, Finger verschränken.<br>
-                    • Mit gestreckten Armen <strong>5–6 cm tief</strong> drücken, Frequenz <strong>100–120 Kompressionen/Minute</strong>. Nach jedem Druck das Brustbein vollständig entlasten.
+                    <div class="step-body">
+                        <div class="step-core">So tief wie möglich drücken – 100–120×/Minute.</div>
+                        <div class="step-detail">Harter Untergrund, Oberkörper frei. Handballen auf die untere Brustbeinhälfte, zweite Hand drauf, Arme durchgestreckt. Der Widerstand steigt spürbar, wenn das Herz ausreichend zusammengedrückt ist. Nach jedem Druck das Brustbein vollständig entlasten.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">3</span>
-                    <strong>IM WECHSEL BEATMEN:</strong> Nach 30 Herzdruckmassagen: Kopf überstrecken, Nase zuhalten, normal einatmen und ca. 1 Sekunde lang gleichmäßig in den Mund blasen, bis sich der Brustkorb hebt. Zweimal beatmen, dann wieder 30 Kompressionen. Immer im Rhythmus <strong>30 : 2</strong> weitermachen.
+                    <div class="step-body">
+                        <div class="step-core">Nach 30 Kompressionen: 2× beatmen.</div>
+                        <div class="step-detail">Kopf überstrecken, Nase zuhalten, normal einatmen, ca. 1 Sekunde in den Mund blasen, bis sich der Brustkorb hebt. Danach wieder 30 Kompressionen. Rhythmus <strong>30 : 2</strong>.</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step" style="background-color: #2c0e0e; border-left-color: #c0392b;">
                     <span class="step-num">4</span>
-                    <strong>AED (DEFIBRILLATOR) NUTZEN, SOBALD VERFÜGBAR:</strong> Gerät einschalten und den Sprachanweisungen folgen. Elektroden wie abgebildet auf den freien Brustkorb kleben. <strong>Bei der Analyse/Schockabgabe darf niemand die Person berühren!</strong> Zwischen den Analysen jeweils 2 Minuten mit Herzdruckmassage/Beatmung weitermachen.
+                    <div class="step-body">
+                        <div class="step-core">AED sobald verfügbar: einschalten &amp; Anweisungen folgen.</div>
+                        <div class="step-detail">Elektroden wie abgebildet auf den freien Brustkorb kleben. <strong>Bei Analyse/Schockabgabe darf niemand die Person berühren!</strong> Dazwischen weiter im Rhythmus 30:2, bis zur nächsten Analyse (ca. alle 2 Minuten).</div>
+                    </div>
                 </div>
 
                 <div class="emergency-step">
                     <span class="step-num">5</span>
-                    <strong>WEITERMACHEN</strong> bis der Rettungsdienst übernimmt oder die Person Lebenszeichen zeigt (z. B. eigene Atmung, Husten, Bewegung) – dann in die Seitenlage bringen und die Atmung weiter beobachten.
+                    <div class="step-body">
+                        <div class="step-core">Weitermachen, bis der Rettungsdienst übernimmt oder Lebenszeichen da sind.</div>
+                        <div class="step-detail">Atmet die Person wieder normal, hustet oder bewegt sie sich: in die Seitenlage bringen und die Atmung weiter beobachten.</div>
+                    </div>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">

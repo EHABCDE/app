@@ -360,7 +360,7 @@ main.mode-learn .panic-content {
        JS in --header-height geschrieben (siehe aktualisiereHeaderHoehe() in
        script.js), damit es auf jedem Gerät exakt passt und nichts überlappt. */
     position: sticky;
-    top: calc(var(--header-height, 64px) + 10px);
+    top: calc(var(--header-total-height, 64px) + 10px);
     z-index: 900;
 }
 
@@ -391,6 +391,44 @@ main.mode-learn .panic-content {
     line-height: 26px;
     font-weight: bold;
     margin-right: 8px;
+}
+
+/* Zweistufiger Aufbau (siehe Absprache mit Johannes): fetter, kurzer
+   Kernsatz zum Erfassen in ca. 1-2 Sekunden, darunter die Details in
+   kleinerer Schrift für alle, die noch genauer lesen wollen/können.
+   Wird schrittweise auf weitere Themen ausgerollt. Das Flex-Layout gilt
+   bewusst NUR für Schritte mit .step-body (per :has() - wird von allen
+   relevanten Browsern/WebViews unterstützt), damit alle noch nicht
+   umgestellten Themen unverändert im bisherigen Fließtext-Stil bleiben
+   und nicht aus Versehen mit-betroffen sind. */
+.emergency-step:has(.step-body) {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.emergency-step:has(.step-body) .step-num {
+    flex-shrink: 0;
+    margin-right: 0;
+}
+
+.step-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.step-core {
+    font-size: 1.15em;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.step-detail {
+    margin-top: 5px;
+    font-size: 0.88em;
+    font-weight: 400;
+    color: #cbd5e1;
+    line-height: 1.5;
 }
 
 .product-box {
@@ -1010,4 +1048,164 @@ textarea.ns-input {
     .wq-question-text {
         font-size: 21px;
     }
+}
+
+/* =========================================================
+   SENIOREN-MODUS: größere Schrift, mehr Kontrast, größere
+   Tippflächen. Wird per toggleSeniorMode() in script.js als
+   Klasse "senior-mode" auf <body> gesetzt und in localStorage
+   gemerkt (siehe SENIOR_MODE_STORAGE_KEY). Deckt bewusst zuerst
+   die Bereiche ab, die im Notfall wirklich gelesen werden müssen
+   (Notfallmodus-Schritte, Lernmodus-Texte, Startseiten-Kacheln,
+   Buttons) - Detailbereiche wie das Wissensquiz können bei Bedarf
+   in einem weiteren Schritt ergänzt werden. */
+
+#accessibility-bar {
+    display: flex;
+    justify-content: center;
+    padding: 8px 20px;
+    background: #eef2f7;
+    border-bottom: 1px solid #e2e8f0;
+    /* Bleibt wie #mode-switcher-container beim Scrollen sichtbar, direkt
+       darunter angedockt (top = dessen Höhe) - siehe aktualisiereHeaderHoehe()
+       in script.js, die --header-height sowie --header-total-height pflegt. */
+    position: sticky;
+    top: var(--header-height, 64px);
+    z-index: 999;
+}
+
+.senior-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: 30px;
+    padding: 8px 18px;
+    min-height: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    background-color: #2c5282;
+    box-shadow: 0 3px 8px rgba(44, 82, 130, 0.35);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.senior-toggle-btn:active {
+    transform: scale(0.96);
+}
+
+.senior-toggle-btn.is-active {
+    background-color: #1a365d;
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.35);
+}
+
+/* --- Basis: größere Schrift & mehr Zeilenabstand für Fließtext --- */
+body.senior-mode {
+    font-size: 19px;
+    line-height: 1.65;
+    --text-color: #000000;
+}
+
+body.senior-mode .learn-content h1,
+body.senior-mode .panic-content h1 {
+    font-size: 30px;
+    line-height: 1.3;
+}
+
+body.senior-mode .learn-content h2 {
+    font-size: 24px;
+}
+
+body.senior-mode .learn-content h3 {
+    font-size: 21px;
+}
+
+body.senior-mode .learn-content p,
+body.senior-mode .learn-content li,
+body.senior-mode .app-disclaimer,
+body.senior-mode .product-box {
+    font-size: 19px;
+    line-height: 1.65;
+}
+
+/* --- Notfallmodus-Schritte: die wichtigsten Inhalte überhaupt --- */
+body.senior-mode .emergency-step {
+    font-size: 21px;
+    line-height: 1.6;
+    padding: 20px;
+    border-left-width: 8px;
+}
+
+body.senior-mode .step-num {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 19px;
+}
+
+body.senior-mode .step-core {
+    font-size: 1.2em;
+}
+
+body.senior-mode .step-detail {
+    font-size: 0.95em;
+    color: #e2e8f0;
+}
+
+/* --- Kopfzeile, Buttons & Bedienelemente: mehr Kontrast, größere Tippflächen --- */
+body.senior-mode #main-title,
+body.senior-mode #main-title-kind,
+body.senior-mode #main-title-erwachsene {
+    font-size: 30px;
+}
+
+body.senior-mode #main-subtitle,
+body.senior-mode #main-subtitle-kind,
+body.senior-mode #main-subtitle-erwachsene {
+    font-size: 18px;
+    color: #334155;
+}
+
+body.senior-mode .category-card {
+    font-size: 20px;
+    min-height: 160px;
+    border-width: 2px;
+}
+
+body.senior-mode .category-icon {
+    font-size: 50px;
+}
+
+body.senior-mode .topic-card {
+    font-size: 17px;
+    min-height: 100px;
+    border-width: 2px;
+    font-weight: 700;
+}
+
+body.senior-mode .emergency-toggle-btn,
+body.senior-mode .senior-toggle-btn,
+body.senior-mode .back-btn,
+body.senior-mode .btn-secondary,
+body.senior-mode .promo-banner,
+body.senior-mode #lang-select {
+    font-size: 17px;
+    min-height: 52px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+body.senior-mode #search-input,
+body.senior-mode #search-input-erwachsene {
+    font-size: 18px;
+    padding: 16px 20px;
+    border-width: 2px;
+}
+
+body.senior-mode .product-link-btn {
+    font-size: 17px;
+    padding: 16px 18px;
 }
